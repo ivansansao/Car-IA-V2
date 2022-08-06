@@ -68,7 +68,7 @@ class Genetic {
         }
 
         if (pesos) {
-            child.ia.setWeightsFromString(pesos, this.shapes);
+            // child.ia.setWeightsFromString(pesos, this.shapes);
         }
         cars.push(child);
         this.melhor = child;

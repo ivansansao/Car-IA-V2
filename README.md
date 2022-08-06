@@ -20,12 +20,14 @@ Print - Pista mais fácil.
 
 Teclas de comandos:
 
-b - Mostra uma circuferência que elimina veículos
+a - Mostra uma circuferência que elimina veículos
+b - Freiar (Brake)
 c - Troca de pista
-d - Mostrar/esconder detalhes dos carros
+d - Marcha dinâmica
 e - Ativa/destiva elitismo
 f - Ativa o eliminador de veículo na ponta do mouse
 g - Mostra o fundo
+h - Mostrar/esconder detalhes dos carros
 i - Motra informações sobre o carro
 l - Mostra os limites da pista
 p - Pausa

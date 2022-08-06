@@ -12,9 +12,19 @@ function keyPressed() {
 
         running = !running;
         
+    } else if (key == 'a') { // Mostrar sensores
+        for (const monster of pista.monsters) {
+            if (!monster.useMouse) {
+                monster.ativo = !monster.ativo;
+            }
+        }
+    } else if (key == 'b') { // Brake
+
     } else if (key == 'l') { // Mostrar sensores
         showWalls = !showWalls;
-    } else if (key == 'd') { // Mostrar detalhes dos carros
+    } else if (key == 'd') { // Marcha dinâmica
+        
+    } else if (key == 'h') { // Mostrar detalhes dos carros
         showCarsDetais = !showCarsDetais;
     } else if (key == 'w') { // Mostrar ranhuras
         showRanhuras = !showRanhuras;
@@ -25,12 +35,6 @@ function keyPressed() {
         showMousePoint = !showMousePoint;
     } else if (key == 'x') { // Mostrar sensores
         showBatidos = !showBatidos;
-    } else if (key == 'b') { // Mostrar sensores
-        for (const monster of pista.monsters) {
-            if (!monster.useMouse) {
-                monster.ativo = !monster.ativo;
-            }
-        }
     } else if (key == 's') { // Mostrar sensores
         for (const car of cars) {
             car.showRays = !car.showRays;
@@ -69,9 +73,9 @@ function handleKeyIsDown() {
     for (let i = 0; i < cars.length; i++) {
 
         if (keyIsDown(UP_ARROW)) {
-            cars[i].vaiPraFrente();
+            cars[i].speedUp();
         } else if (keyIsDown(DOWN_ARROW)) {
-            cars[i].vaiPraTras();
+            cars[i].freeSpeedUp();
         }
         if (keyIsDown(RIGHT_ARROW)) {
             cars[i].vaiPraDireita();

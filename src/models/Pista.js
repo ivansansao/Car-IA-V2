@@ -39,10 +39,10 @@ class Pista {
 
         if (this.selectedPista == 1) {
 
-            collideCars = true;
+            collideCars = false;
             wallsPista = getPista1();
             this.ranhuras = getRanhuras1();
-            this.pistaTimeOut = 20000;
+            this.pistaTimeOut = 2000;
             this.timeOutStopped = 100;
             // this.monsters.push(new Monster(1600, 130, -0.7, 0, 300, 150, false, true));
             // this.monsters.push(new Monster(1300, -200, 0, 1, 600, 150, false, true));

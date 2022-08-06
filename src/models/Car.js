@@ -6,18 +6,11 @@ class Car {
         this.lastPos = createVector();
         this.heading = randomHeading ? random(360) : pista.anguloNascimento;
         this.rotation = 0;
-        this.marcha = 0;
-        this.lastMarcha = 0;
-        this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.3)';
+        this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
-        this.demoLado = '';
-        this.rays = [];
-        this.showSensorPoint = false;
-        this.showSensorRanhura = false;
         this.ia = new RedeNeural();
         this.inteligente = inteligente;
         this.batido = false;
-        this.showRays = false;
         this.km = 0;
         this.kmMax = 0;
         this.kmMin = 0;
@@ -33,30 +26,53 @@ class Car {
         this.id = Number(random(0, 9999).toFixed(0));
         this.luzes = true;
         this.lapCount = 0;
+        this.showInfo = false;
+        this.speed = 0;
+        this.gear = 1; // -1 Reverse, 1 Dinamic
+        this.braking = false;
+        this.speedingUp = false;
+        this.demo = new Demo();
+        this.trail = [];
+        this.rays = [];
+
+        if (this.pos.x == -1) {
+            this.pos = createVector(random(20, 1700), random(20, 800));
+        }
 
         for (let i = 0; i < 360; i += 18) {
             this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
 
         }
 
-        this.setColor();
-
-        if (this.pos.x == -1) {
-            this.pos = createVector(random(20, 1700), random(20, 800));
-        }
 
     }
+
+    setColor() {
+        if (this.marca.toLowerCase().includes('c') || this.marca.toLowerCase().includes('x')) {
+            // this.cor = 'hsl(216, 100%, 50%)'; // Azul
+            this.cor = 'rgb(255,255,255)';
+        } else {
+            // this.cor = 'hsla(' + Math.floor(this.ia.mutated / 10 * 360) + ',100%,50%,0.3)';
+            this.cor = 'hsla(' + Math.floor(this.ia.mutated / 10 * 360) + ',100%,50%,1)';
+        }
+    }
+
 
     raciocinar(inputs) {
 
         if (!this.batido && this.inteligente) {
 
             /*
-            0 - 1a Marcha
-            1 - Ré
-            2 - Direita
-            3 - Reto
-            4 - Esquerda
+            0 - Acelera
+            1 - Mantém aceleração
+            2 - Desacelera
+            3 - Freia
+
+            4 - Engata a marcha Dinamic
+            5 - Engata a marcha Ré
+            6 - Vai pra direita
+            7 - Vai reto
+            8 - Vai pra esquerda
             */
 
 
@@ -65,26 +81,45 @@ class Car {
             let maiorR;
 
 
-            if (resposta[0] > resposta[1]) {
-                this.vaiPraFrente(); // Frente
-            } else {
-                this.vaiPraTras(); // Trás
-            }
-
             maiorI = 0;
             maiorR = -Infinity;
-            for (let i = 2; i < 5; i++) {
+
+            for (let i = 0; i <= 3; i++) {
                 if (resposta[i] > maiorR) {
                     maiorR = resposta[i]
                     maiorI = i
                 }
             }
 
-            if (maiorI == 2) {
-                this.vaiPraDireita();
+            if (maiorI == 0) {
+                this.speedUp();
+            } else if (maiorI == 1) {
+                // Mantém aceleração.
+            } else if (maiorI == 2) {
+                this.freeSpeedUp();
             } else if (maiorI == 3) {
+                this.brake();
+            }
+            if (resposta[4] > resposta[5]) {
+                this.engageDinamic(); // Marcha D
+            } else {                
+                this.engageReverse(); // Marcha R
+            }
+
+            maiorI = 0;
+            maiorR = -Infinity;
+            for (let i = 6; i <= 8; i++) {
+                if (resposta[i] > maiorR) {
+                    maiorR = resposta[i];
+                    maiorI = i;
+                }
+            }            
+
+            if (maiorI == 6) {
+                this.vaiPraDireita();
+            } else if (maiorI == 7) {
                 // Vai reto.
-            } else if (maiorI == 4) {
+            } else if (maiorI == 8) {
                 this.vaiPraEsquerda();
             }
 
@@ -93,6 +128,173 @@ class Car {
         }
     }
 
+    randomizePos() {
+        this.pos = createVector(random(20, windowWidth), random(20, windowHeight));;
+    }
+
+    speedUp() {
+        this.speed += 0.005;
+
+        if (this.gear == 1) {
+            // Limita a velocidade pra frente em 2
+            if (this.speed > 2) {
+                this.speed = 2;
+            }
+        } else {
+
+            // Limita a velocidade da ré em 0.5
+            if (this.speed > 0.5) {
+                this.speed = 0.5;
+            }
+        }
+
+        this.speedingUp = true;
+        this.braking = false;
+    }
+
+    freeSpeedUp() {
+        if (this.speed > 0) {
+            this.speed -= 0.004;
+            if (this.speed < 0) {
+                this.speed = 0;
+            }
+        }
+        this.speedingUp = false;
+
+    }
+
+    brake() {
+
+        this.speed -= 0.04;
+        if (this.speed < 0) {
+            this.speed = 0;
+        }
+        this.braking = true;
+        if (this.speed > 0.5) {
+            this.trail.push({ pos: this.pos.copy(), rotate: this.heading });
+        }
+
+    }
+
+    vaiPraDireita() {
+
+        if (this.speed > 0) {
+
+            if (this.speed < 0.1) {
+                if (this.gear == 1)
+                    this.rotation = this.speed * 0.4; // this.speed * 0.4
+                else if (this.gear == -1)
+                    this.rotation = -this.speed * 0.4;
+            } else {
+                if (this.gear == 1)
+                    this.rotation = 0.1; // this.speed * 0.4
+                else if (this.gear == -1)
+                    this.rotation = -0.1;
+            }
+
+        }
+        this.volanteAngle = 'r';
+    }
+    vaiPraEsquerda() {
+        if (this.speed > 0) {
+
+            if (this.speed < 0.1) {
+                if (this.gear == 1)
+                    this.rotation = -this.speed * 0.4;
+                else if (this.gear == -1)
+                    this.rotation = this.speed * 0.4;
+            } else {
+                if (this.gear == 1)
+                    this.rotation = -0.1;
+                else if (this.gear == -1)
+                    this.rotation = 0.1;
+            }
+
+        }
+        this.volanteAngle = 'l';
+    }
+
+    engageDinamic() {
+        if (this.speed == 0) {
+            this.gear = 1;
+        }
+    }
+
+    engageReverse() {
+        if (this.speed == 0) {
+            this.gear = -1;
+        }
+    }
+
+    update() {
+
+        if (this.batido) {
+            return false;
+        }
+
+        this.heading += this.rotation * 0.3;
+
+        let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
+
+        this.pos.add(irPara);
+
+        this.km += 1;
+        this.aliveTime++;
+
+        this.rotation = 0;
+        this.speed = Number(this.speed.toFixed(3));
+
+        if (this.inteligente) {
+            this.verificaEstagnacao();
+        }
+
+        this.updateRays();
+
+        pista.setMajorDistance(this.km);
+
+        this.killLazier();
+
+        if (this.aliveTime % pista.timeOutStopped == 0) {
+            this.onEachTime();
+        }        
+
+    }
+    killLazier() {
+
+        if (!this.allowLazy) {
+            const distance = pista.carMajorDistance - this.km;
+            if (distance > 400) {
+                this.aposentar();
+            }
+        }
+
+    }
+
+    getPontoAfrente(offset = 0) {
+
+        const dirRaio = this.pos.copy();
+        const lat = p5.Vector.fromAngle(this.heading + offset).mult(50);
+
+        return dirRaio.add(lat);
+
+    }
+
+    updateRays() {
+
+        for (ray of this.rays) {
+
+            ray.pos.x = this.pos.x;
+            ray.pos.y = this.pos.y;
+
+            const dirRaio = this.getPontoAfrente(ray.defAngle);
+
+            if (this.showSensorPoint) circle(dirRaio.x, dirRaio.y, 4);
+
+            ray.lookAt(dirRaio.x, dirRaio.y);
+
+        }
+
+    }
     verificaColisaoRanhura(ranhuras) {
 
         let hit;
@@ -153,7 +355,6 @@ class Car {
         // }
 
     }
-
     verificaEstagnacao() {
 
         this.kmMMCount++;
@@ -170,80 +371,87 @@ class Car {
 
     }
 
-    setColor() {
-        if (this.marca.toLowerCase().includes('c') || this.marca.toLowerCase().includes('x')) {
-            // this.cor = 'hsl(216, 100%, 50%)'; // Azul
-            this.cor = 'rgb(255,255,255)';
-        } else {
-            // this.cor = 'hsla(' + Math.floor(this.ia.mutated / 10 * 360) + ',100%,50%,0.3)';
-            this.cor = 'hsla(' + Math.floor(this.ia.mutated / 10 * 360) + ',100%,50%,1)';
+    aposentar() {
+
+        if (!this.batido) {
+
+            vivos--;
+            this.batido = true;
+            genetic.setFlag();
+            if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
+                console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
+            }
+
         }
     }
 
-    vaiPraFrente() {
 
-        this.marcha = 1;
-        this.lastMarcha = 1;
+    show() {
 
-    }
-    vaiPraTras() {
-
-        this.marcha = -1;
-        this.lastMarcha = -1;
-        this.qtdReh++;
-    }
-
-    vaiPraDireita() {
-        if (this.marcha > 0)
-            this.rotation = 0.2;
-        else if (this.marcha < 0)
-            this.rotation = -0.2;
-
-        this.volanteAngle = 'r';
-    }
-    vaiPraEsquerda() {
-        if (this.marcha > 0)
-            this.rotation = -0.2;
-        else if (this.marcha < 0)
-            this.rotation = 0.2;
-
-        this.volanteAngle = 'l';
-    }
-
-    update() {
+        this.showInfoCar();
 
         if (this.batido) {
-            return false;
+            // imageMode(CENTER);
+            // image(pista.spriteRip, this.pos.x, this.pos.y);
+            strokeWeight(1);
+            fill(0, 0, 255);
+            stroke(255);
+            circle(this.pos.x, this.pos.y, 5);
+        } else {
+
+            push();
+            translate(this.pos.x, this.pos.y);
+            rotate(this.heading);
+            this.drawCar();
+
+            pop();
+
+            this.volanteAngle = '';
         }
 
-        this.heading += this.rotation * 0.3; // 0.3 é o quanto o veiculo esterce
-
-        let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.marcha);
-
-        this.pos.add(irPara);
-
-        this.km += this.marcha;
-        this.aliveTime++;
-
-        this.marcha = 0;
-        this.rotation = 0;
-
-        if (this.inteligente) {
-            this.verificaEstagnacao();
-        }
-
-        this.updateRays();
-
-        pista.setMajorDistance(this.km);
-
-        this.killLazier();
-
-        if (this.aliveTime % pista.timeOutStopped == 0) {
-            this.onEachTime();
-        }
+        this.braking = false;
 
     }
 
+    showInfoCar() {
+
+        if (this.showInfo) {
+
+            let x = this.pos.x - 50;
+            let y = this.pos.y - 100;
+
+            stroke(0, 0, 255);
+            fill(255, 255, 255);
+            strokeWeight(1);
+            line(this.pos.x, y + 50, this.pos.x, this.pos.y);
+            rect(x, y, 130, 65, 4);
+
+            textSize(10);
+            fill(0, 0, 255);
+            noStroke();
+            strokeWeight(1);
+
+            text(`km: ${this.km}`, x + 2, y += 12);
+            text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'}`, x + 2, y += 12);
+            text(`Velocidade: ${this.speed}`, x + 2, y += 12);
+            text(`Acelerador: ${this.speedingUp ? 'Acelerou' : 'Aliviou'}`, x + 2, y += 12);
+            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'}`, x + 2, y += 12);
+
+        }
+    }
+
+    drawTrail() {
+        if (this.trail.length > 0) {
+
+            strokeWeight(0);
+            fill(0, 0, 0, 20);
+            stroke(255);
+            this.trail.forEach(element => {
+                circle(element.pos.x - 4, element.pos.y - 4, 8);
+                circle(element.pos.x + 4, element.pos.y + 4, 8);
+            });
+        }
+    }
     onEachTime() {
 
         if (this.pos.x == this.lastPos.x && this.pos.y == this.lastPos.y) {
@@ -269,120 +477,6 @@ class Car {
         }
         this.setColor();
     }
-
-    killLazier() {
-
-        if (!this.allowLazy) {
-            const distance = pista.carMajorDistance - this.km;
-            if (distance > 400) {
-                this.aposentar();
-            }
-        }
-
-    }
-
-    getPontoAfrente(offset = 0) {
-
-        const dirRaio = this.pos.copy();
-        const lat = p5.Vector.fromAngle(this.heading + offset).mult(50);
-
-        return dirRaio.add(lat);
-
-    }
-
-    updateRays() {
-
-        for (ray of this.rays) {
-
-            ray.pos.x = this.pos.x;
-            ray.pos.y = this.pos.y;
-
-            const dirRaio = this.getPontoAfrente(ray.defAngle);
-
-            if (this.showSensorPoint) circle(dirRaio.x, dirRaio.y, 4);
-
-            ray.lookAt(dirRaio.x, dirRaio.y);
-
-        }
-
-    }
-
-    aposentar() {
-
-        if (!this.batido) {
-
-            vivos--;
-            this.batido = true;
-            genetic.setFlag();
-            if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
-                console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
-            }
-
-        }
-    }
-
-    show() {
-
-        if (!showCarsDetais) {
-
-            strokeWeight(2);
-            fill(this.cor);
-            stroke(255);
-            circle(this.pos.x, this.pos.y,10);
-
-            return false;
-        }
-
-        this.showInfoCar();
-
-        if (this.batido) {
-            // imageMode(CENTER);
-            // image(pista.spriteRip, this.pos.x, this.pos.y);
-            strokeWeight(1);
-            fill(0, 0, 255);
-            stroke(255);
-            circle(this.pos.x, this.pos.y,5);
-        } else {
-
-            push();
-            translate(this.pos.x, this.pos.y);
-            rotate(this.heading);
-            this.drawCar();
-            pop();
-
-            this.volanteAngle = '';
-        }
-
-    }
-
-    showInfoCar() {
-
-        if (showInfoCar) {
-
-            let x = this.pos.x - 50;
-            let y = this.pos.y - 90;
-
-            stroke(0, 0, 255);
-            fill(255, 255, 255);
-            strokeWeight(1);
-            rect(x, y, 120, 65, 4);
-            line(this.pos.x, y + 50, this.pos.x, this.pos.y);
-
-            textSize(10);
-            fill(0, 0, 255);
-            noStroke();
-            strokeWeight(1);
-
-            text(`Genes mutados: ${this.ia.mutated}`, x += 4, y += 12);
-            text(`Ranhuras: ${this.ranhurasColetadas.length}`, x, y += 12);
-            text(`km: ${this.km}`, x, y += 12);
-            text(`Marca: ${this.marca}`, x, y += 12);
-            text(`CRC RNA: ${crc32(this.ia.showWeights(true))}`, x, y += 12);
-            // text(`Voltas: ${this.lapCount}`, x+50, y); // Não está funcionando ainda.
-
-        }
-    }
-
     look(walls) {
 
         if (this.batido) {
@@ -479,95 +573,88 @@ class Car {
         rect(-2, -9, 14, 17, 4);
 
         // Ré.
-        if (this.lastMarcha == -1) {
+        if (this.braking) {
 
             stroke(255, 0, 0);
             strokeWeight(2);
-            // fill('hsl(0, 100%, 50%)'); 
+            fill(0);
+            rect(-9, 2, 3, 6, 4);
+            rect(-9, -8, 3, 6, 4);
+
+            // Faixa
+            // fill(255, 0, 0, 100);
+            // rect(-2, -12, -11, 24, 8);            
+
+        } else if (this.gear == -1) {
+
+            stroke(255, 255, 0);
+            strokeWeight(2);
             fill(0);
             rect(-9, 2, 3, 6, 4);
             rect(-9, -8, 3, 6, 4);
         }
 
-        if (luzes) {
 
-            if (this.luzes) {
 
-                // Faróis dianteiros acesos.
-                strokeWeight(6);
-                stroke(255);
-                point(28, -6);
-                point(28, 6);
+        if (this.luzes) {
 
-                noStroke();
-
-                // Feixo de luz perto.                
-                fill(255, 255, 255, 40);
-                rect(60, -20, -30, 40, 10);
-
-                // Feixo de luz longe.                
-                fill(241, 255, 176, 40);
-                rect(80, -25, -50, 50, 10);
-
-            } else {
-                // Faróis dianteiros apagados.
-                strokeWeight(6);
-                stroke(80);
-                point(28, -6);
-                point(28, 6);
-
-            }
+            // Faróis dianteiros acesos.
+            // strokeWeight(6);
+            // stroke(255);
+            // point(28, -6);
+            // point(28, 6);
 
             noStroke();
 
-            // Feito de luz trazeiro.
-            if (this.lastMarcha == -1) {
-                fill(255, 0, 0, 100);
-                rect(-2, -12, -11, 24, 8);
-            }
+            // Feixo de luz perto.                
+            fill(255, 255, 255, 40);
+            rect(60, -20, -30, 40, 10);
+
+            // Feixo de luz longe.                
+            fill(241, 255, 176, 40);
+            rect(80, -25, -50, 50, 10);
+
+        } else {
+            // Faróis dianteiros apagados.
+            strokeWeight(6);
+            stroke(80);
+            point(28, -6);
+            point(28, 6);
 
         }
 
-        // push()
-        // fill(0);
-        // strokeWeight(0);
-        // rotate(radians(90));
-        // textSize(8);
-        // text(`${this.ranhurasColetadas.length}`, -2, 0);
-        // text(`${this.km}`, -8, -8);
-        // text(`${this.marca}`, -6, -18);
-        // pop();
+        noStroke();
+
 
     }
 
-    demo(run) {
+    runDemo(run) {
 
         if (!run) return
 
-        let movimento = Number((Math.random() * (100 - 1)).toFixed(0));
-        this.marcha = 1
-
-        if (movimento > 30) {
-            this.vaiPraFrente();
-        }
-
         if (frameCount % 50 == 0) {
 
-            const lado = Math.floor(random(0.0, 0.4) * 10)
+            this.demo.think();
 
-            if (lado == 0) {
-                this.demoLado = ''
-            } else if (lado == 1) {
-                this.demoLado = 'r'
-            } else if (lado == 2) {
-                this.demoLado = 'l'
-            }
+        }
+        if (this.demo.brake) {
+            this.brake();
+        }
+        if (this.demo.speedUp) {
+            this.speedUp();
+        } else if (this.demo.freeSpeedUp) {
+            this.freeSpeedUp();
         }
 
+        if (this.demo.gear == -1) {
+            this.engageReverse();
+        } else if (this.demo.gear == 1) {
+            this.engageDinamic();
+        }
 
-        if (this.demoLado == 'r')
+        if (this.demo.side == 'r')
             this.vaiPraDireita();
-        else if (this.demoLado == 'l')
+        else if (this.demo.side == 'l')
             this.vaiPraEsquerda();
 
         if (this.pos.x > width)
@@ -582,7 +669,6 @@ class Car {
         if (this.pos.y < 0)
             this.pos.y = height;
     }
-
 
 }
 

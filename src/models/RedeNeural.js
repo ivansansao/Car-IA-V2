@@ -12,7 +12,7 @@ class RedeNeural {
 
         this.input_nodes = 21; // 20 sensores + 1 marcha.
         this.hidden_nodes = 5;
-        this.output_nodes = 5;
+        this.output_nodes = 9;
         this.f1 = "linear"; // this.getAnyActivation();
         this.f2 = "selu"; // this.getAnyActivation();
         this.mutated = 0; // Number of genes mutateds, zero is not mutated
@@ -44,7 +44,8 @@ class RedeNeural {
         choice = choice || Number(random(0, functions.length - 1).toFixed(0));
         return functions[choice];
     }
-    pensar(inputs = [1, 2, 3, 4, 5]) {
+    pensar(inputs = []) {
+
 
         return tf.tidy(() => {
 
