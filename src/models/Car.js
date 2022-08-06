@@ -80,6 +80,11 @@ class Car {
             let maiorI;
             let maiorR;
 
+            if (resposta[4] > resposta[5]) {
+                this.engageDinamic(); // Marcha D
+            } else {                
+                this.engageReverse(); // Marcha R
+            }
 
             maiorI = 0;
             maiorR = -Infinity;
@@ -100,11 +105,7 @@ class Car {
             } else if (maiorI == 3) {
                 this.brake();
             }
-            if (resposta[4] > resposta[5]) {
-                this.engageDinamic(); // Marcha D
-            } else {                
-                this.engageReverse(); // Marcha R
-            }
+
 
             maiorI = 0;
             maiorR = -Infinity;
