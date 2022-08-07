@@ -19,7 +19,7 @@
 */
 
 let world = new World();
-let crc32=function(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];return(-1^n)>>>0};
+let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 };
 let pesosForcados = undefined;
 let maxCar = 999;
 let genetic = null;
@@ -126,6 +126,12 @@ function draw() {
         }
     }
 
+    if (world.showTrails) {
+        for (const car of cars) {
+            car.drawTrail();
+        }
+    }
+
 
     for (const car of cars) {
 
@@ -187,9 +193,9 @@ function draw() {
     if (vivos <= maxCar) {
 
         if (vivos < 10 || getFrameRate() > 40) {
-            
+
             addMoreCar();
-            
+
         }
     }
 
@@ -212,7 +218,31 @@ function draw() {
     noStroke();
     fill(255);
     textSize(16);
-    text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km} Pista: ${pista.selectedPista}`, 10, 20);
+    if (genetic.melhor) {
+        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km} Pista: ${pista.selectedPista} `, 10, 20);
+    }
+
+    if (genetic.melhorCorrente) {
+
+        if (world.killOnFindBetter) {
+
+            fill(0);
+            text(`Corrente: ${genetic.melhorCorrente.km}-${genetic.melhor.ranhurasColetadas.length} Iguais ${genetic.melhorCorrente == genetic.melhor}`, 10, 35);
+
+            if (genetic.melhorCorrente != genetic.melhor) {
+                text('dif', 2, 45)
+                if (genetic.melhorCorrente.km > 60) {
+                    text('> 60', 2, 55)
+                    if (genetic.melhorCorrente.km > genetic.melhor.km) {
+                        text('C > M', 2, 65)
+                        timer = pista.pistaTimeOut;
+                        eliminarTodosCars();
+                    }
+                }
+            }
+        }
+
+    }
 
     ShowMousePoint()
 
@@ -237,7 +267,7 @@ function addMoreCar() {
     let child = new Car('m2', true, true, false);
     // pista.anguloNascimento = radians(random(0, 360));
     child.ia.model.setWeights(weightCopies);
-    child.mutate(Number(random(0.01,0.05).toFixed(15)));    
+    child.mutate(Number(random(0.01, 0.05).toFixed(15)));
     cars.unshift(child);
     vivos++
 }

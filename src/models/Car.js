@@ -44,6 +44,7 @@ class Car {
 
         }
 
+        this.setColor();
 
     }
 
@@ -99,11 +100,11 @@ class Car {
             if (maiorI == 0) {
                 this.speedUp();
             } else if (maiorI == 1) {
-                // Mantém aceleração.
-            } else if (maiorI == 2) {
                 this.freeSpeedUp();
-            } else if (maiorI == 3) {
+            } else if (maiorI == 2) {
                 this.brake();
+            } else if (maiorI == 3) {
+                // Mantém aceleração.
             }
 
 
@@ -238,12 +239,13 @@ class Car {
         let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
 
         this.pos.add(irPara);
-
-        this.km += 1;
+        
         this.aliveTime++;
 
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
+
+        this.km += Number(this.speed.toFixed(1));
 
         if (this.inteligente) {
             this.verificaEstagnacao();
@@ -379,15 +381,25 @@ class Car {
             vivos--;
             this.batido = true;
             genetic.setFlag();
-            if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
-                console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
-            }
+            // if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
+            //     console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
+            // }
 
         }
     }
 
 
     show() {
+
+        if (!showCarsDetais) {
+
+            strokeWeight(2);
+            fill(this.cor);
+            stroke(255);
+            circle(this.pos.x, this.pos.y,10);
+
+            return false;
+        }
 
         this.showInfoCar();
 
@@ -433,7 +445,7 @@ class Car {
             strokeWeight(1);
 
             text(`km: ${this.km}`, x + 2, y += 12);
-            text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'}`, x + 2, y += 12);
+            text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
             text(`Acelerador: ${this.speedingUp ? 'Acelerou' : 'Aliviou'}`, x + 2, y += 12);
             text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'}`, x + 2, y += 12);

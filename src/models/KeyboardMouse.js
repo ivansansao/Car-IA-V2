@@ -22,8 +22,14 @@ function keyPressed() {
 
     } else if (key == 'l') { // Mostrar sensores
         showWalls = !showWalls;
+        
+    } else if (key == 'j') { // Freiadas na pista
+        world.showTrails = !world.showTrails;
     } else if (key == 'd') { // Marcha dinâmica
         
+    } else if (key == 'k') { // Matar ao encontrar um melhor.
+        world.killOnFindBetter = !world.killOnFindBetter;
+        console.log(`Kill on find better ${world.killOnFindBetter}`);
     } else if (key == 'h') { // Mostrar detalhes dos carros
         showCarsDetais = !showCarsDetais;
     } else if (key == 'w') { // Mostrar ranhuras
@@ -53,8 +59,6 @@ function keyPressed() {
         eliminarTodosCars();
     } else if (key == 'r') {
         showRanhurasNormalized();
-    } else if (key == 'i') {        
-        showInfoCar = !showInfoCar;
     } else if (key == 'n') {        
         showFlag = !showFlag;
     } else if (key == 'z') {        
@@ -65,6 +69,13 @@ function keyPressed() {
                 monster.ativo = !monster.ativo;
             }
         }
+    } else if (key == 'i') {
+        for (const car of cars) {
+            car.showInfo = !car.showInfo;
+        }
+
+    } else if (key == 't') {
+        world.showTrails = !world.showTrails;
     }
 }
 
