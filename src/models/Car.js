@@ -172,7 +172,7 @@ class Car {
             this.speed = 0;
         }
         this.braking = true;
-        if (this.speed > 0.5) {
+        if (this.speed > 1.2) {
             this.trail.push({ pos: this.pos.copy(), rotate: this.heading });
         }
 
@@ -245,7 +245,9 @@ class Car {
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
 
-        this.km += Number(this.speed.toFixed(1));
+        const vel = Number(this.speed.toFixed(1)); 
+
+        this.km += vel;
 
         if (this.inteligente) {
             this.verificaEstagnacao();

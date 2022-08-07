@@ -126,10 +126,23 @@ function draw() {
         }
     }
 
-    if (world.showTrails) {
-        for (const car of cars) {
-            car.drawTrail();
+    if (world.showTrails && world.hasTrailsToShow) {
+
+        let trailsDrawed = 0;
+
+        for (let i = 0; i < cars.length; i++) {
+
+            const car = cars[i];
+
+            if (car.trail.length > 0) {
+                car.drawTrail();
+                if (trailsDrawed > 40) {
+                    break;
+                }
+                trailsDrawed++;
+            }
         }
+
     }
 
 
@@ -185,6 +198,10 @@ function draw() {
             car.show();
         }
 
+        if (car.trail.length) {
+            world.hasTrailsToShow = true;
+        }
+
     }
 
     pista.monstersUpdate();
@@ -219,21 +236,21 @@ function draw() {
     fill(255);
     textSize(16);
     if (genetic.melhor) {
-        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km} Pista: ${pista.selectedPista} `, 10, 20);
+        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km.toFixed(4)} Pista: ${pista.selectedPista} G${nGeracao+1}`, 10, 20);
     }
 
     if (genetic.melhorCorrente) {
 
-        if (world.killOnFindBetter) {
+        if (world.killOnFindBetter && genetic.melhor) {
 
             fill(0);
             text(`Corrente: ${genetic.melhorCorrente.km}-${genetic.melhor.ranhurasColetadas.length} Iguais ${genetic.melhorCorrente == genetic.melhor}`, 10, 35);
 
             if (genetic.melhorCorrente != genetic.melhor) {
                 text('dif', 2, 45)
-                if (genetic.melhorCorrente.km > 60) {
-                    text('> 60', 2, 55)
-                    if (genetic.melhorCorrente.km > genetic.melhor.km) {
+                if (genetic.melhorCorrente.km > 50) {
+                    text('> 50', 2, 55)
+                    if (genetic.melhorCorrente.km > genetic.melhor.km || genetic.melhorCorrente.ranhurasColetadas.length > genetic.melhor.ranhurasColetadas.length) {
                         text('C > M', 2, 65)
                         timer = pista.pistaTimeOut;
                         eliminarTodosCars();
