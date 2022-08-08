@@ -172,7 +172,7 @@ class Car {
             this.speed = 0;
         }
         this.braking = true;
-        if (this.speed > 1.2) {
+        if (this.speed > 1) {
             this.trail.push({ pos: this.pos.copy(), rotate: this.heading });
         }
 

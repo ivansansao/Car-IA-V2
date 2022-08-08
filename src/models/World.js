@@ -6,6 +6,7 @@ class World {
         this.demo = false;
         this.showTrails = true;
         this.killOnFindBetter = false;
+        this.hasTrailsToShow = false;
 
     }
 }

@@ -207,7 +207,7 @@ function draw() {
     pista.monstersUpdate();
     pista.monstersShow();
 
-    if (vivos <= maxCar) {
+    if (vivos < maxCar) {
 
         if (vivos < 10 || getFrameRate() > 40) {
 
@@ -236,24 +236,29 @@ function draw() {
     fill(255);
     textSize(16);
     if (genetic.melhor) {
-        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km.toFixed(4)} Pista: ${pista.selectedPista} G${nGeracao+1}`, 10, 20);
+        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km.toFixed(4)} Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
     }
 
-    if (genetic.melhorCorrente) {
+    if (genetic.melhorCorrente && nGeracao > 0) {
 
         if (world.killOnFindBetter && genetic.melhor) {
 
-            fill(0);
+            fill(0);            
             text(`Corrente: ${genetic.melhorCorrente.km}-${genetic.melhor.ranhurasColetadas.length} Iguais ${genetic.melhorCorrente == genetic.melhor}`, 10, 35);
 
-            if (genetic.melhorCorrente != genetic.melhor) {
-                text('dif', 2, 45)
-                if (genetic.melhorCorrente.km > 50) {
-                    text('> 50', 2, 55)
-                    if (genetic.melhorCorrente.km > genetic.melhor.km || genetic.melhorCorrente.ranhurasColetadas.length > genetic.melhor.ranhurasColetadas.length) {
-                        text('C > M', 2, 65)
-                        timer = pista.pistaTimeOut;
-                        eliminarTodosCars();
+            if (genetic.melhorCorrente.marca != 'c') {                
+                text('!c', 2, 45)
+
+                if (genetic.melhorCorrente != genetic.melhor) {
+                    text('dif', 2, 55)
+                    if (genetic.melhorCorrente.km > 50) {
+                        text('> 50', 2, 65)
+                        if (genetic.melhorCorrente.km > genetic.melhor.km || genetic.melhorCorrente.ranhurasColetadas.length > genetic.melhor.ranhurasColetadas.length) {
+                            text('C > M', 2, 75)
+                            timer = pista.pistaTimeOut;
+                            eliminarTodosCars();
+                            console.log(`Quebrado em ${timer}`);
+                        }
                     }
                 }
             }
