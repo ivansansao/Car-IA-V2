@@ -130,13 +130,13 @@ function draw() {
 
         let trailsDrawed = 0;
 
-        for (let i = 0; i < cars.length; i++) {
+        for (let i = cars.length-1; i > 0 ; i--) {
 
             const car = cars[i];
 
             if (car.trail.length > 0) {
                 car.drawTrail();
-                if (trailsDrawed > 40) {
+                if (trailsDrawed > 10) {
                     break;
                 }
                 trailsDrawed++;
@@ -155,6 +155,13 @@ function draw() {
             car.update();
             car.look(wallsAndCars);
 
+            // if (car.marca == 'c' || car.marca == 'X') {
+            //     if (car.braking) console.log(`braking`);
+            //     if (car.acceleration != '') console.log(car.acceleration);
+            //     console.log(car.gear);
+            // }
+
+            carInputs.push(car.gear);
             carInputs.push(car.speed);
             carInputs.push(car.rays[0].savedDistance);
             carInputs.push(car.rays[1].savedDistance);

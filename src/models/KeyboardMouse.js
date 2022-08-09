@@ -41,10 +41,6 @@ function keyPressed() {
         showMousePoint = !showMousePoint;
     } else if (key == 'x') { // Mostrar sensores
         showBatidos = !showBatidos;
-    } else if (key == 's') { // Mostrar sensores
-        for (const car of cars) {
-            car.showRays = !car.showRays;
-        }
     } else if (key == 't') { // Matar todos
         timerOn = !timerOn;
     } else if (key == 'o') { // Colidir carros?
@@ -59,6 +55,11 @@ function keyPressed() {
         eliminarTodosCars();
     } else if (key == 'r') {
         showRanhurasNormalized();
+    } else if (key == 's') { // Mostrar sensores
+        for (const car of cars) {
+            car.showRays = !car.showRays;
+        }
+
     } else if (key == 'n') {        
         showFlag = !showFlag;
     } else if (key == 'z') {        

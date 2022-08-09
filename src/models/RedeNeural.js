@@ -10,8 +10,8 @@ class RedeNeural {
 
     constructor() {
 
-        this.input_nodes = 21; // 20 sensores + 1 marcha.
-        this.hidden_nodes = 5;
+        this.input_nodes = 22;
+        this.hidden_nodes = 8;
         this.output_nodes = 9;
         this.f1 = "linear"; // this.getAnyActivation();
         this.f2 = "selu"; // this.getAnyActivation();

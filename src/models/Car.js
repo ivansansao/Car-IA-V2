@@ -30,10 +30,11 @@ class Car {
         this.speed = 0;
         this.gear = 1; // -1 Reverse, 1 Dinamic
         this.braking = false;
-        this.speedingUp = false;
+        this.acceleration = '';
         this.demo = new Demo();
         this.trail = [];
         this.rays = [];
+        this.showRays = false;
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -81,12 +82,6 @@ class Car {
             let maiorI;
             let maiorR;
 
-            if (resposta[4] > resposta[5]) {
-                this.engageDinamic(); // Marcha D
-            } else {                
-                this.engageReverse(); // Marcha R
-            }
-
             maiorI = 0;
             maiorR = -Infinity;
 
@@ -104,9 +99,15 @@ class Car {
             } else if (maiorI == 2) {
                 this.brake();
             } else if (maiorI == 3) {
-                // Mantém aceleração.
+                this.speedNoAction();
             }
 
+
+            if (resposta[4] > resposta[5]) {
+                this.engageDinamic(); // Marcha D
+            } else {
+                this.engageReverse(); // Marcha R
+            }
 
             maiorI = 0;
             maiorR = -Infinity;
@@ -115,12 +116,12 @@ class Car {
                     maiorR = resposta[i];
                     maiorI = i;
                 }
-            }            
+            }
 
             if (maiorI == 6) {
                 this.vaiPraDireita();
             } else if (maiorI == 7) {
-                // Vai reto.
+                this.vaiReto();
             } else if (maiorI == 8) {
                 this.vaiPraEsquerda();
             }
@@ -150,7 +151,7 @@ class Car {
             }
         }
 
-        this.speedingUp = true;
+        this.acceleration = 'up';
         this.braking = false;
     }
 
@@ -161,7 +162,8 @@ class Car {
                 this.speed = 0;
             }
         }
-        this.speedingUp = false;
+        this.acceleration = 'down';
+        this.braking = false;
 
     }
 
@@ -171,11 +173,19 @@ class Car {
         if (this.speed < 0) {
             this.speed = 0;
         }
-        this.braking = true;
+
         if (this.speed > 1) {
             this.trail.push({ pos: this.pos.copy(), rotate: this.heading });
         }
 
+        this.braking = true;
+        this.acceleration = 'down';
+
+    }
+
+    speedNoAction() {
+        this.acceleration = '';
+        this.braking = false;
     }
 
     vaiPraDireita() {
@@ -197,6 +207,11 @@ class Car {
         }
         this.volanteAngle = 'r';
     }
+
+    vaiReto() {
+        this.volanteAngle = '';
+    }
+
     vaiPraEsquerda() {
         if (this.speed > 0) {
 
@@ -239,13 +254,13 @@ class Car {
         let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
 
         this.pos.add(irPara);
-        
+
         this.aliveTime++;
 
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
 
-        const vel = Number(this.speed.toFixed(1)); 
+        const vel = Number(this.speed.toFixed(1));
 
         this.km += vel;
 
@@ -261,7 +276,7 @@ class Car {
 
         if (this.aliveTime % pista.timeOutStopped == 0) {
             this.onEachTime();
-        }        
+        }
 
     }
     killLazier() {
@@ -348,7 +363,7 @@ class Car {
             }
         }
 
-        
+
         // // Increase account lap.
         // if (hit) {
         //     if (ranhuras.length % this.ranhurasColetadas.length == 0) {
@@ -398,7 +413,7 @@ class Car {
             strokeWeight(2);
             fill(this.cor);
             stroke(255);
-            circle(this.pos.x, this.pos.y,10);
+            circle(this.pos.x, this.pos.y, 10);
 
             return false;
         }
@@ -421,10 +436,8 @@ class Car {
 
             pop();
 
-            this.volanteAngle = '';
+            // this.volanteAngle = '';
         }
-
-        this.braking = false;
 
     }
 
@@ -445,12 +458,13 @@ class Car {
             fill(0, 0, 255);
             noStroke();
             strokeWeight(1);
+            switch (this.acceleration) { case 'up': 'Aceletou'; case 'down': 'Desacelerou'; default: '' };
 
             text(`km: ${this.km}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
-            text(`Acelerador: ${this.speedingUp ? 'Acelerou' : 'Aliviou'}`, x + 2, y += 12);
-            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'}`, x + 2, y += 12);
+            text(`Acelerador: ${this.acceleration == 'up' ? 'Aceletou' : this.acceleration == 'down' ? 'Desaceletou' : '' }`, x + 2, y += 12);
+            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} `, x + 2, y += 12);
 
         }
     }
@@ -537,7 +551,7 @@ class Car {
                 if (this.showSensorValue) {
                     noStroke();
                     fill(0, 0, 255);
-                    text(`${maisPerto.toFixed(0)}`, menorHit.x + 6, menorHit.y + 2);
+                    text(`${maisPerto.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
                 }
 
             }
@@ -550,6 +564,25 @@ class Car {
     }
 
     drawCar() {
+
+        // Fumaça de 'acelerando'.
+        if (this.acceleration == 'up') {
+
+            strokeWeight(0);
+            fill(160,160,160,160);
+            rect(-14, -7, 5, 5, 4); 
+            rect(-17, -6, 5, 5, 4); 
+            rect(-17, -8, 5, 5, 4); 
+
+            /*
+             rect(
+                 ṕositivo vai pra frente 
+                 positivo vai pra direita
+                 positivo avanca pra frente do carro
+                 Largura da bolinha
+                 )
+             */
+        }        
 
         stroke(100);
         strokeWeight(2);
@@ -571,7 +604,6 @@ class Car {
         if (this.volanteAngle == 'r') rotate(0.5);
         rect(-3, -4, 6, 4, 1); // Roda dianteira direita
         pop();
-
 
         // Corpo do carro.
         stroke(0);
@@ -595,9 +627,10 @@ class Car {
             fill(0);
             rect(-9, 2, 3, 6, 4);
             rect(-9, -8, 3, 6, 4);
-
+            
             // Faixa
-            // fill(255, 0, 0, 100);
+            // strokeWeight(4);
+            // fill(255, 0, 0, 10);
             // rect(-2, -12, -11, 24, 8);            
 
         } else if (this.gear == -1) {
@@ -608,8 +641,6 @@ class Car {
             rect(-9, 2, 3, 6, 4);
             rect(-9, -8, 3, 6, 4);
         }
-
-
 
         if (this.luzes) {
 
@@ -629,17 +660,9 @@ class Car {
             fill(241, 255, 176, 40);
             rect(80, -25, -50, 50, 10);
 
-        } else {
-            // Faróis dianteiros apagados.
-            strokeWeight(6);
-            stroke(80);
-            point(28, -6);
-            point(28, 6);
-
         }
 
         noStroke();
-
 
     }
 
