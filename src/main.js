@@ -130,7 +130,7 @@ function draw() {
 
         let trailsDrawed = 0;
 
-        for (let i = cars.length-1; i > 0 ; i--) {
+        for (let i = cars.length - 1; i > 0; i--) {
 
             const car = cars[i];
 
@@ -250,10 +250,10 @@ function draw() {
 
         if (world.killOnFindBetter && genetic.melhor) {
 
-            fill(0);            
+            fill(0);
             text(`Corrente: ${genetic.melhorCorrente.km}-${genetic.melhor.ranhurasColetadas.length} Iguais ${genetic.melhorCorrente == genetic.melhor}`, 10, 35);
 
-            if (genetic.melhorCorrente.marca != 'c') {                
+            if (genetic.melhorCorrente.marca != 'c') {
                 text('!c', 2, 45)
 
                 if (genetic.melhorCorrente != genetic.melhor) {
@@ -287,16 +287,20 @@ function ShowMousePoint() {
 }
 
 function addMoreCar() {
-    const weights = genetic.melhor.ia.model.getWeights();
-    const weightCopies = [];
-    for (let i = 0; i < weights.length; i++) {
-        weightCopies[i] = weights[i].clone();
-    }
 
-    let child = new Car('m2', true, true, false);
-    // pista.anguloNascimento = radians(random(0, 360));
-    child.ia.model.setWeights(weightCopies);
-    child.mutate(Number(random(0.01, 0.05).toFixed(15)));
-    cars.unshift(child);
-    vivos++
+    if (genetic.melhor) {
+
+        const weights = genetic.melhor.ia.model.getWeights();
+        const weightCopies = [];
+        for (let i = 0; i < weights.length; i++) {
+            weightCopies[i] = weights[i].clone();
+        }
+
+        let child = new Car('m2', true, true, false);
+        // pista.anguloNascimento = radians(random(0, 360));
+        child.ia.model.setWeights(weightCopies);
+        child.mutate(Number(random(0.01, 0.05).toFixed(15)));
+        cars.unshift(child);
+        vivos++
+    }
 }

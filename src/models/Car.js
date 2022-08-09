@@ -262,7 +262,7 @@ class Car {
 
         const vel = Number(this.speed.toFixed(1));
 
-        this.km += vel;
+        this.km += vel*vel;
 
         if (this.inteligente) {
             this.verificaEstagnacao();
