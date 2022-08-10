@@ -35,6 +35,7 @@ p - Pausa
 m - Elimina todos os veículos
 n - Show flag
 o - Ativa colisão entre os carros
+q - Inicar usando os pesos salvos ou não
 r - Mostra uma lista de ranhuras da pista
 s - Mostrar sensores
 t - Pára o 'timer'

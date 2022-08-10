@@ -7,6 +7,7 @@ class World {
         this.showTrails = true;
         this.killOnFindBetter = true;
         this.hasTrailsToShow = false;
+        this.startWeightSaved = true;
 
     }
 }
