@@ -1,5 +1,9 @@
 let showBackground = true;
 let selectedTrack = 1;
+let pg;
+let myWidth = 0
+let myHeight = 0
+let roads = [];
 
 function keyPressed() {
 
@@ -14,67 +18,21 @@ function keyPressed() {
     }
 
     if (key == 'r') {
-        lastPoint = [];
-        console.log('ÚLTIMO PONTO ZERADO!!');
     }
     if (key == 's') {
-
-        console.clear();
-        console.log(walls);
-        imprimePontos(walls);
-
     }
     if (key == 'b') {
-
         showBackground = !showBackground;
-
     }
     if (key == 'd') {
-
-        lastPoint = [];
-        lastPoint.push(Number(walls[walls.length - 1].a));
-        lastPoint.push(Number(walls[walls.length - 1].b));
-        console.log(lastPoint);
-        walls.pop();
-
     }
 }
 function mouseReleased() {
-
-    if (lastPoint.length > 0) {
-
-        console.log(lastPoint);
-
-        const newPoint = { a: lastPoint[0].toFixed(0), b: lastPoint[1].toFixed(0), c: mouseX.toFixed(0), d: mouseY.toFixed(0), m: 0, t: 0 };
-
-        walls.push(newPoint);
-
-        console.log(newPoint);
-
-        lastPoint = [];
-    } else {
-        console.log('Ok, agora clica em outro lugar para começar!');
-    }
-
-    lastPoint.push(mouseX);
-    lastPoint.push(mouseY);
 }
-
-
-let lastPoint = [];
-
-const walls = [];
-let img = null
 
 function preload() {
-
     spritesheet = getSpriteFundo4();
-
 }
-
-let pg;
-let myWidth = 0
-let myHeight = 0
 
 function setup() {
 
@@ -82,17 +40,19 @@ function setup() {
     let myHeight = windowHeight * 0.98
 
     createCanvas(myWidth, myHeight);
-
-
-    showAtalhos();
     makeMatrixRoads();
 
     pg = createGraphics(myWidth, myHeight);
     pg.background(255, 255, 255, 0);
+    
+    
+    floodFillRec(90, 90, 0, 1);
     showRoads();
+    frameRate(1)
+    
 
 }
-let roads = [];
+
 function draw() {
 
     background(255);
@@ -104,8 +64,11 @@ function draw() {
 
     const mx = Number(mouseX.toFixed(0));
     const my = Number(mouseY.toFixed(0));
-    text('Frame rate: ' + mx, 10, 20);
-    const est = roads[mx][my];
+    text('Frame count: ' + frameCount, 10, 20);
+    let est = undefined;
+    if (roads[mx]) {
+        est = roads[mx][my];
+    }
 
     if (est != undefined) {
         text('km: ' + est, 350, 20);
@@ -113,35 +76,13 @@ function draw() {
         text('km: Fora da pista', 350, 20);
     }
 
-}
-
-function start() {
-}
-
-function showAtalhos() {
-    console.log('c - Troca a pista\nr - Reseta o último ponto\nd- Deleta a última linha\ns- Mostra os pontos no console')
-}
-
-function imprimePontos(pontos) {
-
-    let textPontos = '';
-
-    for (const p of pontos) {
-        textPontos += `    points.push({ a: ${p.a}, b: ${p.b}, c: ${p.c}, d: ${p.d}, m: ${p.m}, t: ${p.t} });\n`;
-    }
-
-    console.log(textPontos);
+    waveFront();
 
 }
 
 function makeMatrixRoads() {
 
     console.log("Making matrix")
-
-    let w = spritesheet.width / width;
-    let h = spritesheet.height / height;
-
-    console.log(w, h);
 
     noStroke();
 
@@ -150,10 +91,10 @@ function makeMatrixRoads() {
     spritesheet.loadPixels();
     roads = [];
 
-    for (let i = 0; i < spritesheet.width; i += 1) {
+    for (let i = 0; i < spritesheet.width; i += 10) {
 
         roads[i] = [];
-        for (let j = 0; j < spritesheet.height; j += 1) {
+        for (let j = 0; j < spritesheet.height; j += 10) {
 
             pixelIndex = (i + j * spritesheet.width) * 4;
             r = spritesheet.pixels[pixelIndex + 0];
@@ -165,26 +106,40 @@ function makeMatrixRoads() {
             if (r == 224 && g == 225 && b == 243) {
 
                 const letter = String.fromCharCode((contador % 26) + 65);
-
-                // fill(letter.charCodeAt(0) * 2);
-                // textSize(8);
-                // if (contador > 12500) {
-                //     square(i, j, 4);
-                // } else {
-                //     text(letter, i, j);
-                // }
-                roads[i][j] = letter; // x,y = distância em km
-                // if (j % 800 == 0) {
-                //     console.log(i,j, letter)
-                // }
+                roads[i][j] = 0; // x,y = distância em km
                 contador++;
+            } else {
+                roads[i][j] = -1;
+            }
+
+            if (contador > 800) {
+                i = Infinity;
+                j = Infinity;
             }
 
         }
-
     }
+
+    // const pontoInicial = createVector(96,84);    
+    // roads[pontoInicial.x][pontoInicial.y] = 2;
+
     console.log('contador: ' + contador);
     console.log("Done")
+}
+
+function waveFront() {
+
+    const pontoInicial = createVector(96,84);
+    const un = 12;    
+
+    noStroke();
+    textSize(8);
+    fill(255,0,0);    
+    
+    circle(pontoInicial.x,pontoInicial.y,6)
+    // text(roads[pontoInicial.x][pontoInicial.y],pontoInicial.x, pontoInicial.y);
+    // text(roads[pontoInicial.x][pontoInicial.y+un],pontoInicial.x, pontoInicial.y+un);
+    
 }
 
 function showRoads() {
@@ -192,15 +147,41 @@ function showRoads() {
     console.log("Showing")
 
     pg.noStroke();
-    pg.textSize(8);
-    pg.fill(140);
+    pg.textSize(5);
+    pg.fill(0);
 
     roads.forEach((subArray, i) => {
         subArray.forEach((e, j) => {
-            // pg.text(e, i, j);
-            pg.square(i, j, 1);
+            // pg.square(i, j, 6);
+            
+            if (e == '0') {
+                pg.fill(0)
+            } else {
+                pg.fill(0, 0, 255)
+            }
+            pg.text(roads[i][j], i, j);
+
+            // pg.circle(i, j, 6)
         })
     });
 
     console.log("done")
 }
+
+
+function floodFillRec(i, j, oldValue, newValue) {
+  
+    // Check the boundary condition
+    if (i < 0 || i >= roads.length || j < 0 || j >= roads[i].length) return;
+    if (roads[i][j] !== oldValue) return;
+  
+    // set the color of node to newValue
+    roads[i][j] = newValue;
+  
+    // Look for neighboring cell
+    floodFillRec(i + 10, j, oldValue, roads[i][j]+1);
+    floodFillRec(i - 10, j, oldValue, roads[i][j]+1);
+    floodFillRec(i, j + 10, oldValue, roads[i][j]+1);
+    floodFillRec(i, j - 10, oldValue, roads[i][j]+1);
+
+  }
