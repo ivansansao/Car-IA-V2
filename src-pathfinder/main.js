@@ -72,62 +72,46 @@ function preload() {
 
 }
 
+let pg;
+let myWidth = 0
+let myHeight = 0
+
 function setup() {
 
-    createCanvas(windowWidth * 0.98, windowHeight * 0.98);
+    let myWidth = windowWidth * 0.98
+    let myHeight = windowHeight * 0.98
+
+    createCanvas(myWidth, myHeight);
+
+
     showAtalhos();
+    makeMatrixRoads();
+
+    pg = createGraphics(myWidth, myHeight);
+    pg.background(255, 255, 255, 0);
+    showRoads();
 
 }
-
+let roads = [];
 function draw() {
 
     background(255);
     image(spritesheet, 0, 0);
+    image(pg, 0, 0);
 
-    let w = spritesheet.width / width;
-    let h = spritesheet.height / height;
-    console.log(w, h);
+    // showRoads();
+    textSize(22);
 
-    noStroke();
-    let pixelIndex, r, g, b, avg;
-    let contador = 0;
-    
-    spritesheet.loadPixels();
+    const mx = Number(mouseX.toFixed(0));
+    const my = Number(mouseY.toFixed(0));
+    text('Frame rate: ' + mx, 10, 20);
+    const est = roads[mx][my];
 
-    for (let i = 0; i < spritesheet.width; i++) {
-
-        for (let j = 0; j < spritesheet.height; j++) {
-
-            pixelIndex = (i + j * spritesheet.width) * 4;
-            r = spritesheet.pixels[pixelIndex + 0];
-            g = spritesheet.pixels[pixelIndex + 1];
-            b = spritesheet.pixels[pixelIndex + 2];
-
-            avg = (r + g + b) / 3;
-
-            if (r == 224 && g == 225 && b == 243) {
-
-                fill(120);
-                textSize(2);
-                // square(i * w, j * h, w);
-                text('O', i, j);
-                contador++;
-
-            }
-
-        }
+    if (est != undefined) {
+        text('km: ' + est, 350, 20);
+    } else {
+        text('km: Fora da pista', 350, 20);
     }
-
-    console.log('contador: ' + contador);
-    // spritesheet.updatePixels();
-    // image(spritesheet, 17, 17);
-
-
-    text(`width: ${windowWidth} height: ${windowHeight}`, 4, 20);
-
-    console.log("loop")
-    noLoop();
-
 
 }
 
@@ -150,16 +134,73 @@ function imprimePontos(pontos) {
 
 }
 
-function makeMatrixScreen() {
-    let matrix = [];
+function makeMatrixRoads() {
 
-    console.log('antes');
-    for (let x = 0; x < windowWidth; x++) {
-        for (let y = 0; y < windowHeight; y++) {
-            matrix.push({ x, y, q: 0 });
+    console.log("Making matrix")
+
+    let w = spritesheet.width / width;
+    let h = spritesheet.height / height;
+
+    console.log(w, h);
+
+    noStroke();
+
+    let pixelIndex, r, g, b, avg;
+    let contador = 0;
+    spritesheet.loadPixels();
+    roads = [];
+
+    for (let i = 0; i < spritesheet.width; i += 1) {
+
+        roads[i] = [];
+        for (let j = 0; j < spritesheet.height; j += 1) {
+
+            pixelIndex = (i + j * spritesheet.width) * 4;
+            r = spritesheet.pixels[pixelIndex + 0];
+            g = spritesheet.pixels[pixelIndex + 1];
+            b = spritesheet.pixels[pixelIndex + 2];
+
+            avg = (r + g + b) / 3;
+
+            if (r == 224 && g == 225 && b == 243) {
+
+                const letter = String.fromCharCode((contador % 26) + 65);
+
+                // fill(letter.charCodeAt(0) * 2);
+                // textSize(8);
+                // if (contador > 12500) {
+                //     square(i, j, 4);
+                // } else {
+                //     text(letter, i, j);
+                // }
+                roads[i][j] = letter; // x,y = distância em km
+                // if (j % 800 == 0) {
+                //     console.log(i,j, letter)
+                // }
+                contador++;
+            }
+
         }
-    }
-    console.log('depois')
 
-    return matrix;
+    }
+    console.log('contador: ' + contador);
+    console.log("Done")
+}
+
+function showRoads() {
+
+    console.log("Showing")
+
+    pg.noStroke();
+    pg.textSize(8);
+    pg.fill(140);
+
+    roads.forEach((subArray, i) => {
+        subArray.forEach((e, j) => {
+            // pg.text(e, i, j);
+            pg.square(i, j, 1);
+        })
+    });
+
+    console.log("done")
 }
