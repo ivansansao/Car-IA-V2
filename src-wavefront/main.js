@@ -1,6 +1,4 @@
-
-
-const start = { i: 2, j: 3, value: 0 }; // linha, coluna
+const start = { i: 2, j: 3, value: 0 }; // linha, coluna, valor
 let a = [start];
 let b = [];
 
@@ -86,7 +84,7 @@ function doWave() {
             }
 
         }
-        
+
         a = [...b];
         b = [];
 
@@ -128,19 +126,18 @@ function blockPaint(x, y, w, h, value, row, col) {
         case -1:
             stroke(200);
             fill(220, 220, 220);
-            rect(x, y, w, h);
-
             break;
         case 0:
             stroke(200);
-            noFill();
-            rect(x, y, w, h);
-
+            fill(255);
             break;
 
         default:
+            stroke(200);
+            noFill();
             break;
     }
+    rect(x, y, w, h);
 
     if (row == start.i && col == start.j) {
         stroke(0);
@@ -148,21 +145,5 @@ function blockPaint(x, y, w, h, value, row, col) {
         rect(x, y, w, h);
 
     }
-
-}
-
-function sleep(sleepDuration) {
-    var now = new Date().getTime();
-    while (new Date().getTime() < now + sleepDuration) { /* Do nothing */ }
-}
-
-function showLog() {
-    console.clear();
-    console.log('a:');
-    console.table([...a, {}]);
-
-    console.log('b:');
-    console.table([...b, {}]);
-    sleep(2000);
 
 }

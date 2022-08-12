@@ -1,3 +1,5 @@
+const start = { i: 400, j: 65, value: 0 }; // linha, coluna, valor
+
 let showBackground = true;
 let selectedTrack = 1;
 let pg;
@@ -44,12 +46,11 @@ function setup() {
 
     pg = createGraphics(myWidth, myHeight);
     pg.background(255, 255, 255, 0);
-    
-    
-    floodFillRec(90, 90, 0, 1);
+
+    background(255);
+    waveFront();
     showRoads();
-    frameRate(1)
-    
+    frameRate(10)
 
 }
 
@@ -64,7 +65,9 @@ function draw() {
 
     const mx = Number(mouseX.toFixed(0));
     const my = Number(mouseY.toFixed(0));
+
     text('Frame count: ' + frameCount, 10, 20);
+
     let est = undefined;
     if (roads[mx]) {
         est = roads[mx][my];
@@ -76,7 +79,11 @@ function draw() {
         text('km: Fora da pista', 350, 20);
     }
 
-    waveFront();
+    text(`${mx}, ${my} (km: ${est})`, mx, my);
+    pg.stroke(255, 0, 0)
+    pg.fill(255)
+    pg.circle(start.i, start.j, 8);
+
 
 }
 
@@ -91,10 +98,10 @@ function makeMatrixRoads() {
     spritesheet.loadPixels();
     roads = [];
 
-    for (let i = 0; i < spritesheet.width; i += 10) {
+    for (let i = 0; i < spritesheet.width; i++) {
 
         roads[i] = [];
-        for (let j = 0; j < spritesheet.height; j += 10) {
+        for (let j = 0; j < spritesheet.height; j++) {
 
             pixelIndex = (i + j * spritesheet.width) * 4;
             r = spritesheet.pixels[pixelIndex + 0];
@@ -104,7 +111,6 @@ function makeMatrixRoads() {
             avg = (r + g + b) / 3;
 
             if (r == 224 && g == 225 && b == 243) {
-
                 const letter = String.fromCharCode((contador % 26) + 65);
                 roads[i][j] = 0; // x,y = distância em km
                 contador++;
@@ -112,7 +118,7 @@ function makeMatrixRoads() {
                 roads[i][j] = -1;
             }
 
-            if (contador > 800) {
+            if (contador > 15600 && false) {
                 i = Infinity;
                 j = Infinity;
             }
@@ -120,26 +126,70 @@ function makeMatrixRoads() {
         }
     }
 
-    // const pontoInicial = createVector(96,84);    
-    // roads[pontoInicial.x][pontoInicial.y] = 2;
-
     console.log('contador: ' + contador);
-    console.log("Done")
+    console.log("Done");
+
 }
 
 function waveFront() {
 
-    const pontoInicial = createVector(96,84);
-    const un = 12;    
 
-    noStroke();
-    textSize(8);
-    fill(255,0,0);    
+
+    let a = [start];
+    let b = [];
+
+    let value;
+    let i;
+    let j;
+
+    while (a.length > 0) {
+
+        for (let x = 0; x < a.length; x++) {
+
+            value = a[x].value + 1;
+
+            i = a[x].i;
+            j = a[x].j + 1;
+            if (roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i + 1;
+            j = a[x].j;
     
-    circle(pontoInicial.x,pontoInicial.y,6)
-    // text(roads[pontoInicial.x][pontoInicial.y],pontoInicial.x, pontoInicial.y);
-    // text(roads[pontoInicial.x][pontoInicial.y+un],pontoInicial.x, pontoInicial.y+un);
-    
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i;
+            j = a[x].j - 1;
+            if (roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i - 1;
+            j = a[x].j;
+            if (roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+        }
+
+        a = [...b];
+        b = [];
+
+    }
+
+    stroke(255, 80, 200)
+
 }
 
 function showRoads() {
@@ -149,17 +199,28 @@ function showRoads() {
     pg.noStroke();
     pg.textSize(5);
     pg.fill(0);
+    const offseti = 0;
+    const offsetj = 0;
 
     roads.forEach((subArray, i) => {
         subArray.forEach((e, j) => {
             // pg.square(i, j, 6);
-            
-            if (e == '0') {
-                pg.fill(0)
+
+            if (e >= '0') {
+                pg.fill(180)
             } else {
                 pg.fill(0, 0, 255)
             }
-            pg.text(roads[i][j], i, j);
+
+            const oi = offseti + (i * 1)
+            const oj = offsetj + (j * 1)
+
+            if (start.i == i && start.j == j) {
+                pg.rect(oi, oj * 4, 4, 4);
+            } else {
+                pg.text(roads[i][j], oi, oj);
+            }
+
 
             // pg.circle(i, j, 6)
         })
@@ -167,21 +228,3 @@ function showRoads() {
 
     console.log("done")
 }
-
-
-function floodFillRec(i, j, oldValue, newValue) {
-  
-    // Check the boundary condition
-    if (i < 0 || i >= roads.length || j < 0 || j >= roads[i].length) return;
-    if (roads[i][j] !== oldValue) return;
-  
-    // set the color of node to newValue
-    roads[i][j] = newValue;
-  
-    // Look for neighboring cell
-    floodFillRec(i + 10, j, oldValue, roads[i][j]+1);
-    floodFillRec(i - 10, j, oldValue, roads[i][j]+1);
-    floodFillRec(i, j + 10, oldValue, roads[i][j]+1);
-    floodFillRec(i, j - 10, oldValue, roads[i][j]+1);
-
-  }
