@@ -14,7 +14,7 @@ const roads = [
     [-1, 0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, -1],
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
+    [-1, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, 0, -1],
     [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 ];
@@ -38,34 +38,60 @@ function draw() {
 
     background(255);
     showMap();
-    showArraysAB();
     doWave();
 }
 
 function doWave() {
 
-    let seguranca = 0;
+    let value;
+    let i;
+    let j;
 
-    while (a.length > 0 && seguranca < 20) {
+    while (a.length > 0) {
 
         for (let x = 0; x < a.length; x++) {
 
-            const value = a[x].value + 1;
-            const i = a[x].i;
-            const j = a[x].j + 1;
+            value = a[x].value + 1;
 
+            i = a[x].i;
+            j = a[x].j + 1;
             if (roads[i][j] == 0) {
+                // Discovery new node.
                 roads[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
+
+            i = a[x].i + 1;
+            j = a[x].j;
+            if (roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i;
+            j = a[x].j - 1;
+            if (roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i - 1;
+            j = a[x].j;
+            if (roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
         }
         
-        a.shift(0);
-
-        seguranca++;
+        a = [...b];
+        b = [];
 
     }
-    
+
     stroke(255, 80, 200)
 
 }
@@ -112,13 +138,6 @@ function blockPaint(x, y, w, h, value, row, col) {
 
             break;
 
-        case 1:
-            stroke(200);
-            fill(220, 180, 55);
-            rect(x, y, w, h);
-
-            break;
-
         default:
             break;
     }
@@ -132,33 +151,16 @@ function blockPaint(x, y, w, h, value, row, col) {
 
 }
 
-function showArraysAB() {
-    stroke(0);
-    fill(0);
-
-    textAlign(LEFT);
-    text('a', myWidth - 200, 20);
-
-    for (let x = 0; x < a.length; x++) {
-        const i = a[x].i;
-        const j = a[x].j;
-        const value = a[x].value;
-        text(`${i},${j} ${value}`, myWidth - 200, 30 + (x + 20));
-
-    }
-
-}
-
-function sleep(sleepDuration){
+function sleep(sleepDuration) {
     var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){ /* Do nothing */ }
+    while (new Date().getTime() < now + sleepDuration) { /* Do nothing */ }
 }
 
 function showLog() {
     console.clear();
     console.log('a:');
     console.table([...a, {}]);
-    
+
     console.log('b:');
     console.table([...b, {}]);
     sleep(2000);
