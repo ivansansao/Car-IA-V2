@@ -1,7 +1,7 @@
 
 
-const start = { i: 2, j: 3 }; // linha, coluna
-let a = [];
+const start = { i: 2, j: 3, value: 0 }; // linha, coluna
+let a = [start];
 let b = [];
 
 const roads = [
@@ -38,17 +38,11 @@ function draw() {
 
     background(255);
     showMap();
-    doWave();
     showArraysAB();
+    doWave();
 }
 
 function doWave() {
-
-    let i = start.i;
-    let j = start.j;
-
-    a = [{ i, j, value: 0 }];
-    b = [];
 
     let seguranca = 0;
 
@@ -56,23 +50,22 @@ function doWave() {
 
         for (let x = 0; x < a.length; x++) {
 
-            const value2 = a[x].value + 1;
-            const i2 = a[x].i;
-            const j2 = a[x].j+1;
+            const value = a[x].value + 1;
+            const i = a[x].i;
+            const j = a[x].j + 1;
 
-            if (roads[i2][j2] == 0) {
-                roads[i2][j2] = value2;
-                b.push({ i: i2, j: j2, value: value2 });
-            }            
+            if (roads[i][j] == 0) {
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
         }
-
+        
         a.shift(0);
-        
-        seguranca++;
-        
-    }
-    if (a.length > 0) console.log(b)
 
+        seguranca++;
+
+    }
+    
     stroke(255, 80, 200)
 
 }
@@ -144,14 +137,30 @@ function showArraysAB() {
     fill(0);
 
     textAlign(LEFT);
-    text('a', myWidth-200, 20);
+    text('a', myWidth - 200, 20);
 
     for (let x = 0; x < a.length; x++) {
         const i = a[x].i;
         const j = a[x].j;
         const value = a[x].value;
-        text(`${i},${j} ${value}`, myWidth-200, 20);
-        
+        text(`${i},${j} ${value}`, myWidth - 200, 30 + (x + 20));
+
     }
+
+}
+
+function sleep(sleepDuration){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* Do nothing */ }
+}
+
+function showLog() {
+    console.clear();
+    console.log('a:');
+    console.table([...a, {}]);
+    
+    console.log('b:');
+    console.table([...b, {}]);
+    sleep(2000);
 
 }
