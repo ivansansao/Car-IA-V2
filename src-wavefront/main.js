@@ -1,42 +1,37 @@
-const start = { i: 2, j: 3, value: 0 }; // linha, coluna, valor
+const start = { i: 2, j: 3, value: 0 };
 let a = [start];
 let b = [];
 
-const roads = [
+const map = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, 0, -1],
-    [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, -1, -1, -1, -1, -1, -1, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, -1, -1, -1, -1, -1, -1, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, -1, -1, -1, -1, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 ];
 
-let myWidth = 0;
-let myHeight = 0;
-
 function setup() {
-
-    frameRate(1);
-
-    myWidth = windowWidth * 0.98
-    myHeight = windowHeight * 0.98
-
-    createCanvas(myWidth, myHeight);
-
-
+    createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
 
-    background(255);
-    showMap();
-    doWave();
+    if (frameCount == 1) {
+        background(255);
+        showMap();
+        doWave();
+    } else if (frameCount == 200) {
+        background(255);
+        showMap();
+    }
+
 }
 
 function doWave() {
@@ -53,33 +48,33 @@ function doWave() {
 
             i = a[x].i;
             j = a[x].j + 1;
-            if (roads[i][j] == 0) {
+            if (map[i][j] == 0) {
                 // Discovery new node.
-                roads[i][j] = value;
+                map[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
             i = a[x].i + 1;
             j = a[x].j;
-            if (roads[i][j] == 0) {
+            if (map[i][j] == 0) {
                 // Discovery new node.
-                roads[i][j] = value;
+                map[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
             i = a[x].i;
             j = a[x].j - 1;
-            if (roads[i][j] == 0) {
+            if (map[i][j] == 0) {
                 // Discovery new node.
-                roads[i][j] = value;
+                map[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
             i = a[x].i - 1;
             j = a[x].j;
-            if (roads[i][j] == 0) {
+            if (map[i][j] == 0) {
                 // Discovery new node.
-                roads[i][j] = value;
+                map[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
@@ -90,7 +85,7 @@ function doWave() {
 
     }
 
-    stroke(255, 80, 200)
+    map[start.i][start.j] = 0;
 
 }
 
@@ -98,52 +93,56 @@ function showMap() {
 
     let h = 60;
     let w = 60;
-    let rows = roads.length;
-    let cols = roads[0].length;
-
+    let rows = map.length;
+    let cols = map[0].length;
 
     for (let row = 0; row < rows; row++) {
+
         for (let col = 0; col < cols; col++) {
 
             const x = col * w;
             const y = row * h;
 
-            blockPaint(x, y, w, h, roads[row][col], row, col)
+            showBlock(x, y, w, h, map[row][col], row, col)
 
-            noStroke();
-            fill(255, 0, 0)
-            textSize(22)
-            textAlign(CENTER);
-            text(roads[row][col], x + (w / 2), y + (h / 2));
         }
+        
     }
 
 }
 
-function blockPaint(x, y, w, h, value, row, col) {
+function showBlock(x, y, w, h, value, row, col) {
 
-    switch (value) {
-        case -1:
-            stroke(200);
-            fill(220, 220, 220);
-            break;
-        case 0:
-            stroke(200);
-            fill(255);
-            break;
-
-        default:
-            stroke(200);
-            noFill();
-            break;
-    }
-    rect(x, y, w, h);
+    textSize(22)
+    textAlign(CENTER);
 
     if (row == start.i && col == start.j) {
-        stroke(0);
-        fill(0, 220, 220);
-        rect(x, y, w, h);
 
+        sayRect(stroke(200), fill(255), x, y, w, h);
+        sayText(map[row][col], noStroke(), fill(0, 0, 255), x, y, w, h)
+
+    } else if (value == -1) {
+        
+        sayRect(stroke(200), fill(220, 220, 220), x, y, w, h);
+        sayText(map[row][col], noStroke(), fill(140, 140, 140), x, y, w, h)
+
+    } else if (value == 0) {
+
+        sayRect(stroke(200), fill(255), x, y, w, h);
+        sayText(map[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
+
+    } else {
+
+        sayRect(stroke(200), noFill(), x, y, w, h);
+        sayText(map[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
     }
+    
+}
 
+function sayRect(stroke, fill, x, y, w, h) {
+    rect(x, y, w, h);
+}
+
+function sayText(tex, stroke, fill, x, y, w, h) {
+    text(tex, x + (w / 2), y + (h / 2));
 }

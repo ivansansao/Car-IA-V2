@@ -63,7 +63,7 @@ function setup() {
     //   canvas.parent('canvas-holder');
     //   noStroke();
 
-    createCanvas(windowWidth, windowHeight - 4);
+    createCanvas(windowWidth, windowHeight);
 
     tf.setBackend('cpu');
 
@@ -407,7 +407,5 @@ function waveFront() {
         b = [];
 
     }
-
-    stroke(255, 80, 200)
 
 }
