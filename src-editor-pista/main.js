@@ -95,8 +95,6 @@ function draw() {
 
 }
 
-function start() {
-}
 
 function showAtalhos() {
     console.log('c - Troca a pista\nr - Reseta o último ponto\nd- Deleta a última linha\ns- Mostra os pontos no console')

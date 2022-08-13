@@ -11,7 +11,7 @@ class Car {
         this.ia = new RedeNeural();
         this.inteligente = inteligente;
         this.batido = false;
-        this.km = 0;
+        this.km = Infinity;
         this.kmMax = 0;
         this.kmMin = 0;
         this.kmMMCount = 0;
@@ -261,8 +261,15 @@ class Car {
         this.speed = Number(this.speed.toFixed(3));
 
         const vel = Number(this.speed.toFixed(1));
+        const posX = Number(this.pos.x.toFixed(0));
+        const posY = Number(this.pos.y.toFixed(0));
 
-        this.km += vel*vel;
+        if (roads[posX] != undefined) {
+            this.km = roads[posX][posY];
+        } else {
+            this.km = Infinity;
+        }
+
 
         if (this.inteligente) {
             this.verificaEstagnacao();
@@ -272,11 +279,14 @@ class Car {
 
         pista.setMajorDistance(this.km);
 
-        this.killLazier();
+        // this.killLazier();
 
         if (this.aliveTime % pista.timeOutStopped == 0) {
             this.onEachTime();
         }
+
+
+
 
     }
     killLazier() {
@@ -377,23 +387,29 @@ class Car {
     }
     verificaEstagnacao() {
 
-        this.kmMMCount++;
+        // this.kmMMCount++;
 
-        if (this.km > this.kmMax) {
-            this.kmMax = this.km;
-            this.kmMMCount = 0;
-        }
+        // if (this.km > this.kmMax) {
+        //     this.kmMax = this.km;
+        //     this.kmMMCount = 0;
+        // }
 
-        if (this.km < this.kmMin) {
-            this.kmMin = this.km;
-            this.kmMMCount = 0;
-        }
+        // if (this.km < this.kmMin) {
+        //     this.kmMin = this.km;
+        //     this.kmMMCount = 0;
+        // }
 
     }
 
     aposentar() {
 
         if (!this.batido) {
+
+            // if (this.marca == 'c') {
+            //     console.log(this);
+            //     console.log('SOU ERU MORIIIII')
+            //     noLoop()
+            // }
 
             vivos--;
             this.batido = true;
@@ -429,14 +445,21 @@ class Car {
             circle(this.pos.x, this.pos.y, 5);
         } else {
 
+            
             push();
             translate(this.pos.x, this.pos.y);
             rotate(this.heading);
             this.drawCar();
-
+            
             pop();
-
+            
+            stroke(0);
+            fill(255);
+            textSize(14);
+            text(`${this.km}`,this.pos.x, this.pos.y);
             // this.volanteAngle = '';
+
+
         }
 
     }

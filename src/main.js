@@ -17,7 +17,8 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
-
+let roads = [];
+const startRoad = { i: 500, j: 65, value: 0 }; // linha, coluna, valor
 let world = new World();
 let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 };
 let pesosForcados = undefined;
@@ -53,6 +54,9 @@ let showInfoCar = false;
 let showFlag = false;
 let luzes = true;
 
+function preload() {
+}
+
 function setup() {
 
     //   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
@@ -60,24 +64,22 @@ function setup() {
     //   noStroke();
 
     createCanvas(windowWidth, windowHeight - 4);
+
     tf.setBackend('cpu');
 
     foo = new p5.Speech();
     foo.setVoice('Google português do Brasil');
 
-
     genetic = new Genetic();
 
     pista = new Pista();
-    // monster = new Monster(1561, 120, -0.7,0,260);
-    // monster2 = new Monster(1080, 18, 0.2, 0.1,2700);
 
     for (let i = 0; i < 8; i++) {
         walls.push(new Wall());
     }
 
-    // firstGeneration();
     genetic.nextGeneration();
+    background(255);
 
     clear()
 
@@ -85,9 +87,10 @@ function setup() {
 
 function draw() {
 
-
     background(pista.backcolor);
     handleKeyIsDown();
+
+
 
     if (timerOn) {
         timer++;
@@ -101,6 +104,15 @@ function draw() {
     }
 
     pista.show();
+
+    if (frameCount == 2) {
+        pista.spritesheet.loadPixels();
+        console.log(pista.spritesheet.width)
+        console.log(pista.spritesheet.height)
+        makeMatrixRoads();
+        waveFront();
+    }
+
 
     const wallsAndCars = [...pista.walls];
 
@@ -189,15 +201,15 @@ function draw() {
             car.verificaColisaoRanhura(pista.ranhuras);
             car.show();
 
-            if (vivos == 1) {
-                if (!car.batido) {
-                    if (car.marca == 'c') {
-                        if (car.km > 300) {
-                            car.aposentar();
-                        }
-                    }
-                }
-            }
+            // if (vivos == 1) {
+            //     if (!car.batido) {
+            //         if (car.marca == 'c') {
+            //             if (car.km < 300) {
+            //                 car.aposentar();
+            //             }
+            //         }
+            //     }
+            // }
 
             pista.monstersCollide(car);
 
@@ -258,15 +270,14 @@ function draw() {
 
                 if (genetic.melhorCorrente != genetic.melhor) {
                     text('dif', 2, 55)
-                    if (genetic.melhorCorrente.km > 50) {
-                        text('> 50', 2, 65)
-                        if (genetic.melhorCorrente.km > genetic.melhor.km || genetic.melhorCorrente.ranhurasColetadas.length > genetic.melhor.ranhurasColetadas.length) {
-                            text('C > M', 2, 75)
-                            timer = pista.pistaTimeOut;
-                            eliminarTodosCars();
-                            console.log(`Quebrado em ${timer}`);
-                        }
+                    text('> 50', 2, 65)
+                    if (genetic.melhorCorrente.km < genetic.melhor.km) {
+                        text('C < M', 2, 75)
+                        console.log(`Quebrado em ${timer}`);
+                        timer = pista.pistaTimeOut;
+                        eliminarTodosCars();
                     }
+
                 }
             }
         }
@@ -275,14 +286,24 @@ function draw() {
 
     ShowMousePoint()
 
+
 }
 
 function ShowMousePoint() {
     if (showMousePoint) {
+
+        const mx = Number(mouseX.toFixed(0));
+        const my = Number(mouseY.toFixed(0));
+        let est = undefined;
+        if (roads[mx]) {
+            est = roads[mx][my];
+        }
+
         stroke(0)
         strokeWeight(1);
         fill(255);
-        text(`(${mouseX},${mouseY})`, mouseX, mouseY);
+        text(`(${mouseX},${mouseY}) km: ${est}`, mx - 80, my);
+        // text(`${mx}, ${my} (km: ${est})`, mx - 80, my);
     }
 }
 
@@ -303,4 +324,90 @@ function addMoreCar() {
         cars.unshift(child);
         vivos++
     }
+}
+
+function makeMatrixRoads() {
+
+    let pixelIndex, r, g, b;
+    roads = [];
+
+    for (let i = 0; i < pista.spritesheet.width; i++) {
+
+        roads[i] = [];
+        for (let j = 0; j < pista.spritesheet.height; j++) {
+
+            pixelIndex = (i + j * pista.spritesheet.width) * 4;
+            r = pista.spritesheet.pixels[pixelIndex + 0];
+            g = pista.spritesheet.pixels[pixelIndex + 1];
+            b = pista.spritesheet.pixels[pixelIndex + 2];
+
+            if (r == 224 && g == 225 && b == 243) {
+                roads[i][j] = 0;
+
+            } else {
+                roads[i][j] = -1;
+            }
+
+        }
+    }
+
+}
+
+function waveFront() {
+
+    let a = [startRoad];
+    let b = [];
+
+    let value;
+    let i;
+    let j;
+
+    while (a.length > 0) {
+
+        for (let x = 0; x < a.length; x++) {
+
+            value = a[x].value + 1;
+
+            i = a[x].i;
+            j = a[x].j + 1;
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i + 1;
+            j = a[x].j;
+
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i;
+            j = a[x].j - 1;
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i - 1;
+            j = a[x].j;
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+        }
+
+        a = [...b];
+        b = [];
+
+    }
+
+    stroke(255, 80, 200)
+
 }

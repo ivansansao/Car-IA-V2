@@ -49,8 +49,6 @@ function setup() {
 
     background(255);
     waveFront();
-    showRoads();
-    frameRate(10)
 
 }
 
@@ -60,13 +58,10 @@ function draw() {
     image(spritesheet, 0, 0);
     image(pg, 0, 0);
 
-    // showRoads();
     textSize(22);
 
     const mx = Number(mouseX.toFixed(0));
     const my = Number(mouseY.toFixed(0));
-
-    text('Frame count: ' + frameCount, 10, 20);
 
     let est = undefined;
     if (roads[mx]) {
@@ -79,7 +74,7 @@ function draw() {
         text('km: Fora da pista', 350, 20);
     }
 
-    text(`${mx}, ${my} (km: ${est})`, mx, my);
+    text(`${mx}, ${my} (km: ${est})`, mx - 80, my);
     pg.stroke(255, 0, 0)
     pg.fill(255)
     pg.circle(start.i, start.j, 8);
@@ -89,12 +84,7 @@ function draw() {
 
 function makeMatrixRoads() {
 
-    console.log("Making matrix")
-
-    noStroke();
-
-    let pixelIndex, r, g, b, avg;
-    let contador = 0;
+    let pixelIndex, r, g, b;
     spritesheet.loadPixels();
     roads = [];
 
@@ -108,32 +98,19 @@ function makeMatrixRoads() {
             g = spritesheet.pixels[pixelIndex + 1];
             b = spritesheet.pixels[pixelIndex + 2];
 
-            avg = (r + g + b) / 3;
-
             if (r == 224 && g == 225 && b == 243) {
-                const letter = String.fromCharCode((contador % 26) + 65);
-                roads[i][j] = 0; // x,y = distância em km
-                contador++;
+                roads[i][j] = 0;
+
             } else {
                 roads[i][j] = -1;
-            }
-
-            if (contador > 15600 && false) {
-                i = Infinity;
-                j = Infinity;
             }
 
         }
     }
 
-    console.log('contador: ' + contador);
-    console.log("Done");
-
 }
 
 function waveFront() {
-
-
 
     let a = [start];
     let b = [];
@@ -158,7 +135,7 @@ function waveFront() {
 
             i = a[x].i + 1;
             j = a[x].j;
-    
+
             if (roads[i] !== undefined && roads[i][j] == 0) {
                 // Discovery new node.
                 roads[i][j] = value;
@@ -193,6 +170,8 @@ function waveFront() {
 }
 
 function showRoads() {
+
+    // Esta função é lenta.
 
     console.log("Showing")
 
