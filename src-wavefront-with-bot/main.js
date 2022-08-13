@@ -1,8 +1,11 @@
 const start = { i: 2, j: 3, value: 0 };
 let a = [start];
 let b = [];
+let h = 60;
+let w = 60;
+let bot = {};
 
-const map = [
+const world = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
     [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
@@ -17,21 +20,121 @@ const map = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 ];
 
+function mouseClicked() {
+
+    const cell = getMouseCell();
+
+    if (cell) {
+        bot = cell;
+        console.log(getNeiborhoods());
+    }
+
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    frameRate(20)
 }
 
 function draw() {
 
     if (frameCount == 1) {
         background(255);
-        showMap();
+        showWorld();
         waveFront();
-    } else if (frameCount == 200) {
+    } else if (frameCount > 20) {
+
         background(255);
-        showMap();
+        showWorld();
+
+        const cell = getMouseCell();
+
+        if (cell) {
+
+            text(`${bot.value}  ${mouseX},${mouseY} [${cell.i},${cell.j}]`, width - 100, 20);
+            sayRect(stroke(200), fill(255, 200, 200), cell.j * h, cell.i * w, w, h);
+            sayText(cell.value, noStroke(), fill(255, 0, 0), cell.j * h, cell.i * w, w, h)
+        }
+
+        moveBot();
+
     }
 
+}
+
+function getNeiborhoods() {
+    const neib = [];
+    let i, j, value;
+
+    if (bot) {
+
+        i = bot.i;
+        j = bot.j + 1;
+        if (world[i][j])
+            neib.push({ i, j, value: world[i][j] });
+        else
+            neib.push({});
+
+        i = bot.i + 1;
+        j = bot.j;
+        if (world[i])
+            neib.push({ i, j, value: world[i][j] });
+        else
+            neib.push({});
+
+
+        i = bot.i;
+        j = bot.j - 1;
+        if (world[i][j])
+            neib.push({ i, j, value: world[i][j] });
+        else
+            neib.push({});
+
+        i = bot.i - 1;
+        j = bot.j;
+        if (world[i])
+            neib.push({ i, j, value: world[i][j] });
+        else
+            neib.push({});
+
+
+    }
+
+    return neib;
+}
+
+function moveBot() {
+
+    if (bot) {
+        if (frameCount % 10 == 0) {
+
+            let lessCell;
+
+
+        }
+    }
+
+}
+
+
+function getMouseCell() {
+
+    let mouseCell = {};
+
+    const mapI = floor(map(mouseY, 0, h * w, 0, h));
+    const mapJ = floor(map(mouseX, 0, h * w, 0, h));
+
+    if (world[mapI]) {
+
+        if (world[mapI][mapJ] != undefined) {
+
+            mouseCell = { i: mapI, j: mapJ, value: world[mapI][mapJ] };
+
+        }
+
+    }
+
+    return mouseCell;
 }
 
 function waveFront() {
@@ -48,33 +151,33 @@ function waveFront() {
 
             i = a[x].i;
             j = a[x].j + 1;
-            if (map[i][j] == 0) {
+            if (world[i][j] == 0) {
                 // Discovery new node.
-                map[i][j] = value;
+                world[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
             i = a[x].i + 1;
             j = a[x].j;
-            if (map[i][j] == 0) {
+            if (world[i][j] == 0) {
                 // Discovery new node.
-                map[i][j] = value;
+                world[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
             i = a[x].i;
             j = a[x].j - 1;
-            if (map[i][j] == 0) {
+            if (world[i][j] == 0) {
                 // Discovery new node.
-                map[i][j] = value;
+                world[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
             i = a[x].i - 1;
             j = a[x].j;
-            if (map[i][j] == 0) {
+            if (world[i][j] == 0) {
                 // Discovery new node.
-                map[i][j] = value;
+                world[i][j] = value;
                 b.push({ i: i, j: j, value: value });
             }
 
@@ -85,16 +188,14 @@ function waveFront() {
 
     }
 
-    map[start.i][start.j] = 0;
+    world[start.i][start.j] = 0;
 
 }
 
-function showMap() {
+function showWorld() {
 
-    let h = 60;
-    let w = 60;
-    let rows = map.length;
-    let cols = map[0].length;
+    let rows = world.length;
+    let cols = world[0].length;
 
     for (let row = 0; row < rows; row++) {
 
@@ -103,7 +204,7 @@ function showMap() {
             const x = col * w;
             const y = row * h;
 
-            showBlock(x, y, w, h, map[row][col], row, col)
+            showBlock(x, y, w, h, world[row][col], row, col)
 
         }
 
@@ -119,24 +220,24 @@ function showBlock(x, y, w, h, value, row, col) {
     if (row == start.i && col == start.j) {
 
         sayRect(stroke(200), fill(255), x, y, w, h);
-        sayText(map[row][col], noStroke(), fill(0, 0, 255), x, y, w, h)
+        sayText(world[row][col], noStroke(), fill(0, 0, 255), x, y, w, h)
 
     } else if (value == -1) {
-        
+
         sayRect(stroke(200), fill(220, 220, 220), x, y, w, h);
-        sayText(map[row][col], noStroke(), fill(140, 140, 140), x, y, w, h)
+        sayText(world[row][col], noStroke(), fill(140, 140, 140), x, y, w, h)
 
     } else if (value == 0) {
 
         sayRect(stroke(200), fill(255), x, y, w, h);
-        sayText(map[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
+        sayText(world[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
 
     } else {
 
         sayRect(stroke(200), noFill(), x, y, w, h);
-        sayText(map[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
+        sayText(world[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
     }
-    
+
 }
 
 function sayRect(stroke, fill, x, y, w, h) {
@@ -146,3 +247,4 @@ function sayRect(stroke, fill, x, y, w, h) {
 function sayText(tex, stroke, fill, x, y, w, h) {
     text(tex, x + (w / 2), y + (h / 2));
 }
+
