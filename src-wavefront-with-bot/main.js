@@ -1,4 +1,5 @@
 const start = { i: 2, j: 3, value: 0 };
+let path = [];
 let a = [start];
 let b = [];
 let h = 60;
@@ -6,18 +7,21 @@ let w = 60;
 let bot = {};
 
 const world = [
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, -1, -1, -1, -1, -1, -1, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, -1, -1, -1, -1, -1, -1, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, -1, -1, -1, -1, +0, -1],
-    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, -1, +0, +0, +0, -1, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, -1],
+    [-1, -1, -1, -1, -1, +0, +0, +0, -1, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, -1, -1, -1, +0, -1, -1, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, -1, +0, +0, +0, +0, -1, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, -1, +0, -1, -1, -1, -1, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, -1, -1, -1, -1, -1, +0, +0, +0, +0, +0, -1],
+    [-1, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, +0, -1, +0, +0, -1, +0, +0, +0, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 ];
 
 function mouseClicked() {
@@ -26,14 +30,14 @@ function mouseClicked() {
 
     if (cell) {
         bot = cell;
-        console.log(getNeiborhoods());
+        path = [bot];
     }
 
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    frameRate(20)
+    frameRate(30)
 }
 
 function draw() {
@@ -51,52 +55,66 @@ function draw() {
 
         if (cell) {
 
-            text(`${bot.value}  ${mouseX},${mouseY} [${cell.i},${cell.j}]`, width - 100, 20);
-            sayRect(stroke(200), fill(255, 200, 200), cell.j * h, cell.i * w, w, h);
+            sayRect(stroke(200), fill(255, 255, 100), cell.j * h, cell.i * w, w, h);
             sayText(cell.value, noStroke(), fill(255, 0, 0), cell.j * h, cell.i * w, w, h)
         }
 
         moveBot();
 
+        showPath();
+
     }
 
 }
 
-function getNeiborhoods() {
+function showPath() {
+
+    for (const cell of path) {
+        sayRect(stroke(200), fill(255, 200, 200), cell.j * h, cell.i * w, w, h);
+        sayText(cell.value, noStroke(), fill(255, 0, 0), cell.j * h, cell.i * w, w, h)
+    
+    }
+
+}
+
+function getBotNeiborhoods() {
+
     const neib = [];
     let i, j, value;
-
+    
     if (bot) {
 
         i = bot.i;
         j = bot.j + 1;
-        if (world[i][j])
-            neib.push({ i, j, value: world[i][j] });
-        else
-            neib.push({});
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
+
+        i = bot.i + 1;
+        j = bot.j + 1;
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
 
         i = bot.i + 1;
         j = bot.j;
-        if (world[i])
-            neib.push({ i, j, value: world[i][j] });
-        else
-            neib.push({});
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
 
+        i = bot.i + 1;
+        j = bot.j - 1;
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
 
         i = bot.i;
         j = bot.j - 1;
-        if (world[i][j])
-            neib.push({ i, j, value: world[i][j] });
-        else
-            neib.push({});
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
+
+        i = bot.i - 1;
+        j = bot.j - 1;
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
 
         i = bot.i - 1;
         j = bot.j;
-        if (world[i])
-            neib.push({ i, j, value: world[i][j] });
-        else
-            neib.push({});
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
 
+        i = bot.i - 1;
+        j = bot.j + 1;
+        if (world[i] && world[i][j] != undefined && world[i][j] > -1) neib.push({ i, j, value: world[i][j] });
 
     }
 
@@ -108,8 +126,26 @@ function moveBot() {
     if (bot) {
         if (frameCount % 10 == 0) {
 
-            let lessCell;
+            const neibs = getBotNeiborhoods();
 
+            // Get lestest value;
+            let minor = { i: undefined, j: undefined, value: Infinity };
+
+            for (let i = 0; i < neibs.length; i++) {
+                if (neibs[i].value < minor.value) {
+                    minor = neibs[i];
+                }
+            }
+
+            if (world[bot.i] && world[bot.i][bot.j] < minor.value) {
+                minor = bot;
+            }
+
+            if (minor.i != undefined) {
+                bot = minor;
+            }
+
+            path.push(bot);
 
         }
     }
@@ -221,7 +257,6 @@ function showBlock(x, y, w, h, value, row, col) {
 
         sayRect(stroke(200), fill(255), x, y, w, h);
         sayText(world[row][col], noStroke(), fill(0, 0, 255), x, y, w, h)
-
     } else if (value == -1) {
 
         sayRect(stroke(200), fill(220, 220, 220), x, y, w, h);
@@ -236,6 +271,11 @@ function showBlock(x, y, w, h, value, row, col) {
 
         sayRect(stroke(200), noFill(), x, y, w, h);
         sayText(world[row][col], noStroke(), fill(255, 0, 0), x, y, w, h)
+    }
+
+    if (bot) {
+        sayRect(stroke(0), fill(200, 200, 255), bot.j * w, bot.i * h, w, h);
+        sayText(bot.value, noStroke(), fill(0, 0, 255), bot.j * w, bot.i * h, w, h)
     }
 
 }
