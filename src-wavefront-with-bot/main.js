@@ -24,20 +24,48 @@ const world = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 ];
 
-function mouseClicked() {
+function mouseClicked(retorno) {
 
     const cell = getMouseCell();
 
-    if (cell) {
-        bot = cell;
-        path = [bot];
+    if(mouseButton === RIGHT) {
+        if (world[cell.i][cell.j] == -1) {
+            world[cell.i][cell.j] = 0;
+        } else {
+            world[cell.i][cell.j] = -1;
+        }
+
+        path = [];
+
+        let rows = world.length;
+        let cols = world[0].length;
+    
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                if (world[row][col] > 0) {
+                    world[row][col] = 0;
+                }
+            }
+    
+        }
+
+        waveFront();
+    } else if (mouseButton === LEFT) {
+
+        if (cell) {
+            bot = cell;
+            path = [bot];
+        }
+
     }
+
+    return retorno
 
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    frameRate(30)
+    frameRate(60)
 }
 
 function draw() {
@@ -46,7 +74,7 @@ function draw() {
         background(255);
         showWorld();
         waveFront();
-    } else if (frameCount > 20) {
+    } else if (frameCount > 2) {
 
         background(255);
         showWorld();
@@ -124,7 +152,7 @@ function getBotNeiborhoods() {
 function moveBot() {
 
     if (bot) {
-        if (frameCount % 10 == 0) {
+        if (frameCount % 5 == 0) {
 
             const neibs = getBotNeiborhoods();
 
@@ -178,6 +206,8 @@ function waveFront() {
     let value;
     let i;
     let j;
+
+    a = [start];
 
     while (a.length > 0) {
 
@@ -250,7 +280,7 @@ function showWorld() {
 
 function showBlock(x, y, w, h, value, row, col) {
 
-    textSize(22)
+    textSize(h*0.30)
     textAlign(CENTER);
 
     if (row == start.i && col == start.j) {

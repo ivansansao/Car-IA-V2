@@ -85,7 +85,8 @@ class Genetic {
 
         let date = new Date();
 
-        console.log(`**** G: ${nGeracao + 1}. ${date.getHours()}:${date.getMinutes()} MELHOR FOI (${this.melhor.id}): ${this.melhor.ranhurasColetadas.length} ran. Marca: ${this.melhor.marca}. KM: ${this.melhor.km} f1: ${this.melhor.ia.f1} f2: ${this.melhor.ia.f2} `);
+        console.log(`**** G${nGeracao + 1}. ${date.getHours()}:${date.getMinutes()} KM: ${this.melhor.km} Marca: ${this.melhor.marca} Quebrado: ${this.melhor.timer} Ran: ${this.melhor.ranhurasColetadas.length}`); 
+        //  f1: ${this.melhor.ia.f1} f2: ${this.melhor.ia.f2} 
 
         if (this.melhor.ranhurasColetadas.length > record) {
             foo.speak(`Atingiu ${this.melhor.ranhurasColetadas.length}!`);

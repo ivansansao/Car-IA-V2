@@ -11,6 +11,7 @@ class Car {
         this.ia = new RedeNeural();
         this.inteligente = inteligente;
         this.batido = false;
+        this.timer = 0;
         this.km = Infinity;
         this.kmMax = 0;
         this.kmMin = 0;
@@ -270,6 +271,7 @@ class Car {
             this.km = Infinity;
         }
 
+        this.timer = timer;
 
         if (this.inteligente) {
             this.verificaEstagnacao();
@@ -445,18 +447,19 @@ class Car {
             circle(this.pos.x, this.pos.y, 5);
         } else {
 
-            
+
             push();
             translate(this.pos.x, this.pos.y);
             rotate(this.heading);
             this.drawCar();
-            
+
             pop();
-            
-            stroke(0);
-            fill(255);
+
+            stroke(255, 255, 255);
+            fill(0, 0, 0);
+            strokeWeight(4);
             textSize(14);
-            text(`${this.km}`,this.pos.x, this.pos.y);
+            text(`${this.km}`, this.pos.x, this.pos.y);
             // this.volanteAngle = '';
 
 
@@ -486,7 +489,7 @@ class Car {
             text(`km: ${this.km}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
-            text(`Acelerador: ${this.acceleration == 'up' ? 'Aceletou' : this.acceleration == 'down' ? 'Desaceletou' : '' }`, x + 2, y += 12);
+            text(`Acelerador: ${this.acceleration == 'up' ? 'Aceletou' : this.acceleration == 'down' ? 'Desaceletou' : ''}`, x + 2, y += 12);
             text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} `, x + 2, y += 12);
 
         }
@@ -592,10 +595,10 @@ class Car {
         if (this.acceleration == 'up') {
 
             strokeWeight(0);
-            fill(160,160,160,160);
-            rect(-14, -7, 5, 5, 4); 
-            rect(-17, -6, 5, 5, 4); 
-            rect(-17, -8, 5, 5, 4); 
+            fill(160, 160, 160, 160);
+            rect(-14, -7, 5, 5, 4);
+            rect(-17, -6, 5, 5, 4);
+            rect(-17, -8, 5, 5, 4);
 
             /*
              rect(
@@ -605,7 +608,7 @@ class Car {
                  Largura da bolinha
                  )
              */
-        }        
+        }
 
         stroke(100);
         strokeWeight(2);
@@ -650,7 +653,7 @@ class Car {
             fill(0);
             rect(-9, 2, 3, 6, 4);
             rect(-9, -8, 3, 6, 4);
-            
+
             // Faixa
             // strokeWeight(4);
             // fill(255, 0, 0, 10);
