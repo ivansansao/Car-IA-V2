@@ -85,8 +85,8 @@ class Car {
             this.speed = 0;
         }
         this.braking = true;
-        if (this.speed > 0.5) {
-            this.trail.push({pos: this.pos.copy(), rotate: this.heading});
+        if (this.speed > 0.0) {
+            this.trail.push({ pos: this.pos.copy(), heading: this.heading });
         }
 
     }
@@ -180,13 +180,28 @@ class Car {
             translate(this.pos.x, this.pos.y);
             rotate(this.heading);
             this.drawCar();
-            
+
             pop();
-            
+
             this.volanteAngle = '';
         }
 
         this.braking = false;
+
+        // const element = this;
+
+        // push();
+        // translate(element.pos.x, element.pos.y);
+        // rotate(element.heading);
+
+        // strokeWeight(0);
+        // fill(255, 0, 0);
+        // stroke(255);
+        
+        // circle(-3, -10, 8);
+        // circle(-3, +10, 8);
+        // pop();
+
 
     }
 
@@ -219,13 +234,28 @@ class Car {
 
     drawTrail() {
         if (this.trail.length > 0) {
-            
+
             strokeWeight(0);
-            fill(0, 0, 0,20);
+            fill(0, 0, 0, 20);
             stroke(255);
             this.trail.forEach(element => {
-                circle(element.pos.x-4, element.pos.y-4, 8);
-                circle(element.pos.x+4, element.pos.y+4, 8);
+                // circle(element.pos.x - 4, element.pos.y - 4, 8);
+                // circle(element.pos.x + 4, element.pos.y + 4, 8);
+
+                push();
+                translate(element.pos.x, element.pos.y);
+                rotate(element.heading);
+  
+                strokeWeight(0);
+                stroke(255);
+                
+                fill(0, 0, 0, 20);                
+                square(-3, -12, 4,1);
+
+                // fill(0, 0, 255, 20);
+                square(-3, +9, 4,1);
+                pop();
+
             });
         }
     }
@@ -241,6 +271,7 @@ class Car {
 
         push();
         translate(23, -12);
+        
         if (this.volanteAngle == 'l') rotate(-0.5);
         if (this.volanteAngle == 'r') rotate(0.5);
         rect(-3, 0, 6, 4, 1); // Roda dianteira

@@ -22,7 +22,7 @@ let roads = [];
 let world = new World();
 let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 };
 let pesosForcados = undefined;
-let maxCar = 100;
+let maxCar = 40;
 let genetic = null;
 let quantidade = 0;
 let vivos = 0;
@@ -104,12 +104,13 @@ function draw() {
     }
 
     pista.show();
+    showCredits();
 
     if (!pista.waveFronted) {
 
         if (pista.spritesheet.width > 1) {
             pista.waveFronted = true;
-            
+
             pista.spritesheet.loadPixels();
             // console.log(pista.spritesheet.width)
             // console.log(pista.spritesheet.height)
@@ -162,7 +163,6 @@ function draw() {
 
     }
 
-
     for (const car of cars) {
 
         if (!car.batido) {
@@ -177,6 +177,12 @@ function draw() {
             //     if (car.acceleration != '') console.log(car.acceleration);
             //     console.log(car.gear);
             // }
+
+            if (frameCount > 900 && frameCount < 1200) {
+                car.showRays = true;
+            } else if (frameCount > 1200 && frameCount < 1210) {
+                car.showRays = false;
+            }
 
             carInputs.push(car.gear);
             carInputs.push(car.speed);
@@ -233,7 +239,7 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (vivos < 10 || getFrameRate() > 40) {
+        if (vivos < 10 || getFrameRate() > 0) {
 
             addMoreCar();
 
@@ -331,13 +337,13 @@ function addMoreCar() {
 }
 
 function makeMatrixRoads() {
-    
+
 
     let pixelIndex, r, g, b;
     roads = [];
-    
-    console.log(' Pista idth: ' +pista.spritesheet.width)
-    console.log(' Pista height: ' +pista.spritesheet.height)
+
+    console.log(' Pista idth: ' + pista.spritesheet.width)
+    console.log(' Pista height: ' + pista.spritesheet.height)
     for (let i = 0; i < pista.spritesheet.width; i++) {
 
 
@@ -412,6 +418,28 @@ function waveFront() {
 
         a = [...b];
         b = [];
+
+    }
+
+}
+function showCredits() {
+
+    if (pista.selectedPista == 4) {
+
+        noStroke();
+        fill(80, 80, 80);
+        strokeWeight(4);
+        textSize(28);
+        text(`github.com/ivansansao`, 750, 62);
+        
+        fill(255);
+
+        strokeWeight(4);
+        textSize(20);
+        text(`@TensorFlow`, 250, 510);
+
+        text(`@Inteligência`, 400, 830);
+        text(`@Artificial`, 750, 760);
 
     }
 

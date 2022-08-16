@@ -176,7 +176,7 @@ class Car {
         }
 
         if (this.speed > 1) {
-            this.trail.push({ pos: this.pos.copy(), rotate: this.heading });
+            this.trail.push({ pos: this.pos.copy(), heading: this.heading });
         }
 
         this.braking = true;
@@ -264,7 +264,7 @@ class Car {
         const vel = Number(this.speed.toFixed(1));
         const posX = Number(this.pos.x.toFixed(0));
         const posY = Number(this.pos.y.toFixed(0));
-        
+
 
         if (roads[posX] != undefined) {
             if (roads[posX][posY] > 0) {
@@ -430,8 +430,13 @@ class Car {
         if (!showCarsDetais) {
 
             strokeWeight(2);
-            fill(this.cor);
-            stroke(255);
+            if (this.batido) {
+                noStroke();
+                fill(100, 100, 100, 80);
+            } else {
+                stroke(255);
+                fill(this.cor);
+            }
             circle(this.pos.x, this.pos.y, 10);
 
             return false;
@@ -502,8 +507,18 @@ class Car {
             fill(0, 0, 0, 20);
             stroke(255);
             this.trail.forEach(element => {
-                circle(element.pos.x - 4, element.pos.y - 4, 8);
-                circle(element.pos.x + 4, element.pos.y + 4, 8);
+                push();
+                translate(element.pos.x, element.pos.y);
+                rotate(element.heading);
+
+                strokeWeight(0);
+                stroke(255);
+
+                fill(0, 0, 0, 20);
+                square(-3, -12, 4, 1);
+                square(-3, +9, 4, 1);
+
+                pop();
             });
         }
     }
