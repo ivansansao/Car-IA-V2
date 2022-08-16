@@ -1,5 +1,8 @@
 class Pista {
     constructor() {
+        this.waveFronted = false;
+        this.startRoad = { i: 0, j: 0, value: 0 };
+        this.corDaPista = { r: 224, g: 225, b: 243 };
         this.walls = [];
         this.showWalls = true;
         this.ranhuras = [];
@@ -48,6 +51,8 @@ class Pista {
             // this.monsters.push(new Monster(1300, -200, 0, 1, 600, 150, false, true));
             this.localNascimento = createVector(1500, 120);
             this.anguloNascimento = radians(180);
+            this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
+            this.corDaPista = { r: 204, g: 204, b: 204 };
 
         } else if (this.selectedPista == 2) {
 
@@ -61,6 +66,8 @@ class Pista {
             // this.monsters.push(new Monster(1080, 18, 0.2, 0.1, 2700, 100, false, true));
             this.localNascimento = createVector(1500, 120);
             this.anguloNascimento = radians(180);
+            this.startRoad = { i: 1640, j: 118, value: 0 };
+            this.corDaPista = { r: 191, g: 191, b: 191 };
 
         } else if (this.selectedPista == 3) {
 
@@ -71,6 +78,8 @@ class Pista {
             this.localNascimento = createVector(400, 720);
             this.anguloNascimento = radians(0);
             // this.monsters.push(new Monster(250, 720, 1.5, 0, 500, 260, false, true));
+            this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
+            this.corDaPista = { r: 224, g: 225, b: 243 };
 
         } else if (this.selectedPista == 4) {
 
@@ -79,7 +88,8 @@ class Pista {
             this.ranhuras = getRanhuras4();
             this.pistaTimeOut = 4000;
             this.timeOutStopped = 90;
-
+            
+            
             if (random(1) > 0.5 || true) {
                 this.localNascimento = createVector(400, 65);
                 this.anguloNascimento = radians(180);
@@ -94,6 +104,9 @@ class Pista {
                 this.monsters.push(new Monster(1770, 660, 0, -2, 600, 100, false, true));
             }
 
+            this.startRoad = { i: 500, j: 65, value: 0 };
+            this.corDaPista = { r: 224, g: 225, b: 243 };
+
         } else if (this.selectedPista == 5) {
 
             collideCars = false;
@@ -103,6 +116,8 @@ class Pista {
             this.timeOutStopped = 100;
             this.localNascimento = createVector(610, 450);
             this.anguloNascimento = radians(-90);
+            this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
+            this.corDaPista = { r: 224, g: 225, b: 243 };
 
         } else if (this.selectedPista == 6) {
 
@@ -114,6 +129,8 @@ class Pista {
             this.localNascimento = createVector(-1, -1);
             this.anguloNascimento = radians(-90);
             this.backcolor = [52, 126, 163];
+            this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
+            this.corDaPista = { r: 224, g: 225, b: 243 };
 
         }
 
@@ -154,7 +171,12 @@ class Pista {
 
         this.reset();
         this.getSpriteFundo();
+        // this.spritesheet.loadPixels();
+        console.log(this.spritesheet.width);
         genetic.firstGeneration();
+
+        this.waveFronted = false;
+
 
     }
 
@@ -254,7 +276,7 @@ class Pista {
                 noStroke();
                 fill(0, 0, 255);
                 textSize(9);
-                text(i+1, r.a, r.b);
+                text(i + 1, r.a, r.b);
             }
         }
 
@@ -973,7 +995,7 @@ function getPista4() {
 }
 
 function getRanhuras1() {
-    
+
     const points = [];
 
     points.push({ a: 1237, b: 284, c: 1364, d: 284, m: 0, t: 0 });
@@ -981,9 +1003,9 @@ function getRanhuras1() {
     points.push({ a: 440, b: 801, c: 440, d: 885, m: 0, t: 0 });
     points.push({ a: 890, b: 570, c: 890, d: 648, m: 0, t: 0 });
     points.push({ a: 1447, b: 809, c: 1447, d: 881, m: 0, t: 0 });
-    points.push({ a: 1708, b: 331, c: 1807, d: 331, m: 0, t: 0 });    
+    points.push({ a: 1708, b: 331, c: 1807, d: 331, m: 0, t: 0 });
     return points;
-    
+
 }
 function getRanhuras2() {
 
@@ -994,7 +1016,7 @@ function getRanhuras2() {
     points.push({ a: 1417, b: 113, c: 1417, d: 135, m: 0, t: 0 });
     points.push({ a: 1375, b: 113, c: 1376, d: 133, m: 0, t: 0 });
     points.push({ a: 1334, b: 113, c: 1334, d: 134, m: 0, t: 0 });
-    points.push({ a: 1300, b: 113, c: 1300, d: 160, m: 0, t: 0 });    
+    points.push({ a: 1300, b: 113, c: 1300, d: 160, m: 0, t: 0 });
     points.push({ a: 1359, b: 165, c: 1348, d: 180, m: 0, t: 0 });
     points.push({ a: 1368, b: 172, c: 1358, d: 184, m: 0, t: 0 });
     points.push({ a: 1378, b: 177, c: 1366, d: 192, m: 0, t: 0 });
@@ -1048,35 +1070,35 @@ function getRanhuras2() {
     points.push({ a: 965, b: 178, c: 927, d: 168, m: 0, t: 0 });
     points.push({ a: 964, b: 179, c: 926, d: 169, m: 0, t: 0 });
     points.push({ a: 963, b: 180, c: 925, d: 170, m: 0, t: 0 });
-    
- 
-    points.push({ a: 990, b: 184, c: 939, d: 184, m: 0, t: 0 }); 
-    points.push({ a: 990, b: 185, c: 939, d: 185, m: 0, t: 0 }); 
-    points.push({ a: 990, b: 186, c: 939, d: 186, m: 0, t: 0 }); 
-    points.push({ a: 990, b: 187, c: 939, d: 187, m: 0, t: 0 }); 
+
+
+    points.push({ a: 990, b: 184, c: 939, d: 184, m: 0, t: 0 });
+    points.push({ a: 990, b: 185, c: 939, d: 185, m: 0, t: 0 });
+    points.push({ a: 990, b: 186, c: 939, d: 186, m: 0, t: 0 });
+    points.push({ a: 990, b: 187, c: 939, d: 187, m: 0, t: 0 });
     points.push({ a: 990, b: 188, c: 939, d: 188, m: 0, t: 0 }); // 28    
-    points.push({ a: 990, b: 189, c: 939, d: 189, m: 0, t: 0 });     
+    points.push({ a: 990, b: 189, c: 939, d: 189, m: 0, t: 0 });
     points.push({ a: 990, b: 190, c: 939, d: 190, m: 0, t: 0 });
     points.push({ a: 990, b: 191, c: 939, d: 191, m: 0, t: 0 });
-    points.push({ a: 990, b: 192, c: 939, d: 192, m: 0, t: 0 });    
-    
-    points.push({ a: 990, b: 194, c: 939, d: 194, m: 0, t: 0 });    
-    points.push({ a: 990, b: 196, c: 939, d: 196, m: 0, t: 0 });    
-    points.push({ a: 990, b: 198, c: 939, d: 198, m: 0, t: 0 });    
-    points.push({ a: 990, b: 200, c: 939, d: 200, m: 0, t: 0 });    
+    points.push({ a: 990, b: 192, c: 939, d: 192, m: 0, t: 0 });
 
-    points.push({ a: 990, b: 205, c: 939, d: 205, m: 0, t: 0 });    
-    points.push({ a: 990, b: 210, c: 939, d: 210, m: 0, t: 0 });    
-    points.push({ a: 990, b: 215, c: 939, d: 215, m: 0, t: 0 });    
-    points.push({ a: 990, b: 220, c: 939, d: 220, m: 0, t: 0 });    
-    points.push({ a: 990, b: 225, c: 939, d: 225, m: 0, t: 0 });    
+    points.push({ a: 990, b: 194, c: 939, d: 194, m: 0, t: 0 });
+    points.push({ a: 990, b: 196, c: 939, d: 196, m: 0, t: 0 });
+    points.push({ a: 990, b: 198, c: 939, d: 198, m: 0, t: 0 });
+    points.push({ a: 990, b: 200, c: 939, d: 200, m: 0, t: 0 });
 
-    
+    points.push({ a: 990, b: 205, c: 939, d: 205, m: 0, t: 0 });
+    points.push({ a: 990, b: 210, c: 939, d: 210, m: 0, t: 0 });
+    points.push({ a: 990, b: 215, c: 939, d: 215, m: 0, t: 0 });
+    points.push({ a: 990, b: 220, c: 939, d: 220, m: 0, t: 0 });
+    points.push({ a: 990, b: 225, c: 939, d: 225, m: 0, t: 0 });
+
+
 
     points.push({ a: 437, b: 337, c: 482, d: 337, m: 0, t: 0 });
     points.push({ a: 835, b: 455, c: 835, d: 490, m: 0, t: 0 });
 
-    
+
     return points;
 }
 
@@ -1101,11 +1123,11 @@ function getRanhuras4() {
 
     // points.push({ a: 500, b: 366, c: 460, d: 407, m: 0, t: 0 });
     // points.push({ a: 414, b: 351, c: 401, d: 389, m: 0, t: 0 });
-    
+
     // points.push({ a: 394, b: 323, c: 353, d: 332, m: 0, t: 0 });
     // points.push({ a: 320, b: 260, c: 351, d: 232, m: 0, t: 0 });
     // points.push({ a: 277, b: 207, c: 327, d: 209, m: 0, t: 0 });
-        
+
     // points.push({ a: 391, b: 252, c: 406, d: 275, m: 0, t: 0 });
     // points.push({ a: 815, b: 248, c: 854, d: 242, m: 0, t: 0 });
     // points.push({ a: 876, b: 242, c: 925, d: 243, m: 0, t: 0 });

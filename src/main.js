@@ -18,11 +18,11 @@
     Rode um servidor facilmente com: python3 -m http.server
 */
 let roads = [];
-const startRoad = { i: 500, j: 65, value: 0 }; // linha, coluna, valor
+// const startRoad = { i: 500, j: 65, value: 0 }; // linha, coluna, valor
 let world = new World();
 let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 };
 let pesosForcados = undefined;
-let maxCar = 20;
+let maxCar = 100;
 let genetic = null;
 let quantidade = 0;
 let vivos = 0;
@@ -105,12 +105,17 @@ function draw() {
 
     pista.show();
 
-    if (frameCount == 2) {
-        pista.spritesheet.loadPixels();
-        // console.log(pista.spritesheet.width)
-        // console.log(pista.spritesheet.height)
-        makeMatrixRoads();
-        waveFront();
+    if (!pista.waveFronted) {
+
+        if (pista.spritesheet.width > 1) {
+            pista.waveFronted = true;
+            
+            pista.spritesheet.loadPixels();
+            // console.log(pista.spritesheet.width)
+            // console.log(pista.spritesheet.height)
+            makeMatrixRoads();
+            waveFront();
+        }
     }
 
 
@@ -326,11 +331,15 @@ function addMoreCar() {
 }
 
 function makeMatrixRoads() {
+    
 
     let pixelIndex, r, g, b;
     roads = [];
-
+    
+    console.log(' Pista idth: ' +pista.spritesheet.width)
+    console.log(' Pista height: ' +pista.spritesheet.height)
     for (let i = 0; i < pista.spritesheet.width; i++) {
+
 
         roads[i] = [];
         for (let j = 0; j < pista.spritesheet.height; j++) {
@@ -340,9 +349,8 @@ function makeMatrixRoads() {
             g = pista.spritesheet.pixels[pixelIndex + 1];
             b = pista.spritesheet.pixels[pixelIndex + 2];
 
-            if (r == 224 && g == 225 && b == 243) {
+            if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
                 roads[i][j] = 0;
-
             } else {
                 roads[i][j] = -1;
             }
@@ -354,7 +362,7 @@ function makeMatrixRoads() {
 
 function waveFront() {
 
-    let a = [startRoad];
+    let a = [pista.startRoad];
     let b = [];
 
     let value;

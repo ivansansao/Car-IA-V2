@@ -456,12 +456,11 @@ class Car {
 
             pop();
 
-            stroke(255, 255, 255);
-            fill(0, 0, 0);
-            strokeWeight(4);
-            textSize(14);
-            text(`${this.km}`, this.pos.x, this.pos.y);
-            // this.volanteAngle = '';
+            // stroke(255, 255, 255);
+            // fill(0, 0, 0);
+            // strokeWeight(4);
+            // textSize(14);
+            // text(`${this.km}`, this.pos.x, this.pos.y);
 
 
         }
