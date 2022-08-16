@@ -264,11 +264,12 @@ class Car {
         const vel = Number(this.speed.toFixed(1));
         const posX = Number(this.pos.x.toFixed(0));
         const posY = Number(this.pos.y.toFixed(0));
+        
 
         if (roads[posX] != undefined) {
-            this.km = roads[posX][posY];
-        } else {
-            this.km = Infinity;
+            if (roads[posX][posY] > 0) {
+                this.km = roads[posX][posY];
+            }
         }
 
         this.timer = timer;

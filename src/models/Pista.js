@@ -77,7 +77,7 @@ class Pista {
             collideCars = false;
             wallsPista = getPista4();
             this.ranhuras = getRanhuras4();
-            this.pistaTimeOut = 3000;
+            this.pistaTimeOut = 4000;
             this.timeOutStopped = 90;
 
             if (random(1) > 0.5 || true) {
