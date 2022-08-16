@@ -70,7 +70,7 @@ let lastPoint = [];
 const walls = [];
 function setup() {
 
-    createCanvas(windowWidth * 0.98, windowHeight * 0.98);
+    createCanvas(windowWidth, windowHeight);
     showAtalhos();
 
 }

@@ -43,7 +43,7 @@ function keyPressed() {
 }
 function setup() {
 
-    createCanvas(windowWidth, windowHeight - 4);
+    createCanvas(windowWidth, windowHeight);
 
     for (let i = 0; i < 10; i++) {
         world.cars.push(new Car());
@@ -57,6 +57,12 @@ function setup() {
 function draw() {
 
     background(200, 200, 200);
+
+    if (frameCount % 1000 == 0) {
+        for (const car of world.cars) {
+            car.trail = [];    
+        }
+    }
 
     if (world.showTrails) {
         for (const car of world.cars) {
