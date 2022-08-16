@@ -8,10 +8,12 @@ function keyPressed() {
                 monster.ativo = !monster.ativo;
             }
         }
-    } else if (key == 'b') { // Brake
+    } else if (key == 'b') {
+        world.showCars = !world.showCars;
     } else if (key == 'c') { // Change pista.        
         pista.togglePista();
-    } else if (key == 'd') { // Marcha dinâmica
+    } else if (key == 'd') {
+        showFunctionalities = !showFunctionalities;
     } else if (key == 'e') { // Toggle elitism
         elitism = !elitism;
         console.log('Elitism: ', elitism);

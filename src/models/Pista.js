@@ -1,5 +1,6 @@
 class Pista {
     constructor() {
+
         this.waveFronted = false;
         this.startRoad = { i: 0, j: 0, value: 0 };
         this.corDaPista = { r: 224, g: 225, b: 243 };

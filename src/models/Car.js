@@ -417,6 +417,9 @@ class Car {
             vivos--;
             this.batido = true;
             genetic.setFlag();
+            genetic.deads++;
+
+
             // if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
             //     console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
             // }

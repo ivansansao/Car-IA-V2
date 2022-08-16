@@ -17,12 +17,13 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+let showFunctionalities = false;
 let roads = [];
 // const startRoad = { i: 500, j: 65, value: 0 }; // linha, coluna, valor
 let world = new World();
 let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 };
 let pesosForcados = undefined;
-let maxCar = 40;
+let maxCar = 999;
 let genetic = null;
 let quantidade = 0;
 let vivos = 0;
@@ -89,8 +90,6 @@ function draw() {
 
     background(pista.backcolor);
     handleKeyIsDown();
-
-
 
     if (timerOn) {
         timer++;
@@ -178,10 +177,12 @@ function draw() {
             //     console.log(car.gear);
             // }
 
-            if (frameCount > 900 && frameCount < 1200) {
-                car.showRays = true;
-            } else if (frameCount > 1200 && frameCount < 1210) {
-                car.showRays = false;
+            if (showFunctionalities) {                
+                if (frameCount > 900 && frameCount < 1200) {
+                    car.showRays = true;
+                } else if (frameCount > 1200 && frameCount < 1210) {
+                    car.showRays = false;
+                }
             }
 
             carInputs.push(car.gear);
@@ -210,7 +211,7 @@ function draw() {
             car.raciocinar(carInputs);
             car.runDemo(runDemo);
             car.verificaColisaoRanhura(pista.ranhuras);
-            car.show();
+            if (world.showCars) car.show();
 
             // if (vivos == 1) {
             //     if (!car.batido) {
@@ -239,7 +240,7 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (vivos < 10 || getFrameRate() > 0) {
+        if (vivos < 10 || getFrameRate() > 40) {
 
             addMoreCar();
 
