@@ -544,9 +544,9 @@ class Car {
         }
     }
 
-    mutate(rate) {
+    mutate(rate, maxMutations) {
         while (this.ia.mutated == 0) {
-            this.ia.mutate(rate);
+            this.ia.mutate(rate, maxMutations);
         }
         this.setColor();
     }

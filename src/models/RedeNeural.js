@@ -68,9 +68,13 @@ class RedeNeural {
 
     }
 
-    mutate(rate) {
+    mutate(rate, maxMutations = Infinity) {
+
+        maxMutations = Infinity;
 
         tf.tidy(() => {
+
+            // maxMutations = Number(random(1,4).toFixed(0));
 
             const weights = this.model.getWeights();
             const mutatedWeights = [];
@@ -83,15 +87,21 @@ class RedeNeural {
 
                 for (let j = 0; j < values.length; j++) {
                     if (random(1) < rate) { // random(1)
-                        let w = values[j];
-                        values[j] = w + randomGaussian();
-                        // values[j] = w + random(-1,1);
-                        this.mutated++;
+                        if (this.mutated < maxMutations) {
+                            const w = values[j];
+                            values[j] = w + randomGaussian();
+                            // values[j] = w + random(-1,1);
+                            this.mutated++;
+                        }
                     }
+
                 }
                 
                 let newTensor = tf.tensor(values, shape);
                 mutatedWeights[i] = newTensor;
+
+                
+
             }
             this.model.setWeights(mutatedWeights);
 

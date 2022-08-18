@@ -97,7 +97,7 @@ class Genetic {
         
         let date = new Date();
         
-        console.log(`**** G${nGeracao + 1}. ${date.getHours()}:${date.getMinutes()} KM: ${this.melhor.km} Marca: ${this.melhor.marca} Quebrado: ${this.melhor.timer} Ran: ${this.melhor.ranhurasColetadas.length} Perto: ${this.gotCloserBest}`);
+        console.log(`**** G${nGeracao + 1}. ${date.getHours()}:${date.getMinutes()} KM: ${this.melhor.km} Marca: ${this.melhor.marca} Quebrado: ${this.melhor.timer} Ran: ${this.melhor.ranhurasColetadas.length} Perto: ${this.gotCloserBest} Muts: ${this.melhor.ia.mutated}`);
         
         //  f1: ${this.melhor.ia.f1} f2: ${this.melhor.ia.f2} 
 
@@ -228,28 +228,38 @@ class Genetic {
         for (const car of cars) {
 
             if (car.km > 0) {
-                if (car.km < km) {
+                if (car.km < km && car.timer < pista.pistaTimeOut) {
                     km = car.km;
                     melhor = car;
                 }
             }
         }
 
+        let maisMuts = 0;
+
         for (const car of cars) {
 
-            if (car.ranhurasColetadas.length > maisRanhuras) {
-                maisRanhuras = car.ranhurasColetadas.length;
-                melhor = car;
+            if (car.km == km) {
+                if (car.ia.mutated > maisMuts) {
+                    maisMuts = car.ia.mutated;
+                    melhor = car;                    
+                }
+                
             }
         }
 
-        // console.log('getMelhorCarro() -> ', this.melhor.km, ' maisRanhuras: ', maisRanhuras);
-        // fill(0,255,0);
-        // circle(this.melhor.pos.x,this.melhor.pos.y,8);
-        // noLoop();
+
 
         if (true) {
-
+            
+            for (const car of cars) {
+    
+                if (car.ranhurasColetadas.length > maisRanhuras) {
+                    maisRanhuras = car.ranhurasColetadas.length;
+                    melhor = car;
+                }
+            }
+    
             if (maisRanhuras < 7 && pista.selectedPista == 2) {
 
                 // Se empate, verifica desses qual tem melhor ângulo.

@@ -285,8 +285,8 @@ function draw() {
                     text('> 50', 2, 65)
                     if (genetic.melhorCorrente.km < genetic.melhor.km) {
                         text('C < M', 2, 75)
-                        timer = pista.pistaTimeOut;
                         eliminarTodosCars();
+                        timer = pista.pistaTimeOut;
                     }
 
                 }
