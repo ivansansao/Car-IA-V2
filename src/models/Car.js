@@ -498,7 +498,7 @@ class Car {
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Aceletou' : this.acceleration == 'down' ? 'Desaceletou' : ''}`, x + 2, y += 12);
-            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} `, x + 2, y += 12);
+            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated}`, x + 2, y += 12);
 
         }
     }

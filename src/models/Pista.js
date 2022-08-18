@@ -15,7 +15,7 @@ class Pista {
         this.anguloNascimento = radians(180);
         this.carMajorDistance = 0;
         this.recordFlag = new Flag();
-        this.recordKm = 0;
+        this.recordKm = Infinity;
         this.recordRanhuras = 0;
         this.population = 25;
         this.timeOutStopped = 100;
