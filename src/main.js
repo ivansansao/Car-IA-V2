@@ -211,6 +211,9 @@ function draw() {
             car.raciocinar(carInputs);
             car.runDemo(runDemo);
             car.verificaColisaoRanhura(pista.ranhuras);
+
+            car.hitLapSensor(pista.lapSensor);
+
             if (world.showCars) car.show();
 
             // if (vivos == 1) {

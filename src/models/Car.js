@@ -4,6 +4,8 @@ class Car {
 
         this.pos = pista.localNascimento.copy();
         this.lastPos = createVector();
+        this.overLapSensor = false;
+        this.ray = 10;
         this.heading = randomHeading ? random(360) : pista.anguloNascimento;
         this.rotation = 0;
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
@@ -36,6 +38,7 @@ class Car {
         this.trail = [];
         this.rays = [];
         this.showRays = false;
+        this.lap = 1;
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -475,6 +478,10 @@ class Car {
 
     }
 
+    getScore() {
+        return this.km * this.lap;
+    }
+
     showInfoCar() {
 
         if (this.showInfo) {
@@ -494,7 +501,7 @@ class Car {
             strokeWeight(1);
             switch (this.acceleration) { case 'up': 'Aceletou'; case 'down': 'Desacelerou'; default: '' };
 
-            text(`km: ${this.km}`, x + 2, y += 12);
+            text(`km: ${this.km} Volta: ${this.lap}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Aceletou' : this.acceleration == 'down' ? 'Desaceletou' : ''}`, x + 2, y += 12);
@@ -518,8 +525,8 @@ class Car {
                 stroke(255);
 
                 fill(0, 0, 0, 20);
-                square(-3, -12, 4, 1);
-                square(-3, +9, 4, 1);
+                square(-6, -12, 6, 1);
+                square(-6, +6, 6, 1);
 
                 pop();
             });
@@ -606,7 +613,39 @@ class Car {
             }
         }
     }
+    lapSensorEntry(hr) {
+        console.log('Entrou pela ', hr ? 'direita' : 'esquerda');
+        if (hr) {
+            this.lap++;
+        } else {
+            this.aposentar();
+        }
 
+    }
+    lapSensorExit(hr) {
+        console.log('Saiu pela ', hr ? 'direita' : 'esquerda');
+
+    }
+    hitLapSensor(sensor) {
+        const hit = circRect(this.pos.x, this.pos.y, this.ray, sensor.pos.x, sensor.pos.y, sensor.width, sensor.height);
+
+        if (hit) {
+            if (!this.overLapSensor) {
+                const hr = hitRight(this.pos.x, sensor.pos.x, sensor.width);
+                this.lapSensorEntry(hr);
+            }
+
+        } else {
+            if (this.overLapSensor) {
+                const hr = hitRight(this.pos.x, sensor.pos.x, sensor.width);
+                this.lapSensorExit(hr);
+            }
+        }
+        this.overLapSensor = hit;
+
+        return hit;
+
+    }
     drawCar() {
 
         // Fumaça de 'acelerando'.

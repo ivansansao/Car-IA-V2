@@ -250,10 +250,10 @@ class Car {
                 stroke(255);
                 
                 fill(0, 0, 0, 20);                
-                square(-3, -12, 4,1);
+                square(-6, -12, 6,1);
 
                 // fill(0, 0, 255, 20);
-                square(-3, +9, 4,1);
+                square(-6, +6, 6,1);
                 pop();
 
             });

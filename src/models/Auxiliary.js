@@ -63,3 +63,25 @@ function myRelu(v) {
     }
     return 0;
 }
+
+function hitRight(cx, rx, rw) {
+
+    return abs(rx - cx) > abs(rx + rw - cx);
+
+}
+
+function circRect(cx, cy, rad, rx, ry, rw, rh) {
+
+    let testX = cx;
+    let testY = cy;
+
+    if (cx < rx) testX = rx;
+    else if (cx > rx + rw) testX = rx + rw;
+    if (cy < ry) testY = ry;
+    else if (cy > ry + rh) testY = ry + rh;
+
+    let d = dist(cx, cy, testX, testY);
+
+    return d <= rad;
+
+}
