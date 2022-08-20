@@ -205,10 +205,12 @@ class Genetic {
 
         let qtd = 0;
 
-        for (const car of cars) {
-            if (this.melhor.id != car.id) {
-                if (abs(this.melhor.km - car.km) < 100) {
-                    qtd++;
+        if (this.melhor) {            
+            for (const car of cars) {
+                if (this.melhor.id != car.id) {
+                    if (abs(this.melhor.km - car.km) < 100) {
+                        qtd++;
+                    }
                 }
             }
         }
@@ -219,27 +221,37 @@ class Genetic {
 
     getMelhorCarro() {
 
-        // Captura quem tem mais ranhuras.
-
+        
         let melhor = null;
         let km = Infinity;
         let maisRanhuras = 0;
+        let lap = 0;
+        let maisMuts = 0;
+
+        // Seleciona a maior volta.
+        for (const car of cars) {
+            if (car.lap > lap) {
+                lap = car.lap;
+            }
+        }
+
+        // Mais perto do final da pista
 
         for (const car of cars) {
 
-            if (car.getScore() > 0) {
-                if (car.getScore() < km && car.timer < pista.pistaTimeOut) {
-                    km = car.getScore();
+            if (car.km > 0 && car.lap == lap) {
+                if (car.km < km && car.timer < pista.pistaTimeOut) {
+                    km = car.km;
                     melhor = car;
                 }
             }
         }
 
-        let maisMuts = 0;
+        // Carros com mais mutações.
 
         for (const car of cars) {
 
-            if (car.getScore() == km) {
+            if (car.km == km && car.lap == lap) {
                 if (car.ia.mutated > maisMuts) {
                     maisMuts = car.ia.mutated;
                     melhor = car;                    
@@ -248,9 +260,7 @@ class Genetic {
             }
         }
 
-
-
-        if (true) {
+        if (false) {
             
             for (const car of cars) {
     
@@ -283,9 +293,9 @@ class Genetic {
 
                 for (const car of cars) {
                     if (car.ranhurasColetadas.length == maisRanhuras) {
-                        if (car.getScore() > 0) {
-                            if (car.getScore() < maisKm) {
-                                maisKm = car.getScore();
+                        if (car.km > 0) {
+                            if (car.km < maisKm) {
+                                maisKm = car.km;
                                 melhor = car;
                             }
                         }

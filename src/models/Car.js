@@ -478,10 +478,6 @@ class Car {
 
     }
 
-    getScore() {
-        return this.km * this.lap;
-    }
-
     showInfoCar() {
 
         if (this.showInfo) {

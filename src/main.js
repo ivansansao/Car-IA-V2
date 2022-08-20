@@ -270,7 +270,7 @@ function draw() {
     fill(255);
     textSize(16);
     if (genetic.melhor) {
-        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Melhor: ${genetic.melhor.km.toFixed(4)} Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
+        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Record: ${genetic.melhor.km.toFixed(4)} Voltas: ${genetic.melhor.lap} Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
     }
 
     if (genetic.melhorCorrente && nGeracao > 0) {

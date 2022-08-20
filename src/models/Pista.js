@@ -20,10 +20,10 @@ class Pista {
         this.population = 25;
         this.timeOutStopped = 100;
         this.backcolor = [68, 170, 0];
-
+        
+        this.lapSensor = new LapSensor();
         this.getSpriteFundo();
         this.pistaTimeOut = 20000;
-        this.lapSensor = new LapSensor();
 
         this.make();
     }
@@ -54,10 +54,10 @@ class Pista {
             // this.monsters.push(new Monster(1300, -200, 0, 1, 600, 150, false, true));
             this.localNascimento = createVector(1500, 120);
             this.anguloNascimento = radians(180);
-            this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
+            this.startRoad = { i: 1532, j: 135, value: 0 };
             this.corDaPista = { r: 204, g: 204, b: 204 };
-            this.lapSensor.pos.x = this.startRoad.i+20;
-            this.lapSensor.pos.y = this.startRoad.j-51;
+            this.lapSensor.pos.x = this.startRoad.i-15;
+            this.lapSensor.pos.y = this.startRoad.j-65;
             this.lapSensor.height = 135;
 
 
@@ -115,12 +115,12 @@ class Pista {
                 this.monsters.push(new Monster(1770, 660, 0, -2, 600, 100, false, true));
             }
 
-            this.startRoad = { i: 440, j: 30, value: 0 };
+            this.startRoad = { i: 453, j: 66, value: 0 };
             this.corDaPista = { r: 224, g: 225, b: 243 };
-            this.lapSensor.pos.x = this.startRoad.i;
-            this.lapSensor.pos.y = this.startRoad.j;
+            this.lapSensor.pos.x = this.startRoad.i-15;
+            this.lapSensor.pos.y = this.startRoad.j-38;
             this.lapSensor.width = 10;
-            this.lapSensor.height = 65;
+            this.lapSensor.height = 71;
 
         } else if (this.selectedPista == 5) {
 
