@@ -70,7 +70,7 @@ class RedeNeural {
 
     mutate(rate, maxMutations = Infinity) {
 
-        maxMutations = Infinity;
+        maxMutations = 4;
 
         tf.tidy(() => {
 
