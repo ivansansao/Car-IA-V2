@@ -610,7 +610,6 @@ class Car {
         }
     }
     lapSensorEntry(hr) {
-        console.log('Entrou pela ', hr ? 'direita' : 'esquerda');
         if (hr) {
             this.lap++;
         } else {
@@ -619,7 +618,6 @@ class Car {
 
     }
     lapSensorExit(hr) {
-        console.log('Saiu pela ', hr ? 'direita' : 'esquerda');
 
     }
     hitLapSensor(sensor) {

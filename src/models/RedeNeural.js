@@ -18,9 +18,9 @@ class RedeNeural {
         this.mutated = 0; // Number of genes mutateds, zero is not mutated
 
         this.model = tf.sequential();
-        this.model.add(tf.layers.dense({units: this.hidden_nodes, inputShape: [this.input_nodes], activation: this.f1}));        
+        this.model.add(tf.layers.dense({ units: this.hidden_nodes, inputShape: [this.input_nodes], activation: this.f1 }));
         // this.model.add(tf.layers.dense({units: 5, inputShape: [5], activation: 'relu'}));        
-        this.model.add(tf.layers.dense({units: this.output_nodes, activation: this.f2}));        
+        this.model.add(tf.layers.dense({ units: this.output_nodes, activation: this.f2 }));
 
         // const input = tf.input({ shape: [input_nodes] });
         // const denseLayer1 = tf.layers.dense({ units: hidden_nodes, activation: this.f1 }); // def. sigmoid
@@ -68,9 +68,60 @@ class RedeNeural {
 
     }
 
-    mutate(rate, maxMutations = Infinity) {
+    mutate(rate, maxMutations = 8) {
 
-        maxMutations = 4;
+        tf.tidy(() => {
+
+            const weights = this.model.getWeights();
+            const mutatedWeights = [];
+            let mutations = Number(random(1, maxMutations).toFixed(0));
+
+            for (let i = 0; i < weights.length; i++) {
+
+                let tensor = weights[i];
+                let shape = weights[i].shape;
+                let values = tensor.dataSync().slice();
+                
+                for (let m = 0; m < mutations; m++) {
+
+                    if (this.mutated < mutations) {
+                        
+                        const j = Number(random(0, values.length - 1).toFixed(0));
+                        const w = values[j];
+                        
+                        values[j] = w + randomGaussian();
+                        this.mutated++;
+
+                    }
+
+                }
+
+                // for (let j = 0; j < values.length; j++) {
+                //     if (random(1) < rate) { // random(1)
+                //         if (this.mutated < maxMutations) {
+                //             const w = values[j];
+                //             values[j] = w + randomGaussian();
+                //             // values[j] = w + random(-1,1);
+                //             this.mutated++;
+                //         }
+                //     }
+
+                // }
+
+                let newTensor = tf.tensor(values, shape);
+                mutatedWeights[i] = newTensor;
+
+
+
+            }
+            this.model.setWeights(mutatedWeights);
+
+        });
+
+    }
+    depreciated_mutate(rate, maxMutations = Infinity) {
+
+        maxMutations = 1;
 
         tf.tidy(() => {
 
@@ -96,11 +147,11 @@ class RedeNeural {
                     }
 
                 }
-                
+
                 let newTensor = tf.tensor(values, shape);
                 mutatedWeights[i] = newTensor;
 
-                
+
 
             }
             this.model.setWeights(mutatedWeights);
@@ -111,7 +162,7 @@ class RedeNeural {
     showWeights(toReturn) {
 
         return tf.tidy(() => {
-            
+
             const weights = this.model.getWeights();
             let pesos = '';
             let shapes = '';
@@ -124,7 +175,7 @@ class RedeNeural {
 
                 if (pesos) pesos += ';';
                 if (shapes) shapes += ';';
-                           
+
                 pesos += values;
                 shapes += shape;
 
@@ -132,35 +183,35 @@ class RedeNeural {
 
             if (toReturn) {
                 return pesos;
-            } else {                
+            } else {
                 console.log(pesos);  // sValues for setWeightsFromString
                 console.log(shapes); // sShapes for setWeightsFromString
             }
-            
+
         });
 
     }
 
-    setWeightsFromString(sValues,sShapes) {   
-        
-       tf.tidy(() => {
+    setWeightsFromString(sValues, sShapes) {
+
+        tf.tidy(() => {
 
             const aValues = sValues.split(';');
             const aShapes = sShapes.split(';');
             const loadedWeights = [];
 
-            for (let i = 0 ; i < aValues.length ; i++) {
-                
-                const anValues = aValues[i].split(',').map((e) => {return Number(e)});
+            for (let i = 0; i < aValues.length; i++) {
+
+                const anValues = aValues[i].split(',').map((e) => { return Number(e) });
                 const newValues = new Float32Array(anValues);
-                const newShapes = aShapes[i].split(',').map((e) => {return Number(e)});
+                const newShapes = aShapes[i].split(',').map((e) => { return Number(e) });
 
                 loadedWeights[i] = tf.tensor(newValues, newShapes);
 
             }
 
             this.model.setWeights(loadedWeights);
-            
+
         });
     }
 }

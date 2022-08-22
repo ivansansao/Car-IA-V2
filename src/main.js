@@ -243,7 +243,7 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (vivos < 10 || getFrameRate() > 40) {
+        if (vivos < 10 || getFrameRate() > 25) {
 
             addMoreCar();
 
@@ -334,7 +334,7 @@ function addMoreCar() {
         let child = new Car('m2', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
-        child.mutate(Number(random(0.01, 0.05).toFixed(15)));
+        child.mutate(Number(random(0.01, 0.05).toFixed(15)),random(1,2));
         cars.unshift(child);
         vivos++
     }
