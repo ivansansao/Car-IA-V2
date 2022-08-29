@@ -43,8 +43,6 @@ class Genetic {
 
     firstGeneration() {
 
-        console.log('Primeira geração...');
-
         cars = [];
 
         // Novos
@@ -103,7 +101,7 @@ class Genetic {
         
         let date = new Date();
         
-        console.log(`**** G${nGeracao + 1}. ${date.getHours()}:${date.getMinutes()} KM: ${this.melhor.km} Marca: ${this.melhor.marca} Quebrado: ${this.melhor.timer} Ran: ${this.melhor.ranhurasColetadas.length} Perto: ${this.gotCloserBest} Muts: ${this.melhor.ia.mutated}`);
+        console.log(`**** G${nGeracao + 1}. ${date.getHours()}:${date.getMinutes()} KM: ${this.melhor.km} Marca: ${this.melhor.marca} Quebrado: ${this.melhor.timer} Ran: ${this.melhor.ranhurasColetadas.length} Perto: ${this.gotCloserBest} Muts: ${this.melhor.ia.mutated} NM: ${this.melhor.ia.mutatedNeurons}`);
         
         //  f1: ${this.melhor.ia.f1} f2: ${this.melhor.ia.f2} 
 

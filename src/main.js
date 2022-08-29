@@ -334,7 +334,7 @@ function addMoreCar() {
         let child = new Car('m2', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
-        child.mutate(Number(random(0.01, 0.05).toFixed(15)),random(1,2));
+        child.mutate(Number(random(0.01, 0.05).toFixed(15)),random(1,15));
         cars.unshift(child);
         vivos++
     }
@@ -342,14 +342,10 @@ function addMoreCar() {
 
 function makeMatrixRoads() {
 
-
     let pixelIndex, r, g, b;
     roads = [];
 
-    console.log(' Pista idth: ' + pista.spritesheet.width)
-    console.log(' Pista height: ' + pista.spritesheet.height)
     for (let i = 0; i < pista.spritesheet.width; i++) {
-
 
         roads[i] = [];
         for (let j = 0; j < pista.spritesheet.height; j++) {

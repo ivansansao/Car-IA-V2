@@ -16,6 +16,7 @@ class RedeNeural {
         this.f1 = "linear"; // this.getAnyActivation();
         this.f2 = "selu"; // this.getAnyActivation();
         this.mutated = 0; // Number of genes mutateds, zero is not mutated
+        this.mutatedNeurons = '';
 
         this.model = tf.sequential();
         this.model.add(tf.layers.dense({ units: this.hidden_nodes, inputShape: [this.input_nodes], activation: this.f1 }));
@@ -68,50 +69,38 @@ class RedeNeural {
 
     }
 
-    mutate(rate, maxMutations = 8) {
+    mutate(rate, maxMutations = 10) {
 
         tf.tidy(() => {
 
             const weights = this.model.getWeights();
             const mutatedWeights = [];
-            let mutations = Number(random(1, maxMutations).toFixed(0));
+            let mutations = Number(random(0, maxMutations).toFixed(0));
 
             for (let i = 0; i < weights.length; i++) {
 
                 let tensor = weights[i];
                 let shape = weights[i].shape;
                 let values = tensor.dataSync().slice();
-                
+
                 for (let m = 0; m < mutations; m++) {
 
                     if (this.mutated < mutations) {
-                        
-                        const j = Number(random(0, values.length - 1).toFixed(0));
+
+                        const j = Number(random(0, values.length).toFixed(0));
                         const w = values[j];
-                        
+
                         values[j] = w + randomGaussian();
                         this.mutated++;
-
+                        this.mutatedNeurons += j + ',';
+                        
                     }
+
 
                 }
 
-                // for (let j = 0; j < values.length; j++) {
-                //     if (random(1) < rate) { // random(1)
-                //         if (this.mutated < maxMutations) {
-                //             const w = values[j];
-                //             values[j] = w + randomGaussian();
-                //             // values[j] = w + random(-1,1);
-                //             this.mutated++;
-                //         }
-                //     }
-
-                // }
-
                 let newTensor = tf.tensor(values, shape);
                 mutatedWeights[i] = newTensor;
-
-
 
             }
             this.model.setWeights(mutatedWeights);
