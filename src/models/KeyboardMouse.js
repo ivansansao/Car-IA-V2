@@ -2,6 +2,20 @@
 
 function keyPressed() {
 
+    if (key == '0') {
+        engine.start();
+    }
+    if (key == '9') {
+        engine.stop();
+    }
+
+    if (key == '8') {
+        engine.setFrequency(90);
+    }
+    if (key == '2') {
+        engine.setFrequency(60);
+    }
+
     if (key == 'a') { // Mostrar sensores
         for (const monster of pista.monsters) {
             if (!monster.useMouse) {
@@ -65,9 +79,10 @@ function keyPressed() {
     } else if (key == 't') {
         timerOn = !timerOn;
     } else if (key == 'u') {
-    } else if (key == 'v') {    
+    } else if (key == 'v') {
         showMousePoint = !showMousePoint;
     } else if (key == 'y') {
+        world.engineSound = !world.engineSound;
     } else if (key == 'w') { // Mostrar ranhuras
         showRanhuras = !showRanhuras;
     } else if (key == 'x') {
@@ -95,8 +110,25 @@ function handleKeyIsDown() {
     }
 }
 
+// audio = new Audio('sound/sounds_engine.wav');
+// audio.play();
+
 function mouseClicked() {
-    audio.play();
+
+    // let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // let freq = {step: 0, min: 69, max: 121};
+
+    // let gain = audioCtx.createGain();
+    // let osc = audioCtx.createOscillator()
+    // osc.connect(gain);
+
+    // gain.connect(audioCtx.destination);
+    // osc.type = "sawtooth";
+    // osc.frequency.value = freq.min + random(-1,1);
+    // gain.gain.value = 0.2;
+    // osc.start();
+
+    
 }
 
 function mousePressed() {

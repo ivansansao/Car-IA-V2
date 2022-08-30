@@ -9,6 +9,7 @@ class World {
         this.killOnFindBetter = false;
         this.hasTrailsToShow = false;
         this.startWeightSaved = true;
+        this.engineSound = false;
 
     }
 }

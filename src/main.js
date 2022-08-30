@@ -57,11 +57,15 @@ let luzes = true;
 
 let soundBrake;
 let audio;
+let engine;
 
 function preload() {
     // soundFormats('mp3', 'ogg');
     // soundBrake = loadSound('sound/crow.wav');
-    audio = new Audio('sound/sounds_engine.wav');
+    // audio = new Audio('sound/sounds_engine.wav');
+    engine = new EngineSound();
+
+
     
 
 }

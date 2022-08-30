@@ -39,6 +39,7 @@ class Car {
         this.rays = [];
         this.showRays = false;
         this.lap = 1;
+        this.engineSound = new EngineSound();
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -53,8 +54,12 @@ class Car {
 
     }
 
+    isParent() {
+        return (this.marca.toLowerCase().includes('c') || this.marca.toLowerCase().includes('x'));
+    }
+
     setColor() {
-        if (this.marca.toLowerCase().includes('c') || this.marca.toLowerCase().includes('x')) {
+        if (this.isParent()) {
             // this.cor = 'hsl(216, 100%, 50%)'; // Azul
             this.cor = 'rgb(255,255,255)';
         } else {
@@ -157,17 +162,35 @@ class Car {
 
         this.acceleration = 'up';
         this.braking = false;
+
+        this.setEngineSound();
+
     }
 
     freeSpeedUp() {
+
         if (this.speed > 0) {
             this.speed -= 0.004;
             if (this.speed < 0) {
                 this.speed = 0;
             }
         }
+
         this.acceleration = 'down';
         this.braking = false;
+
+        this.setEngineSound();
+
+    }
+
+    setEngineSound() {
+        if (this.isParent()) {
+            if (world.engineSound) {
+                this.engineSound.start();
+                const freq = map(this.speed, 0, 2, 30, 50)
+                this.engineSound.setFrequency(freq);
+            }
+        }
 
     }
 
@@ -428,6 +451,8 @@ class Car {
             //     console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
             // }
 
+            this.engineSound.stop();
+
         }
     }
 
@@ -496,12 +521,12 @@ class Car {
             fill(0, 0, 255);
             noStroke();
             strokeWeight(1);
-            switch (this.acceleration) { case 'up': 'Aceletou'; case 'down': 'Desacelerou'; default: '' };
+            switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
             text(`km: ${this.km} Volta: ${this.lap}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
-            text(`Acelerador: ${this.acceleration == 'up' ? 'Aceletou' : this.acceleration == 'down' ? 'Desaceletou' : ''}`, x + 2, y += 12);
+            text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
             text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated}`, x + 2, y += 12);
 
         }
@@ -522,8 +547,10 @@ class Car {
                 stroke(255);
 
                 fill(0, 0, 0, 20);
-                square(-6, -12, 6, 1);
-                square(-6, +6, 6, 1);
+                square(-6, -12, 6, 10);
+                square(-6, +6, 6, 10);
+                // circle(-6, -12, 6);
+                // circle(-6, +6, 6);
 
                 pop();
             });
@@ -643,7 +670,7 @@ class Car {
     }
     drawCar() {
 
-        // Fumaça de 'acelerando'.
+        // Fumaça de 'acelerada forte'.
         if (this.acceleration == 'up') {
 
             strokeWeight(0);
@@ -652,14 +679,15 @@ class Car {
             rect(-17, -6, 5, 5, 4);
             rect(-17, -8, 5, 5, 4);
 
-            /*
-             rect(
-                 ṕositivo vai pra frente 
-                 positivo vai pra direita
-                 positivo avanca pra frente do carro
-                 Largura da bolinha
-                 )
-             */
+
+        } else {
+
+            strokeWeight(0);
+            fill(255, 255, 255, this.speed * 100);
+            rect(-14, -7, 5, 5, 4);
+            // rect(-17, -6, 5, 5, 4);
+            // rect(-17, -8, 5, 5, 4);
+
         }
 
         stroke(100);
