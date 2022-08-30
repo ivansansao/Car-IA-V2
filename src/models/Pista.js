@@ -59,8 +59,8 @@ class Pista {
             this.lapSensor.pos.x = this.startRoad.i-15;
             this.lapSensor.pos.y = this.startRoad.j-65;
             this.lapSensor.height = 135;
-
-
+            
+            
         } else if (this.selectedPista == 2) {
 
             collideCars = false;
@@ -69,14 +69,15 @@ class Pista {
             this.pistaTimeOut = 1800;
             this.timeOutStopped = 100;
             this.population = 20;
-            this.monsters.push(new Monster(1570, 120, 0, 0, this.pistaTimeOut, 100, false, true));
+            // this.monsters.push(new Monster(1570, 120, 0, 0, this.pistaTimeOut, 100, false, true));
             // this.monsters.push(new Monster(1080, 18, 0.2, 0.1, 2700, 100, false, true));
             this.localNascimento = createVector(1500, 120);
             this.anguloNascimento = radians(180);
-            this.startRoad = { i: 1640, j: 118, value: 0 };
+            this.startRoad = { i: 1579, j: 140, value: 0 };
             this.corDaPista = { r: 191, g: 191, b: 191 };
-            this.lapSensor.pos.x = this.startRoad.i+10;
-            this.lapSensor.pos.y = this.startRoad.j-10;
+            this.lapSensor.pos.x = this.startRoad.i-10;
+            this.lapSensor.pos.y = this.startRoad.j-85;
+            this.lapSensor.height = 170;
 
         } else if (this.selectedPista == 3) {
 

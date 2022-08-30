@@ -96,6 +96,7 @@ function handleKeyIsDown() {
 }
 
 function mouseClicked() {
+    audio.play();
 }
 
 function mousePressed() {

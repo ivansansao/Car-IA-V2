@@ -55,15 +55,23 @@ let showInfoCar = false;
 let showFlag = false;
 let luzes = true;
 
+let soundBrake;
+let audio;
+
 function preload() {
+    // soundFormats('mp3', 'ogg');
+    // soundBrake = loadSound('sound/crow.wav');
+    audio = new Audio('sound/sounds_engine.wav');
+    
+
 }
 
 function setup() {
-
+    
     //   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
     //   canvas.parent('canvas-holder');
     //   noStroke();
-
+    
     createCanvas(windowWidth, windowHeight);
 
     tf.setBackend('cpu');
@@ -177,7 +185,7 @@ function draw() {
             //     console.log(car.gear);
             // }
 
-            if (showFunctionalities) {                
+            if (showFunctionalities) {
                 if (frameCount > 900 && frameCount < 1200) {
                     car.showRays = true;
                 } else if (frameCount > 1200 && frameCount < 1210) {
@@ -334,7 +342,7 @@ function addMoreCar() {
         let child = new Car('m2', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
-        child.mutate(Number(random(0.01, 0.05).toFixed(15)),random(1,15));
+        child.mutate(Number(random(0.01, 0.05).toFixed(15)), random(1, 4));
         cars.unshift(child);
         vivos++
     }
@@ -431,7 +439,7 @@ function showCredits() {
         strokeWeight(4);
         textSize(28);
         text(`github.com/ivansansao`, 750, 62);
-        
+
         fill(255);
 
         strokeWeight(4);

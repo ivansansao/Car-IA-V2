@@ -179,6 +179,7 @@ class Car {
         }
 
         if (this.speed > 1) {
+            // soundBrake.play();
             this.trail.push({ pos: this.pos.copy(), heading: this.heading });
         }
 
