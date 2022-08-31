@@ -171,7 +171,8 @@ class RedeNeural {
                             values[j] = w + randomGaussian();
                             // values[j] = w + random(-1,1);
                             this.mutated++;
-                            this.mutatedNeurons += j + ',';
+                            if (this.mutatedNeurons != '') this.mutatedNeurons += ','
+                            this.mutatedNeurons += j
                         }
                     }
 
