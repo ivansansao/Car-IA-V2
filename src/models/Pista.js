@@ -24,6 +24,7 @@ class Pista {
         this.lapSensor = new LapSensor();
         this.getSpriteFundo();
         this.pistaTimeOut = 20000;
+        this.mutationCounter = 0;
 
         this.make();
     }

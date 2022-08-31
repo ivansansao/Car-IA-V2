@@ -208,6 +208,7 @@ class Car {
 
         this.braking = true;
         this.acceleration = 'down';
+        this.setEngineSound();
 
     }
 
@@ -221,19 +222,20 @@ class Car {
         if (this.speed > 0) {
 
             if (this.speed < 0.1) {
-                if (this.gear == 1)
+                if (this.gear == 1) // Dynamic
                     this.rotation = this.speed * 0.4; // this.speed * 0.4
-                else if (this.gear == -1)
+                else if (this.gear == -1) // Reverse
                     this.rotation = -this.speed * 0.4;
             } else {
                 if (this.gear == 1)
-                    this.rotation = 0.1; // this.speed * 0.4
+                    this.rotation = 0.1;
                 else if (this.gear == -1)
                     this.rotation = -0.1;
             }
 
         }
-        this.volanteAngle = 'r';
+        this.volanteAngle = this.volanteAngle == 'l' ? '' : 'r';
+
     }
 
     vaiReto() {
@@ -256,7 +258,7 @@ class Car {
             }
 
         }
-        this.volanteAngle = 'l';
+        this.volanteAngle = this.volanteAngle == 'r' ? '' : 'l';
     }
 
     engageDinamic() {
@@ -288,10 +290,8 @@ class Car {
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
 
-        const vel = Number(this.speed.toFixed(1));
         const posX = Number(this.pos.x.toFixed(0));
         const posY = Number(this.pos.y.toFixed(0));
-
 
         if (roads[posX] != undefined) {
             if (roads[posX][posY] > 0) {
@@ -525,9 +525,10 @@ class Car {
 
             text(`km: ${this.km} Volta: ${this.lap}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
-            text(`Velocidade: ${this.speed}`, x + 2, y += 12);
+            text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
             text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated}`, x + 2, y += 12);
+
 
         }
     }
@@ -694,21 +695,33 @@ class Car {
         strokeWeight(2);
 
         fill(100);
-        rect(-6, -12, 6, 4, 1); // Roda traseira
-        rect(-6, 8, 6, 4, 1); // Roda traseira
+        rect(-3, -11.5, 6, 4, 1); // Roda traseira esquerda
+        rect(-3, 7.5, 6, 4, 1); // Roda traseira direita
 
         push();
         translate(23, -12);
-        if (this.volanteAngle == 'l') rotate(-0.5);
-        if (this.volanteAngle == 'r') rotate(0.5);
-        rect(-3, 0, 6, 4, 1); // Roda dianteira
+        let mapLWeel
+        let mapRWeel
+
+        if (this.volanteAngle == 'l') {
+            mapLWeel = map(this.speed, 0, 2, 0.65, 0.1);
+            mapRWeel = map(this.speed, 0, 2, 0.45, 0.0);
+        }
+        if (this.volanteAngle == 'r') {
+            mapLWeel = map(this.speed, 0, 2, 0.45, 0.0);
+            mapRWeel = map(this.speed, 0, 2, 0.65, 0.1);
+        }
+
+        if (this.volanteAngle == 'l') rotate(-mapLWeel);
+        if (this.volanteAngle == 'r') rotate(mapLWeel);
+        rect(-3, 0.5, 6, 4, 1); // Roda dianteira esquerda        
         pop();
 
         push();
         translate(23, 12);
-        if (this.volanteAngle == 'l') rotate(-0.5);
-        if (this.volanteAngle == 'r') rotate(0.5);
-        rect(-3, -4, 6, 4, 1); // Roda dianteira direita
+        if (this.volanteAngle == 'l') rotate(-mapRWeel);
+        if (this.volanteAngle == 'r') rotate(mapRWeel);
+        rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
         pop();
 
         // Corpo do carro.
@@ -723,7 +736,7 @@ class Car {
 
         // Teto.
         fill(this.cor);
-        rect(-2, -9, 14, 17, 4);
+        rect(-2, -9, 15, 18, 4);
 
         // Ré.
         if (this.braking) {

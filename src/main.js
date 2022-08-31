@@ -346,7 +346,7 @@ function addMoreCar() {
         let child = new Car('m2', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
-        child.mutate(Number(random(0.01, 0.05).toFixed(15)), random(1, 4));
+        child.mutate(Number(random(0.01, 0.05).toFixed(15)), random(1, 1));
         cars.unshift(child);
         vivos++
     }

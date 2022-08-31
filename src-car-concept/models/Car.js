@@ -197,7 +197,7 @@ class Car {
         // strokeWeight(0);
         // fill(255, 0, 0);
         // stroke(255);
-        
+
         // circle(-3, -10, 8);
         // circle(-3, +10, 8);
         // pop();
@@ -245,15 +245,15 @@ class Car {
                 push();
                 translate(element.pos.x, element.pos.y);
                 rotate(element.heading);
-  
+
                 strokeWeight(0);
                 stroke(255);
-                
-                fill(0, 0, 0, 20);                
-                square(-6, -12, 6,1);
+
+                fill(0, 0, 0, 20);
+                square(-6, -12, 6, 1);
 
                 // fill(0, 0, 255, 20);
-                square(-6, +6, 6,1);
+                square(-6, +6, 6, 1);
                 pop();
 
             });
@@ -266,22 +266,36 @@ class Car {
         strokeWeight(2);
 
         fill(100);
-        rect(-6, -12, 6, 4, 1); // Roda traseira
-        rect(-6, 8, 6, 4, 1); // Roda traseira
+
+        rect(-3, -11.5, 6, 4, 1); // Roda traseira esquerda
+        rect(-3, 7.5, 6, 4, 1); // Roda traseira direita
 
         push();
         translate(23, -12);
         
-        if (this.volanteAngle == 'l') rotate(-0.5);
-        if (this.volanteAngle == 'r') rotate(0.5);
-        rect(-3, 0, 6, 4, 1); // Roda dianteira
+        let mapLWeel
+        let mapRWeel
+
+        if (this.volanteAngle == 'l') {
+            mapLWeel = map(this.speed, 0, 2, 0.7, 0.1);
+            mapRWeel = map(this.speed, 0, 2, 0.45, 0.0);
+        }
+        if (this.volanteAngle == 'r') {
+            mapLWeel = map(this.speed, 0, 2, 0.45, 0.0);
+            mapRWeel = map(this.speed, 0, 2, 0.7, 0.1);
+        }
+        
+        if (this.volanteAngle == 'l') rotate(-mapLWeel);
+        if (this.volanteAngle == 'r') rotate(mapLWeel);
+        rect(-3, 0.5, 6, 4, 1); // Roda dianteira esquerda
+        
         pop();
 
         push();
         translate(23, 12);
-        if (this.volanteAngle == 'l') rotate(-0.5);
-        if (this.volanteAngle == 'r') rotate(0.5);
-        rect(-3, -4, 6, 4, 1); // Roda dianteira direita
+        if (this.volanteAngle == 'l') rotate(-mapRWeel);
+        if (this.volanteAngle == 'r') rotate(mapRWeel);
+        rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
         pop();
 
 
@@ -297,7 +311,7 @@ class Car {
 
         // Teto.
         fill(this.cor);
-        rect(-2, -9, 14, 17, 4);
+        rect(-2, -9, 15, 18, 4);
 
         // Ré.
         if (this.braking) {

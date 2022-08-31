@@ -1,4 +1,5 @@
 let world = new World();
+let pg;
 
 function handleKeyIsDown(car) {
 
@@ -45,6 +46,9 @@ function setup() {
 
     createCanvas(windowWidth, windowHeight);
 
+    pg = createGraphics(windowWidth, windowHeight);
+    pg.background(255, 255, 255, 200);
+
     for (let i = 0; i < 10; i++) {
         world.cars.push(new Car());
     }
@@ -57,6 +61,9 @@ function setup() {
 function draw() {
 
     background(200, 200, 200);
+
+    pg.fill(255,0,0);
+    pg.circle(100,100,10);
 
     if (frameCount % 1000 == 0) {
         for (const car of world.cars) {

@@ -69,7 +69,46 @@ class RedeNeural {
 
     }
 
-    mutate(rate, maxMutations = 10) {
+    mutate_sequence(rate, maxMutations = 10) {
+
+        tf.tidy(() => {
+
+            const weights = this.model.getWeights();
+            const mutatedWeights = [];
+            let mutations = Number(random(0, maxMutations).toFixed(0));
+
+            for (let i = 0; i < weights.length; i++) {
+
+                let tensor = weights[i];
+                let shape = weights[i].shape;
+                let values = tensor.dataSync().slice();
+
+                for (let m = 0; m < mutations; m++) {
+
+                    if (this.mutated < mutations) {
+
+                        const j = pista.mutationCounter % 16;
+                        const w = values[j];
+                        
+                        values[j] = w + randomGaussian();
+                        this.mutated++;
+                        this.mutatedNeurons += j + ',';
+                        pista.mutationCounter++;
+                        
+                    }
+
+                }
+
+                let newTensor = tf.tensor(values, shape);
+                mutatedWeights[i] = newTensor;
+
+            }
+            this.model.setWeights(mutatedWeights);
+
+        });
+
+    }
+    mutate2(rate, maxMutations = 10) {
 
         tf.tidy(() => {
 
@@ -108,9 +147,9 @@ class RedeNeural {
         });
 
     }
-    depreciated_mutate(rate, maxMutations = Infinity) {
+    mutate(rate, maxMutations = Infinity) {
 
-        maxMutations = 1;
+        maxMutations = Infinity;
 
         tf.tidy(() => {
 
@@ -132,6 +171,7 @@ class RedeNeural {
                             values[j] = w + randomGaussian();
                             // values[j] = w + random(-1,1);
                             this.mutated++;
+                            this.mutatedNeurons += j + ',';
                         }
                     }
 
