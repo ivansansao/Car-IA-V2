@@ -61,7 +61,7 @@ function keyPressed() {
         collideCars = !collideCars;
         console.log('Colidir carros: ', collideCars)
     } else if (key == 'p') {
-        console.log('Parei! Clique para continuar!');
+        console.log('Parado!');
         if (running) {
             noLoop();
         } else {
@@ -83,6 +83,7 @@ function keyPressed() {
         showMousePoint = !showMousePoint;
     } else if (key == 'y') {
         world.engineSound = !world.engineSound;
+        console.log(`Engine sound: ${world.engineSound}`);
     } else if (key == 'w') { // Mostrar ranhuras
         showRanhuras = !showRanhuras;
     } else if (key == 'x') {
