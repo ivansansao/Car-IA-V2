@@ -502,6 +502,15 @@ class Car {
 
         }
 
+        if (this.speed > 1 && this.volanteAngle != '') {
+
+            if (random(0,4) > 3) {
+                pg.noStroke();
+                pg.fill(127,127,127,0.6);
+                pg.circle(this.pos.x, this.pos.y, random(18,22));
+            }
+        }
+
     }
 
     showInfoCar() {

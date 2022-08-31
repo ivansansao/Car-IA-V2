@@ -58,6 +58,7 @@ let luzes = true;
 let soundBrake;
 let audio;
 let engine;
+let pg;
 
 function preload() {
     // soundFormats('mp3', 'ogg');
@@ -65,18 +66,13 @@ function preload() {
     // audio = new Audio('sound/sounds_engine.wav');
     engine = new EngineSound();
 
-
-    
-
 }
 
 function setup() {
-    
-    //   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-    //   canvas.parent('canvas-holder');
-    //   noStroke();
-    
+
     createCanvas(windowWidth, windowHeight);
+
+    pg = createGraphics(windowWidth, windowHeight);
 
     tf.setBackend('cpu');
 
@@ -92,16 +88,20 @@ function setup() {
     }
 
     genetic.nextGeneration();
-    background(255);
+    // background(255);
 
     clear()
+
 
 }
 
 function draw() {
 
+
     background(pista.backcolor);
     handleKeyIsDown();
+
+
 
     if (timerOn) {
         timer++;
@@ -114,8 +114,13 @@ function draw() {
         }
     }
 
+    // pg.background(255, 255, 255, 0);
+
+    image(pg, 0, 0);
+
     pista.show();
     showCredits();
+
 
     if (!pista.waveFronted) {
 
@@ -311,7 +316,6 @@ function draw() {
     }
 
     ShowMousePoint()
-
 
 }
 

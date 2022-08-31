@@ -182,7 +182,7 @@ class Pista {
         }
         this.spriteRip = getSpriteRip1();
     }
-    togglePista() {
+    togglePista() {        
 
         if (this.selectedPista == 6) {
             this.selectedPista = 1;
@@ -205,7 +205,8 @@ class Pista {
         this.carMajorDistance = 0;
         this.kmWheel = 0;
         this.monstersResetPos();
-        this.make()
+        this.make();
+        pg.clear();
     }
 
     setMajorDistance(distance) {
