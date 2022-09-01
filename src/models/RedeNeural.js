@@ -165,7 +165,7 @@ class RedeNeural {
                 let values = tensor.dataSync().slice();
 
                 for (let j = 0; j < values.length; j++) {
-                    if (random(1) < rate) { // random(1)
+                    if (random(1) < rate) { 
                         if (this.mutated < maxMutations) {
                             const w = values[j];
                             values[j] = w + randomGaussian();

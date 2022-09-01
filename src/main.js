@@ -124,7 +124,7 @@ function draw() {
 
     if (!pista.waveFronted) {
 
-        if (pista.spritesheet.width > 1) {
+        if (pista.spritesheet?.width > 1) {
             pista.waveFronted = true;
 
             pista.spritesheet.loadPixels();

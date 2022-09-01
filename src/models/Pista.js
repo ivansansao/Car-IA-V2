@@ -90,9 +90,9 @@ class Pista {
             this.anguloNascimento = radians(0);
             // this.monsters.push(new Monster(250, 720, 1.5, 0, 500, 260, false, true));
             this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
-            this.corDaPista = { r: 224, g: 225, b: 243 };
-            this.lapSensor.pos.x = this.startRoad.i+10;
-            this.lapSensor.pos.y = this.startRoad.j-10;
+            this.corDaPista = { r: 0, g: 0, b: 0 };
+            this.lapSensor.pos.x = this.startRoad.i-30;
+            this.lapSensor.pos.y = this.startRoad.j-100;
 
         } else if (this.selectedPista == 4) {
 
@@ -133,10 +133,10 @@ class Pista {
             this.timeOutStopped = 100;
             this.localNascimento = createVector(610, 450);
             this.anguloNascimento = radians(-90);
-            this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
-            this.corDaPista = { r: 224, g: 225, b: 243 };
-            this.lapSensor.pos.x = this.startRoad.i+10;
-            this.lapSensor.pos.y = this.startRoad.j-10;
+            this.startRoad = { i: this.localNascimento.x+30, j: this.localNascimento.y, value: 0 };
+            this.corDaPista = { r: 255, g: 255, b: 255 };
+            this.lapSensor.pos.x = this.startRoad.i;
+            this.lapSensor.pos.y = this.startRoad.j;
 
         } else if (this.selectedPista == 6) {
 
@@ -149,7 +149,7 @@ class Pista {
             this.anguloNascimento = radians(-90);
             this.backcolor = [52, 126, 163];
             this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
-            this.corDaPista = { r: 224, g: 225, b: 243 };
+            this.corDaPista = { r: 52, g: 126, b: 163 };
             this.lapSensor.pos.x = this.startRoad.i+10;
             this.lapSensor.pos.y = this.startRoad.j-10;
 
@@ -193,7 +193,7 @@ class Pista {
         this.reset();
         this.getSpriteFundo();
         // this.spritesheet.loadPixels();
-        console.log(this.spritesheet.width);
+        // console.log(this.spritesheet.width);
         genetic.firstGeneration();
 
         this.waveFronted = false;
