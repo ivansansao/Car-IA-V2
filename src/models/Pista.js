@@ -131,9 +131,9 @@ class Pista {
             this.ranhuras = getRanhuras5();
             this.pistaTimeOut = 20000;
             this.timeOutStopped = 100;
-            this.localNascimento = createVector(610, 450);
+            this.localNascimento = createVector(160, 770);
             this.anguloNascimento = radians(-90);
-            this.startRoad = { i: this.localNascimento.x+30, j: this.localNascimento.y, value: 0 };
+            this.startRoad = { i: 1750, j:79, value: 0 };
             this.corDaPista = { r: 255, g: 255, b: 255 };
             this.lapSensor.pos.x = this.startRoad.i;
             this.lapSensor.pos.y = this.startRoad.j;
@@ -1022,12 +1022,12 @@ function getRanhuras1() {
 
     const points = [];
 
-    points.push({ a: 1237, b: 284, c: 1364, d: 284, m: 0, t: 0 });
-    points.push({ a: 253, b: 63, c: 253, d: 143, m: 0, t: 0 });
-    points.push({ a: 440, b: 801, c: 440, d: 885, m: 0, t: 0 });
-    points.push({ a: 890, b: 570, c: 890, d: 648, m: 0, t: 0 });
-    points.push({ a: 1447, b: 809, c: 1447, d: 881, m: 0, t: 0 });
-    points.push({ a: 1708, b: 331, c: 1807, d: 331, m: 0, t: 0 });
+    // points.push({ a: 1237, b: 284, c: 1364, d: 284, m: 0, t: 0 });
+    // points.push({ a: 253, b: 63, c: 253, d: 143, m: 0, t: 0 });
+    // points.push({ a: 440, b: 801, c: 440, d: 885, m: 0, t: 0 });
+    // points.push({ a: 890, b: 570, c: 890, d: 648, m: 0, t: 0 });
+    // points.push({ a: 1447, b: 809, c: 1447, d: 881, m: 0, t: 0 });
+    // points.push({ a: 1708, b: 331, c: 1807, d: 331, m: 0, t: 0 });
     return points;
 
 }

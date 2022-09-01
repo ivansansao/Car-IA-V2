@@ -45,8 +45,7 @@ function keyPressed() {
         for (const car of cars) {
             car.showInfo = !car.showInfo;
         }
-    } else if (key == 'j') { // Freiadas na pista
-        world.showTrails = !world.showTrails;
+    } else if (key == 'j') {         
     } else if (key == 'k') { // Matar ao encontrar um melhor.
         world.killOnFindBetter = !world.killOnFindBetter;
         console.log(`Kill on find better ${world.killOnFindBetter}`);

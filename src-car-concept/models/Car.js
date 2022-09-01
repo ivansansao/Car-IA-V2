@@ -87,6 +87,7 @@ class Car {
         this.braking = true;
         if (this.speed > 0.0) {
             this.trail.push({ pos: this.pos.copy(), heading: this.heading });
+            this.drawTrailPg();
         }
 
     }
@@ -235,9 +236,6 @@ class Car {
     drawTrail() {
         if (this.trail.length > 0) {
 
-            strokeWeight(0);
-            fill(0, 0, 0, 20);
-            stroke(255);
             this.trail.forEach(element => {
                 // circle(element.pos.x - 4, element.pos.y - 4, 8);
                 // circle(element.pos.x + 4, element.pos.y + 4, 8);
@@ -249,7 +247,7 @@ class Car {
                 strokeWeight(0);
                 stroke(255);
 
-                fill(0, 0, 0, 20);
+                fill(200, 200, 0, 70);
                 square(-6, -12, 6, 1);
 
                 // fill(0, 0, 255, 20);
@@ -258,6 +256,31 @@ class Car {
 
             });
         }
+    }
+    drawTrailPg() {
+                
+        pg.push();
+
+        pg.translate(this.pos.x,this.pos.y);  
+        pg.rotate(this.heading);        
+        pg.strokeWeight(0);
+        pg.stroke(255);
+        pg.noStroke();
+        
+        pg.fill(50, 50, 50, 20);
+        // pg.square(-6, -12, 6, 10); // Left
+        // pg.square(-6, +6, 6, 10); // Right       
+        // pg.circle(-6, -12, 10); // Left
+        // pg.circle(-6, +6, 10); // Right
+               
+        pg.rect(-6, -12, 4, 2, 10); // Left
+        pg.rect(-6, -9, 4, 2, 10); // Left
+
+        pg.rect(-6, +10, 8, 2, 10); // Right
+        pg.rect(-6, +7, 8, 2, 10); // Right
+
+        pg.pop();
+
     }
 
     drawCar() {

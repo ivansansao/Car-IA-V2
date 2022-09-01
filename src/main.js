@@ -142,7 +142,7 @@ function draw() {
 
         for (const car of cars) {
 
-            if (!car.batido && abs(car.km) > 100) {
+            if (!car.batido && abs(car.aliveTime) > 400) {
 
                 const ptd = p5.Vector.fromAngle(car.heading + 90).mult(10).add(car.pos);
                 const pte = p5.Vector.fromAngle(car.heading - 90).mult(10).add(car.pos);
@@ -158,26 +158,7 @@ function draw() {
 
             }
         }
-    }
-
-    if (world.showTrails && world.hasTrailsToShow) {
-
-        let trailsDrawed = 0;
-
-        for (let i = cars.length - 1; i > 0; i--) {
-
-            const car = cars[i];
-
-            if (car.trail.length > 0) {
-                car.drawTrail();
-                if (trailsDrawed > 10) {
-                    break;
-                }
-                trailsDrawed++;
-            }
-        }
-
-    }
+    }   
 
     for (const car of cars) {
 
@@ -247,10 +228,6 @@ function draw() {
 
         } else if (showBatidos) {
             car.show();
-        }
-
-        if (car.trail.length) {
-            world.hasTrailsToShow = true;
         }
 
     }
@@ -349,7 +326,7 @@ function addMoreCar() {
 
         let child = new Car('m', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
-        child.ia.model.setWeights(weightCopies);
+        child.ia.model.setWeights(weightCopies);        
         child.mutate(Number(random(0.01, 0.05).toFixed(15)), random(1, 1));
         cars.unshift(child);
         vivos++

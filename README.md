@@ -28,7 +28,6 @@ f - Ativa o eliminador de veículo na ponta do mouse
 g - Mostra o fundo
 h - Mostrar/esconder detalhes dos carros
 i - Motra informações sobre o carro
-j - Mostra freiadas na pista
 k - Reiniciar caso na corrida atual tenha um recorde
 l - Mostra os limites da pista
 p - Pausa

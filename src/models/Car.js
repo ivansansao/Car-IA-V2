@@ -35,7 +35,6 @@ class Car {
         this.braking = false;
         this.acceleration = '';
         this.demo = new Demo();
-        this.trail = [];
         this.rays = [];
         this.showRays = false;
         this.lap = 1;
@@ -199,11 +198,6 @@ class Car {
         this.speed -= 0.04;
         if (this.speed < 0) {
             this.speed = 0;
-        }
-
-        if (this.speed > 1) {
-            // soundBrake.play();
-            this.trail.push({ pos: this.pos.copy(), heading: this.heading });
         }
 
         this.braking = true;
@@ -474,6 +468,11 @@ class Car {
             return false;
         }
 
+        if (this.braking && this.speed > 1) {
+            this.drawTrailPg();
+        }
+
+
         this.showInfoCar();
 
         if (this.batido) {
@@ -504,10 +503,10 @@ class Car {
 
         if (this.speed > 1 && this.volanteAngle != '') {
 
-            if (random(0,4) > 3) {
+            if (random(0, 4) > 3) {
                 pg.noStroke();
-                pg.fill(127,127,127,0.6);
-                pg.circle(this.pos.x, this.pos.y, random(18,22));
+                pg.fill(127, 127, 127, 0.6);
+                pg.circle(this.pos.x, this.pos.y, random(12, 22));
             }
         }
 
@@ -542,30 +541,42 @@ class Car {
         }
     }
 
-    drawTrail() {
-        if (this.trail.length > 0) {
+    drawTrailPg() {
+                
+        pg.push();
 
-            strokeWeight(0);
-            fill(0, 0, 0, 20);
-            stroke(255);
-            this.trail.forEach(element => {
-                push();
-                translate(element.pos.x, element.pos.y);
-                rotate(element.heading);
+        pg.translate(this.pos.x,this.pos.y);  
+        pg.rotate(this.heading);        
+        pg.strokeWeight(0);
+        pg.stroke(255);
 
-                strokeWeight(0);
-                stroke(255);
+        pg.fill(50, 50, 50, 20);
+        // pg.square(-6, -12, 6, 10); // Left
+        // pg.square(-6, +6, 6, 10); // Right
 
-                fill(0, 0, 0, 20);
-                square(-6, -12, 6, 10);
-                square(-6, +6, 6, 10);
-                // circle(-6, -12, 6);
-                // circle(-6, +6, 6);
+        // pg.circle(-6, -12, 10); // Left
+        // pg.circle(-6, +6, 10); // Right
 
-                pop();
-            });
-        }
+        // // pg.fill(0, 0, 200);
+        // pg.rect(-6, -12, 8, 1, 10); // Left
+        // // pg.fill(200, 0, 0);
+        // pg.rect(-6, -10, 8, 1, 10); // Left
+
+        // // pg.fill(0, 0, 200);
+        // pg.rect(-6, +11, 8, 1, 10); // Right
+        // // pg.fill(200, 0, 0);
+        // pg.rect(-6, +9, 8, 1, 10); // Right
+
+        pg.rect(-6, -12, 4, 2, 10); // Left
+        pg.rect(-6, -9, 4, 2, 10); // Left
+
+        pg.rect(-6, +10, 8, 2, 10); // Right
+        pg.rect(-6, +7, 8, 2, 10); // Right        
+
+        pg.pop();
+
     }
+
     onEachTime() {
 
         if (this.pos.x == this.lastPos.x && this.pos.y == this.lastPos.y) {
@@ -713,12 +724,12 @@ class Car {
         let mapRWeel
 
         if (this.volanteAngle == 'l') {
-            mapLWeel = map(this.speed, 0, 2, 0.65, 0.1);
-            mapRWeel = map(this.speed, 0, 2, 0.45, 0.0);
+            mapLWeel = map(this.speed, 0, 2, 0.55, 0.05);
+            mapRWeel = map(this.speed, 0, 2, 0.35, 0.01);
         }
         if (this.volanteAngle == 'r') {
-            mapLWeel = map(this.speed, 0, 2, 0.45, 0.0);
-            mapRWeel = map(this.speed, 0, 2, 0.65, 0.1);
+            mapLWeel = map(this.speed, 0, 2, 0.35, 0.01);
+            mapRWeel = map(this.speed, 0, 2, 0.55, 0.05);
         }
 
         if (this.volanteAngle == 'l') rotate(-mapLWeel);
