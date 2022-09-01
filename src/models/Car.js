@@ -39,6 +39,7 @@ class Car {
         this.showRays = false;
         this.lap = 1;
         this.engineSound = new EngineSound();
+        this.reasonRetirement = 0; // 0-Nothing 1-Crased 2-Out of trail
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -58,12 +59,18 @@ class Car {
     }
 
     setColor() {
-        if (this.isParent()) {
-            // this.cor = 'hsl(216, 100%, 50%)'; // Azul
+        if (this.ia.mutated == 0) {
             this.cor = 'rgb(255,255,255)';
         } else {
-            // this.cor = 'hsla(' + Math.floor(this.ia.mutated / 10 * 360) + ',100%,50%,0.3)';
-            this.cor = 'hsla(' + Math.floor(this.ia.mutated / 10 * 360) + ',100%,50%,1)';
+
+            let indexMut = this.ia.mutated;
+
+            if (indexMut > 20) indexMut = 20;
+
+            const indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
+
+            this.cor = 'hsla(' + indexColor + ',100%,50%,1)';
+
         }
     }
 
@@ -309,7 +316,14 @@ class Car {
             this.onEachTime();
         }
 
-
+        if (roads[this.pos.x]) {
+            if (roads[this.pos.x][this.pos.y] == -1) {
+                foo.speak('Carro vasou da pista');
+                console.log('Carro vasou da pista');
+                this.km = Infinity;
+                this.aposentar(2);
+            }
+        }
 
 
     }
@@ -425,7 +439,7 @@ class Car {
 
     }
 
-    aposentar() {
+    aposentar(reasonRetirement) {
 
         if (!this.batido) {
 
@@ -446,6 +460,7 @@ class Car {
             // }
 
             this.engineSound.stop();
+            this.reasonRetirement = reasonRetirement;
 
         }
     }
@@ -542,11 +557,11 @@ class Car {
     }
 
     drawTrailPg() {
-                
+
         pg.push();
 
-        pg.translate(this.pos.x,this.pos.y);  
-        pg.rotate(this.heading);        
+        pg.translate(this.pos.x, this.pos.y);
+        pg.rotate(this.heading);
         pg.strokeWeight(0);
         pg.stroke(255);
 

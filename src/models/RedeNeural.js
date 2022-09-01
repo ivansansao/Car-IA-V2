@@ -172,7 +172,7 @@ class RedeNeural {
                             // values[j] = w + random(-1,1);
                             this.mutated++;
                             if (this.mutatedNeurons != '') this.mutatedNeurons += ','
-                            this.mutatedNeurons += j
+                            this.mutatedNeurons += `${i}.${j}`
                         }
                     }
 
