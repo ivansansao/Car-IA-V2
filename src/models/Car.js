@@ -317,10 +317,14 @@ class Car {
         }
 
         if (roads[this.pos.x]) {
-            if (roads[this.pos.x][this.pos.y] == -1) {
-                foo.speak('Carro vasou da pista');
-                console.log('Carro vasou da pista');
+
+            const est = roads[this.pos.x][this.pos.y];
+
+            if (est == -1) {
+                foo.speak('Carro vazou da pista');
+                console.log('Carro vazou da pista');
                 this.km = Infinity;
+                this.lap = 1;
                 this.aposentar(2);
             }
         }

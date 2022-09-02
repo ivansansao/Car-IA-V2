@@ -327,10 +327,10 @@ function addMoreCar() {
         let child = new Car('m', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
-        if (frameCount % 3 == 0)
+        if (frameCount % 4 == 0)
             child.mutate(Number(random(0.01, 0.02).toFixed(15)), random(1, 1));
         else
-            child.mutate(Number(random(0.01, 0.5).toFixed(15)), random(1, 1));
+            child.mutate(Number(random(0.01, 0.6).toFixed(15)), random(1, 1));
         cars.unshift(child);
         vivos++
     }
