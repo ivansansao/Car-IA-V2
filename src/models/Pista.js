@@ -30,6 +30,11 @@ class Pista {
         this.make();
     }
 
+    setPistaTimeOut() {        
+        this.pistaTimeOut = this.trackSize*0.6 || this.pistaTimeOut;
+        this.pistaTimeOut = Number(this.pistaTimeOut.toFixed(0));
+    }
+
     setFlag(x, y, text) {
         this.recordFlag.setVisible(true);
         this.recordFlag.setPos(x, y);
@@ -44,13 +49,13 @@ class Pista {
 
         this.monsters.push(new Monster(1600, 130, -0.7, 0, 300, 50, true));
         this.monsters[0].ativo = false;
+        this.setPistaTimeOut();
 
         if (this.selectedPista == 1) {
 
             collideCars = false;
             wallsPista = getPista1();
-            this.ranhuras = getRanhuras1();
-            this.pistaTimeOut = this.trackSize || 8000;
+            this.ranhuras = getRanhuras1();            
             this.timeOutStopped = 100;
             // this.monsters.push(new Monster(1600, 130, -0.7, 0, 300, 150, false, true));
             // this.monsters.push(new Monster(1300, -200, 0, 1, 600, 150, false, true));
@@ -67,8 +72,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista2();
-            this.ranhuras = getRanhuras2();
-            this.pistaTimeOut = this.trackSize || 1800;
+            this.ranhuras = getRanhuras2();            
             this.timeOutStopped = 100;
             this.population = 20;
             // this.monsters.push(new Monster(1570, 120, 0, 0, this.pistaTimeOut, 100, false, true));
@@ -84,8 +88,7 @@ class Pista {
         } else if (this.selectedPista == 3) {
 
             collideCars = false;
-            wallsPista = getPista3();
-            this.pistaTimeOut = this.trackSize || 20000;
+            wallsPista = getPista3();            
             this.timeOutStopped = 100;
             this.localNascimento = createVector(400, 720);
             this.anguloNascimento = radians(0);
@@ -99,8 +102,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista4();
-            this.ranhuras = getRanhuras4();
-            this.pistaTimeOut = this.trackSize || 4000;
+            this.ranhuras = getRanhuras4();            
             this.timeOutStopped = 90;
             
             
@@ -129,8 +131,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista5();
-            this.ranhuras = getRanhuras5();
-            this.pistaTimeOut = this.trackSize || 20000;
+            this.ranhuras = getRanhuras5();            
             this.timeOutStopped = 100;
             this.localNascimento = createVector(160, 770);
             this.anguloNascimento = radians(-90);
@@ -143,8 +144,7 @@ class Pista {
 
             collideCars = true;
             wallsPista = getPista6();
-            this.ranhuras = getRanhuras6();
-            this.pistaTimeOut = this.trackSize || 5000;
+            this.ranhuras = getRanhuras6();            
             this.timeOutStopped = 100;
             this.localNascimento = createVector(-1, -1);
             this.anguloNascimento = radians(-90);

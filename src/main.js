@@ -92,7 +92,6 @@ function setup() {
 
     clear()
 
-
 }
 
 function draw() {
@@ -239,7 +238,7 @@ function draw() {
 
         if (getFrameRate() > 61 || vivos < 10) {
 
-            const perToEnd = 100-(timer/pista.pistaTimeOut*100)
+            const perToEnd = 100 - (timer / pista.pistaTimeOut * 100)
 
             if (perToEnd > 50) {
                 addMoreCar();
@@ -268,7 +267,7 @@ function draw() {
     fill(255);
     textSize(16);
     if (genetic.melhor) {
-        const percentComplete = 100-(genetic.melhor.km/pista.trackSize*100).toFixed(0);
+        const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
         text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Volta: ${genetic.melhor.lap} Record: ${genetic.melhor.km.toFixed(0)} km Completo: ${percentComplete}% Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
     }
 
@@ -423,7 +422,7 @@ function waveFront() {
     }
 
     pista.trackSize = value;
-    pista.pistaTimeOut = value;
+    pista.setPistaTimeOut();
 
 }
 function showCredits() {

@@ -151,7 +151,7 @@ class Car {
     }
 
     speedUp() {
-        this.speed += 0.005;
+        this.speed += 0.005;        
 
         if (this.gear == 1) {
             // Limita a velocidade pra frente em 2
