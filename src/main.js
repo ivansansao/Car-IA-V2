@@ -237,11 +237,11 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (vivos < 10 || getFrameRate() > 25) {
+        if (getFrameRate() > 61 || vivos < 10) {
 
             const perToEnd = 100-(timer/pista.pistaTimeOut*100)
 
-            if (perToEnd > 40) {
+            if (perToEnd > 50) {
                 addMoreCar();
             }
 
@@ -423,6 +423,7 @@ function waveFront() {
     }
 
     pista.trackSize = value;
+    pista.pistaTimeOut = value;
 
 }
 function showCredits() {
