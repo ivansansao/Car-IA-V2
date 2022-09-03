@@ -39,7 +39,7 @@ class Car {
         this.showRays = false;
         this.lap = 1;
         this.engineSound = new EngineSound();
-        this.reasonRetirement = 0; // 0-Nothing 1-Crased 2-Out of trail
+        this.reasonRetirement = 0; // 0-Nothing 1-Crased 2-Out of trail 3-Restart
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -743,12 +743,12 @@ class Car {
         let mapRWeel
 
         if (this.volanteAngle == 'l') {
-            mapLWeel = map(this.speed, 0, 2, 0.55, 0.05);
-            mapRWeel = map(this.speed, 0, 2, 0.35, 0.01);
+            mapLWeel = map(this.speed, 0, 2, 0.50, 0.02);
+            mapRWeel = map(this.speed, 0, 2, 0.25, 0.01);
         }
         if (this.volanteAngle == 'r') {
-            mapLWeel = map(this.speed, 0, 2, 0.35, 0.01);
-            mapRWeel = map(this.speed, 0, 2, 0.55, 0.05);
+            mapLWeel = map(this.speed, 0, 2, 0.25, 0.01);
+            mapRWeel = map(this.speed, 0, 2, 0.50, 0.02);
         }
 
         if (this.volanteAngle == 'l') rotate(-mapLWeel);

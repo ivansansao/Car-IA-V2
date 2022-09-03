@@ -239,7 +239,11 @@ function draw() {
 
         if (vivos < 10 || getFrameRate() > 25) {
 
-            addMoreCar();
+            const perToEnd = 100-(timer/pista.pistaTimeOut*100)
+
+            if (perToEnd > 40) {
+                addMoreCar();
+            }
 
         }
     }
@@ -264,7 +268,8 @@ function draw() {
     fill(255);
     textSize(16);
     if (genetic.melhor) {
-        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Record: ${genetic.melhor.km.toFixed(4)} Voltas: ${genetic.melhor.lap} Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
+        const percentComplete = 100-(genetic.melhor.km/pista.trackSize*100).toFixed(0);
+        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Volta: ${genetic.melhor.lap} Record: ${genetic.melhor.km.toFixed(0)} km Completo: ${percentComplete}% Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
     }
 
     if (genetic.melhorCorrente && nGeracao > 0) {
@@ -328,9 +333,9 @@ function addMoreCar() {
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
         if (frameCount % 4 == 0)
-            child.mutate(Number(random(0.01, 0.02).toFixed(15)), random(1, 1));
-        else
             child.mutate(Number(random(0.01, 0.6).toFixed(15)), random(1, 1));
+        else
+            child.mutate(Number(random(0.01, 0.015).toFixed(15)), random(1, 1));
         cars.unshift(child);
         vivos++
     }
@@ -416,6 +421,8 @@ function waveFront() {
         b = [];
 
     }
+
+    pista.trackSize = value;
 
 }
 function showCredits() {

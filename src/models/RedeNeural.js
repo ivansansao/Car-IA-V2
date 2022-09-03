@@ -89,12 +89,12 @@ class RedeNeural {
 
                         const j = pista.mutationCounter % 16;
                         const w = values[j];
-                        
+
                         values[j] = w + randomGaussian();
                         this.mutated++;
                         this.mutatedNeurons += j + ',';
                         pista.mutationCounter++;
-                        
+
                     }
 
                 }
@@ -132,7 +132,7 @@ class RedeNeural {
                         values[j] = w + randomGaussian();
                         this.mutated++;
                         this.mutatedNeurons += j + ',';
-                        
+
                     }
 
 
@@ -147,10 +147,81 @@ class RedeNeural {
         });
 
     }
-    mutate(rate, maxMutations = Infinity) {
+    mutate_normal(rate, maxMutations = Infinity) {
 
         maxMutations = Infinity;
 
+        tf.tidy(() => {
+
+            // maxMutations = Number(random(1,4).toFixed(0));
+
+            const weights = this.model.getWeights();
+            const mutatedWeights = [];
+
+            if (random(1) > 0.5) {
+
+                for (let i = 0; i < weights.length; i++) {
+
+                    let tensor = weights[i];
+                    let shape = weights[i].shape;
+                    let values = tensor.dataSync().slice();
+
+                    for (let j = 0; j < values.length; j++) {
+                        if (random(1) < rate) {
+                            if (this.mutated < maxMutations) {
+                                const w = values[j];
+                                values[j] = w + randomGaussian();
+                                // values[j] = w + random(-1,1);
+                                this.mutated++;
+                                if (this.mutatedNeurons != '') this.mutatedNeurons += ','
+                                this.mutatedNeurons += `${i}.${j}`
+                            }
+                        }
+
+                    }
+
+                    let newTensor = tf.tensor(values, shape);
+                    mutatedWeights[i] = newTensor;
+
+                }
+
+            } else {
+
+                for (let i = weights.length - 1; i > -1; i--) {
+
+                    let tensor = weights[i];
+                    let shape = weights[i].shape;
+                    let values = tensor.dataSync().slice();
+
+                    for (let j = values.length - 1; j > -1; j--) {
+                        if (random(1) < rate) {
+                            if (this.mutated < maxMutations) {
+                                const w = values[j];
+                                values[j] = w + randomGaussian();
+                                // values[j] = w + random(-1,1);
+                                this.mutated++;
+                                if (this.mutatedNeurons != '') this.mutatedNeurons += ','
+                                this.mutatedNeurons += `${i}.${j}`
+                            }
+                        }
+
+                    }
+
+                    let newTensor = tf.tensor(values, shape);
+                    mutatedWeights[i] = newTensor;
+
+                }
+
+            }
+            this.model.setWeights(mutatedWeights);
+
+        });
+
+    }
+    mutate(rate, maxMutations = Infinity) {
+
+        maxMutations = Infinity;
+        
         tf.tidy(() => {
 
             // maxMutations = Number(random(1,4).toFixed(0));
@@ -165,14 +236,18 @@ class RedeNeural {
                 let values = tensor.dataSync().slice();
 
                 for (let j = 0; j < values.length; j++) {
-                    if (random(1) < rate) { 
+                    if (random(1) < rate) {
                         if (this.mutated < maxMutations) {
-                            const w = values[j];
-                            values[j] = w + randomGaussian();
-                            // values[j] = w + random(-1,1);
-                            this.mutated++;
-                            if (this.mutatedNeurons != '') this.mutatedNeurons += ','
-                            this.mutatedNeurons += `${i}.${j}`
+
+                            const n = Number(random(0,values.length-1).toFixed(0));
+
+                            if (!this.mutatedNeurons.includes(`(${i}.${n})`)) {
+                                const w = values[n];
+                                values[n] = w + randomGaussian();
+                                this.mutated++;
+                                this.mutatedNeurons += `(${i}.${n})`
+                            }
+
                         }
                     }
 
@@ -181,9 +256,9 @@ class RedeNeural {
                 let newTensor = tf.tensor(values, shape);
                 mutatedWeights[i] = newTensor;
 
-
-
             }
+
+
             this.model.setWeights(mutatedWeights);
 
         });

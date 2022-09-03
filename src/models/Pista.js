@@ -25,6 +25,7 @@ class Pista {
         this.getSpriteFundo();
         this.pistaTimeOut = 20000;
         this.mutationCounter = 0;
+        this.trackSize = 0;
 
         this.make();
     }
