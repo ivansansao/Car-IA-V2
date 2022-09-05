@@ -487,7 +487,7 @@ class Car {
             return false;
         }
 
-        if (this.braking && this.speed > 1) {
+        if (this.braking && this.speed > 0.5) {
             this.drawTrailPg();
         }
 

@@ -18,12 +18,12 @@ function my() {
     return mouseY.toFixed(0)
 };
 
-function lineX(a,b,c,d, strokeColor, dotted = false) {
+function lineX(a, b, c, d, strokeColor, dotted = false) {
 
     if (dotted) drawingContext.setLineDash([5, 5]);
 
     stroke(strokeColor);
-    line(a,b,c,d);
+    line(a, b, c, d);
 
     if (dotted) drawingContext.setLineDash([]);
 }
@@ -84,4 +84,14 @@ function circRect(cx, cy, rad, rx, ry, rw, rh) {
 
     return d <= rad;
 
+}
+
+function addZero(i) {
+    if (i < 10) { i = "0" + i }
+    return i;
+}
+
+function getHourMin() {
+    const date = new Date();            
+    return addZero(date.getHours())+':'+addZero(date.getMinutes());
 }

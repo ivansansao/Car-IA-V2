@@ -290,7 +290,7 @@ class RedeNeural {
                 return pesos;
             } else {
                 console.log(pesos);  // sValues for setWeightsFromString
-                console.log(shapes); // sShapes for setWeightsFromString
+                // console.log(shapes); // sShapes for setWeightsFromString
             }
 
         });
