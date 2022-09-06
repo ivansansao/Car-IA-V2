@@ -9,7 +9,7 @@ class Pista {
         this.walls = [];
         this.showWalls = true;
         this.ranhuras = [];
-        this.selectedPista = 3;
+        this.selectedPista = 4;
         this.spritesheet = null;
         this.spriteRip = null;
         this.monsters = [];
@@ -114,6 +114,7 @@ class Pista {
             this.lapSensor.pos.x = 1153;
             this.lapSensor.pos.y = 233;
             this.lapSensor.width = 6;
+            this.lapSensor.height = 80;
 
         } else if (this.selectedPista == 4) {
 
