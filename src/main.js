@@ -231,8 +231,8 @@ function draw() {
 
     }
 
-    pista.monstersUpdate();
-    pista.monstersShow();
+    // pista.monstersUpdate();
+    // pista.monstersShow();
 
     if (vivos < maxCar) {
 

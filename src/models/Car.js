@@ -322,7 +322,7 @@ class Car {
 
             if (est == -1) {
                 foo.speak('Carro vazou da pista');
-                console.log('Carro vazou da pista');
+                console.log(`Carro '${this.marca}' vazou da pista`);
                 this.km = Infinity;
                 this.lap = 1;
                 this.aposentar(2);

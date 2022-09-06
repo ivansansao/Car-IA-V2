@@ -55,6 +55,18 @@ class Pista {
         this.monsters[0].ativo = false;
         this.setPistaTimeOut();
 
+
+        // // Track map.
+        // this.spritesheet.loadPixels();
+        // while (this.spritesheet.width > 1) {}
+        // console.log(this.selectedPista)
+        // console.log(this.spritesheet)
+        // console.log(this.spritesheet.width)
+        // console.log(this.spritesheet.height)
+        // console.log(this.spritesheet)
+        // makeMatrixRoads();
+        // waveFront();
+
         if (this.selectedPista == 1) {
 
             collideCars = false;
