@@ -264,11 +264,12 @@ function draw() {
     }
 
     noStroke();
-    fill(255);
+
+    fill(pista.textBackColor);
     textSize(16);
     if (genetic.melhor) {
         const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-        text(`Vivos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Volta: ${genetic.melhor.lap} Record: ${genetic.melhor.km.toFixed(0)} km Completo: ${percentComplete}% Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
+        text(`Ativos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Volta: ${genetic.melhor.lap} Record: ${genetic.melhor.km.toFixed(0)} km Completo: ${percentComplete}% Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
     }
 
     if (genetic.melhorCorrente && nGeracao > 0) {

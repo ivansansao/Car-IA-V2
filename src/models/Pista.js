@@ -29,6 +29,8 @@ class Pista {
         this.mutationCounter = 0;
         this.trackSize = 0;
 
+        this.textBackColor = [255,255,255];
+
         this.make();
     }
 
@@ -94,7 +96,7 @@ class Pista {
             this.timeOutStopped = 100;
             this.localNascimento = createVector(1140, 280);
             this.anguloNascimento = radians(180);
-            this.backcolor = ['#99d45a'];
+            this.backcolor = [154,179,161];
             this.startRoad = { i: 1192, j: 280, value: 0 };
             this.corDaPista = { r: 202, g: 202, b: 202 };
             this.lapSensor.pos.x = 1153;
@@ -167,6 +169,8 @@ class Pista {
         }
 
         timer = 0;
+
+        this.textBackColor = oppositeBright(this.backcolor)
 
     }
 

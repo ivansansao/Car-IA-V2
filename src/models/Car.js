@@ -586,8 +586,8 @@ class Car {
         // // pg.fill(200, 0, 0);
         // pg.rect(-6, +9, 8, 1, 10); // Right
 
-        pg.rect(-6, -12, 4, 2, 10); // Left
-        pg.rect(-6, -9, 4, 2, 10); // Left
+        pg.rect(-6, -12, 8, 2, 10); // Left
+        pg.rect(-6, -9, 8, 2, 10); // Left
 
         pg.rect(-6, +10, 8, 2, 10); // Right
         pg.rect(-6, +7, 8, 2, 10); // Right        

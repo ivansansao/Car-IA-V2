@@ -92,6 +92,29 @@ function addZero(i) {
 }
 
 function getHourMin() {
-    const date = new Date();            
-    return addZero(date.getHours())+':'+addZero(date.getMinutes());
+    const date = new Date();
+    return addZero(date.getHours()) + ':' + addZero(date.getMinutes());
+}
+
+function oppositeBright(color) {
+
+    const rgb = (typeof color === 'string') ? hexToRGBArray(color) : color;
+
+    const av = rgb.reduce((a, b) => a + b, 0) / 3;
+
+    return av > 125 ? 0 : 255;
+
+}
+
+function hexToRGBArray(color) {
+    
+    if (color.length === 3)
+        color = color.charAt(0) + color.charAt(0) + color.charAt(1) + color.charAt(1) + color.charAt(2) + color.charAt(2);
+    else if (color.length !== 6)
+        throw ('Invalid hex color: ' + color);
+    let rgb = [];
+    for (var i = 0; i <= 2; i++)
+        rgb[i] = parseInt(color.substr(i * 2, 2), 16);
+    return rgb;
+
 }
