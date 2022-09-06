@@ -1,37 +1,37 @@
-Clone ou baixe esse repositório e execute o arquivo src/index.html no seu navegador.
-Pressione 'c' para trocar de pista, F12 vai mostrar algumas infos!
+Clone or download this repository and run the src/index.html file in your browser.
+Press 'c' to change lanes, F12 will show some info!
 
-IA dirigindo, veja abaixo prints com e sem os sensores.
+This project uses Google TensorFlow for the car's neural network.
 
-O algorítmo genético seleciona o primeiro colocado, clona para gerar a próxima geração além de manter o seu superior e adicionar um novo aleatório.
+The genetic algorithm selects the first one, clones it to generate the next generation in addition to keeping its superior and adding a new random one.
 
-Pista 3 com informações sobre os carros
-![Alt text](src/assets/p3-infocar.png?raw=true "Print da pista")
+Track 3 with information about the cars
+![Alt text](src/assets/p3-infocar.png?raw=true "track print")
 
-Pista 3 mapa térmico da pista
-![Alt text](src/assets/p3-thermalmap.png?raw=true "Print da pista")
+Track 3 runway heatmap
+![Alt text](src/assets/p3-thermalmap.png?raw=true "track print")
 
-Teclas de comandos:
+Command keys:
 
-b - Para de renderizar os carros para melhorar performance do treino
-c - Troca de pista
-e - Ativa/destiva elitismo
-f - Ativa o eliminador de veículo na ponta do mouse
-g - Mostra o fundo
-h - Mostrar/esconder detalhes dos carros
-i - Mostra informações sobre o carro
-j - Mostra o mapa térmico da pista
-k - Reiniciar caso na corrida atual tenha um recorde
-l - Mostra os limites da pista
-p - Pausa
-m - Elimina todos os veículos
+b - Stop rendering cars to improve training performance
+c - Change lane
+e - Enables/disables elitism
+f - Activates the vehicle eliminator at the mouse tip
+g - Shows the background
+h - Show/hide car details
+i - Shows information about the car
+j - Shows the heat map of the track
+k - Reset if the current race has a record
+l - Shows the limits of the track
+p - Pause
+m - Deletes all vehicles
 n - Show flag
-o - Ativa colisão entre os carros
-q - Inicar usando os pesos salvos ou não
-r - Mostra uma lista de ranhuras da pista
-s - Mostrar sensores
-t - Pára o 'timer'
-w - Alternar mostragem das ranhuras
-x - Mostra veículos batidos
-y - Ativa/desativa som do motor
-z - Luzes
+o - Activates collision between cars
+q - Start using saved weights or not
+r - Shows a list of track slots
+s - Show sensors
+t - Stop the 'timer'
+w - Toggle slot display
+x - Shows crashed vehicles
+y - Enables/disables engine sound
+z - lights
