@@ -36,4 +36,4 @@ t   | Stop the 'timer'
 w   | Toggle slot display
 x   | Shows crashed vehicles
 y   | Enables/disables engine sound
-z   | lights
+z   | Lights
