@@ -20,18 +20,18 @@ c   | Change lane
 e   | Enables/disables elitism
 f   | Activates the vehicle eliminator at the mouse tip
 g   | Shows the background
-h   | Show/hide car details
+h   | Shows car details
 i   | Shows information about the car
 j   | Shows the heat map of the track
 k   | Reset if the current race has a record
 l   | Shows the limits of the track
-p   | Pause
 m   | Deletes all vehicles
 n   | Show flag
 o   | Activates collision between cars
+p   | Pause
 q   | Start using saved weights or not
 r   | Shows a list of track slots
-s   | Show sensors
+s   | Shows sensors
 t   | Stop the 'timer'
 w   | Toggle slot display
 x   | Shows crashed vehicles
