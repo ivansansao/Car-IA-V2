@@ -1,6 +1,8 @@
 /* 
   https://github.com/davenewt/p5-asteroids/blob/master/ship.js
 
+  https://docs.pipz.com/central-de-ajuda/learning-center/guia-basico-de-markdown#open
+
   Colisão Line Line: https://editor.p5js.org/simontiger/sketches/S1kfupErZ
 
   Collide2D Methods: https://github.com/bmoren/p5.collide2D
