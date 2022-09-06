@@ -13,10 +13,8 @@ Pista 3 mapa térmico da pista
 
 Teclas de comandos:
 
-a - Mostra uma circuferência na ponta do mouse que elimina veículos
-b - Freiar
+b - Para de renderizar os carros para melhorar performance do treino
 c - Troca de pista
-d - Marcha dinâmica
 e - Ativa/destiva elitismo
 f - Ativa o eliminador de veículo na ponta do mouse
 g - Mostra o fundo
@@ -33,8 +31,7 @@ q - Inicar usando os pesos salvos ou não
 r - Mostra uma lista de ranhuras da pista
 s - Mostrar sensores
 t - Pára o 'timer'
-u - Mostra coordenas no ponteiro do mouse
 w - Alternar mostragem das ranhuras
 x - Mostra veículos batidos
-y - Ativa/desativa som
+y - Ativa/desativa som do motor
 z - Luzes

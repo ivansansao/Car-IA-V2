@@ -16,12 +16,7 @@ function keyPressed() {
         engine.setFrequency(60);
     }
 
-    if (key == 'a') { // Mostrar sensores
-        for (const monster of pista.monsters) {
-            if (!monster.useMouse) {
-                monster.ativo = !monster.ativo;
-            }
-        }
+    if (key == 'a') {       
     } else if (key == 'b') {
         world.showCars = !world.showCars;
     } else if (key == 'c') { // Change pista.        
