@@ -5,29 +5,24 @@ IA dirigindo, veja abaixo prints com e sem os sensores.
 
 O algorítmo genético seleciona o primeiro colocado, clona para gerar a próxima geração além de manter o seu superior e adicionar um novo aleatório.
 
-[Clique aqui para assistir no YouTube](https://youtu.be/-AE7YnHMn9E)
+Pista 3 com informações sobre os carros
+![Alt text](src/assets/p3-infocar.png?raw=true "Print da pista")
 
-
-Print - Pista mais difícil.
-![Alt text](src/assets/asset3.png?raw=true "Print da pista")
-
-Print - Nesse print um carro pode enxergar o outro.
-![Alt text](src/assets/asset4.png?raw=true "Print da pista")
-
-Print - Pista mais fácil.
-![Alt text](src/assets/asset1.png?raw=true "Print da pista")
+Pista 3 mapa térmico da pista
+![Alt text](src/assets/p3-thermalmap.png?raw=true "Print da pista")
 
 Teclas de comandos:
 
-a - Mostra uma circuferência que elimina veículos
-b - Freiar (Brake)
+a - Mostra uma circuferência na ponta do mouse que elimina veículos
+b - Freiar
 c - Troca de pista
 d - Marcha dinâmica
 e - Ativa/destiva elitismo
 f - Ativa o eliminador de veículo na ponta do mouse
 g - Mostra o fundo
 h - Mostrar/esconder detalhes dos carros
-i - Motra informações sobre o carro
+i - Mostra informações sobre o carro
+j - Mostra o mapa térmico da pista
 k - Reiniciar caso na corrida atual tenha um recorde
 l - Mostra os limites da pista
 p - Pausa

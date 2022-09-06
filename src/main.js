@@ -96,11 +96,14 @@ function setup() {
 
 function draw() {
 
+    if (pista.spriteLoaded == false) {
+        console.log('Carregando game...')
+        return;
+    }
+ 
 
     background(pista.backcolor);
     handleKeyIsDown();
-
-
 
     if (timerOn) {
         timer++;
@@ -113,27 +116,10 @@ function draw() {
         }
     }
 
-    // pg.background(255, 255, 255, 0);
-
     image(pg, 0, 0);
 
     pista.show();
     showCredits();
-
-
-    if (!pista.waveFronted) {
-
-        if (pista.spritesheet?.width > 1) {
-            pista.waveFronted = true;
-
-            pista.spritesheet.loadPixels();
-            // console.log(pista.spritesheet.width)
-            // console.log(pista.spritesheet.height)
-            makeMatrixRoads();
-            waveFront();
-        }
-    }
-
 
     const wallsAndCars = [...pista.walls];
 
@@ -341,91 +327,7 @@ function addMoreCar() {
     }
 }
 
-function makeMatrixRoads() {
 
-    let pixelIndex, r, g, b;
-    roads = [];
-
-    for (let i = 0; i < pista.spritesheet.width; i++) {
-
-        roads[i] = [];
-        for (let j = 0; j < pista.spritesheet.height; j++) {
-
-            pixelIndex = (i + j * pista.spritesheet.width) * 4;
-            r = pista.spritesheet.pixels[pixelIndex + 0];
-            g = pista.spritesheet.pixels[pixelIndex + 1];
-            b = pista.spritesheet.pixels[pixelIndex + 2];
-
-            if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
-                roads[i][j] = 0;
-            } else {
-                roads[i][j] = -1;
-            }
-
-        }
-    }
-
-}
-
-function waveFront() {
-
-    let a = [pista.startRoad];
-    let b = [];
-
-    let value;
-    let i;
-    let j;
-
-    while (a.length > 0) {
-
-        for (let x = 0; x < a.length; x++) {
-
-            value = a[x].value + 1;
-
-            i = a[x].i;
-            j = a[x].j + 1;
-            if (roads[i] !== undefined && roads[i][j] == 0) {
-                // Discovery new node.
-                roads[i][j] = value;
-                b.push({ i: i, j: j, value: value });
-            }
-
-            i = a[x].i + 1;
-            j = a[x].j;
-
-            if (roads[i] !== undefined && roads[i][j] == 0) {
-                // Discovery new node.
-                roads[i][j] = value;
-                b.push({ i: i, j: j, value: value });
-            }
-
-            i = a[x].i;
-            j = a[x].j - 1;
-            if (roads[i] !== undefined && roads[i][j] == 0) {
-                // Discovery new node.
-                roads[i][j] = value;
-                b.push({ i: i, j: j, value: value });
-            }
-
-            i = a[x].i - 1;
-            j = a[x].j;
-            if (roads[i] !== undefined && roads[i][j] == 0) {
-                // Discovery new node.
-                roads[i][j] = value;
-                b.push({ i: i, j: j, value: value });
-            }
-
-        }
-
-        a = [...b];
-        b = [];
-
-    }
-
-    pista.trackSize = value;
-    pista.setPistaTimeOut();
-
-}
 function showCredits() {
 
     if (pista.selectedPista == 4) {

@@ -1,3 +1,4 @@
 function getSpriteFundo6() {
-    return loadImage('data:image/png;base64');
+    return spriteLoaded();
+    // return loadImage('',spriteLoaded);
 }

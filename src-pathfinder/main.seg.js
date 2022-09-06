@@ -93,6 +93,7 @@ function setup() {
 
 }
 let roads = [];
+
 function draw() {
 
     background(255);

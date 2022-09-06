@@ -22,20 +22,22 @@ class Pista {
         this.population = 25;
         this.timeOutStopped = 100;
         this.backcolor = [68, 170, 0];
-        
+
         this.lapSensor = new LapSensor();
         this.getSpriteFundo();
         this.pistaTimeOut = 20000;
         this.mutationCounter = 0;
         this.trackSize = 0;
 
-        this.textBackColor = [255,255,255];
+        this.textBackColor = [255, 255, 255];
+        this.spriteLoaded = false;
 
         this.make();
+
     }
 
-    setPistaTimeOut() {        
-        this.pistaTimeOut = this.trackSize*0.6 || this.pistaTimeOut;
+    setPistaTimeOut() {
+        this.pistaTimeOut = this.trackSize * 0.6 || this.pistaTimeOut;
         this.pistaTimeOut = Number(this.pistaTimeOut.toFixed(0));
     }
 
@@ -71,7 +73,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista1();
-            this.ranhuras = getRanhuras1();            
+            this.ranhuras = getRanhuras1();
             this.timeOutStopped = 100;
             // this.monsters.push(new Monster(1600, 130, -0.7, 0, 300, 150, false, true));
             // this.monsters.push(new Monster(1300, -200, 0, 1, 600, 150, false, true));
@@ -79,16 +81,16 @@ class Pista {
             this.anguloNascimento = radians(180);
             this.startRoad = { i: 1532, j: 135, value: 0 };
             this.corDaPista = { r: 204, g: 204, b: 204 };
-            this.lapSensor.pos.x = this.startRoad.i-15;
-            this.lapSensor.pos.y = this.startRoad.j-65;
+            this.lapSensor.pos.x = this.startRoad.i - 15;
+            this.lapSensor.pos.y = this.startRoad.j - 65;
             this.lapSensor.height = 135;
-            
-            
+
+
         } else if (this.selectedPista == 2) {
 
             collideCars = false;
             wallsPista = getPista2();
-            this.ranhuras = getRanhuras2();            
+            this.ranhuras = getRanhuras2();
             this.timeOutStopped = 100;
             this.population = 20;
             // this.monsters.push(new Monster(1570, 120, 0, 0, this.pistaTimeOut, 100, false, true));
@@ -97,18 +99,18 @@ class Pista {
             this.anguloNascimento = radians(180);
             this.startRoad = { i: 1579, j: 140, value: 0 };
             this.corDaPista = { r: 191, g: 191, b: 191 };
-            this.lapSensor.pos.x = this.startRoad.i-10;
-            this.lapSensor.pos.y = this.startRoad.j-85;
+            this.lapSensor.pos.x = this.startRoad.i - 10;
+            this.lapSensor.pos.y = this.startRoad.j - 85;
             this.lapSensor.height = 170;
-            
+
         } else if (this.selectedPista == 3) {
 
             collideCars = false;
-            wallsPista = getPista3();            
+            wallsPista = getPista3();
             this.timeOutStopped = 100;
             this.localNascimento = createVector(1140, 280);
             this.anguloNascimento = radians(180);
-            this.backcolor = [154,179,161];
+            this.backcolor = [154, 179, 161];
             this.startRoad = { i: 1192, j: 280, value: 0 };
             this.corDaPista = { r: 202, g: 202, b: 202 };
             this.lapSensor.pos.x = 1153;
@@ -120,10 +122,10 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista4();
-            this.ranhuras = getRanhuras4();            
+            this.ranhuras = getRanhuras4();
             this.timeOutStopped = 90;
-            
-            
+
+
             if (random(1) > 0.5 || true) {
                 this.localNascimento = createVector(400, 65);
                 this.anguloNascimento = radians(180);
@@ -140,8 +142,8 @@ class Pista {
 
             this.startRoad = { i: 453, j: 66, value: 0 };
             this.corDaPista = { r: 224, g: 225, b: 243 };
-            this.lapSensor.pos.x = this.startRoad.i-15;
-            this.lapSensor.pos.y = this.startRoad.j-38;
+            this.lapSensor.pos.x = this.startRoad.i - 15;
+            this.lapSensor.pos.y = this.startRoad.j - 38;
             this.lapSensor.width = 10;
             this.lapSensor.height = 71;
 
@@ -149,11 +151,11 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista5();
-            this.ranhuras = getRanhuras5();            
+            this.ranhuras = getRanhuras5();
             this.timeOutStopped = 100;
             this.localNascimento = createVector(160, 770);
             this.anguloNascimento = radians(-90);
-            this.startRoad = { i: 1750, j:79, value: 0 };
+            this.startRoad = { i: 1750, j: 79, value: 0 };
             this.corDaPista = { r: 255, g: 255, b: 255 };
             this.lapSensor.pos.x = this.startRoad.i;
             this.lapSensor.pos.y = this.startRoad.j;
@@ -162,15 +164,15 @@ class Pista {
 
             collideCars = true;
             wallsPista = getPista6();
-            this.ranhuras = getRanhuras6();            
+            this.ranhuras = getRanhuras6();
             this.timeOutStopped = 1000;
             this.localNascimento = createVector(-1, -1);
             this.anguloNascimento = radians(-90);
             this.backcolor = [52, 126, 163];
             this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
             this.corDaPista = { r: 52, g: 126, b: 163 };
-            this.lapSensor.pos.x = this.startRoad.i+10;
-            this.lapSensor.pos.y = this.startRoad.j-10;
+            this.lapSensor.pos.x = this.startRoad.i + 10;
+            this.lapSensor.pos.y = this.startRoad.j - 10;
 
         }
 
@@ -199,11 +201,14 @@ class Pista {
         } else if (this.selectedPista == 5) {
             this.spritesheet = getSpriteFundo5();
         } else if (this.selectedPista == 6) {
-            this.spritesheet = null;
+            this.spritesheet = getSpriteFundo6();
         }
         this.spriteRip = getSpriteRip1();
     }
-    togglePista() {        
+    togglePista() {
+
+        this.spriteLoaded = false;
+        this.waveFronted = false;
 
         if (this.selectedPista == 6) {
             this.selectedPista = 1;
@@ -213,11 +218,8 @@ class Pista {
 
         this.reset();
         this.getSpriteFundo();
-        // this.spritesheet.loadPixels();
-        // console.log(this.spritesheet.width);
         genetic.firstGeneration();
 
-        this.waveFronted = false;
 
 
     }
@@ -1414,4 +1416,147 @@ function getRanhuras6() {
 
     return points;
 
+}
+/**
+ * When loadImage is done it trigger this function below.
+ */
+function spriteLoaded() {
+
+    if (pista.spritesheet !== undefined) {
+        pista.spritesheet.loadPixels();
+        makeMatrixRoads();
+        waveFront();
+        // showRoads(funShowRoads);        
+    }
+
+    pista.waveFronted = true;
+    pista.spriteLoaded = true;
+
+}
+
+function funShowRoads(i, j, e) {
+
+    if (e > 0) {
+
+        // const mapX = map(roads[i][j], pista.trackSize, 0, 0, 255);
+        const mapX = Math.floor(map(roads[i][j], pista.trackSize, 0, 0, 250));
+        const cor = 'hsla(' + mapX + ',100%,50%,0.8)';
+
+
+        pg.fill(cor)
+
+        const oi = (i * 1)
+        const oj = (j * 1)
+        pg.circle(i, j, 1);
+
+    }
+
+
+}
+
+function makeMatrixRoads() {
+
+    let pixelIndex, r, g, b;
+    roads = [];
+
+    for (let i = 0; i < pista.spritesheet.width; i++) {
+
+        roads[i] = [];
+        for (let j = 0; j < pista.spritesheet.height; j++) {
+
+            pixelIndex = (i + j * pista.spritesheet.width) * 4;
+            r = pista.spritesheet.pixels[pixelIndex + 0];
+            g = pista.spritesheet.pixels[pixelIndex + 1];
+            b = pista.spritesheet.pixels[pixelIndex + 2];
+
+            if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
+                roads[i][j] = 0;
+            } else {
+                roads[i][j] = -1;
+            }
+
+        }
+
+    }
+
+}
+
+function waveFront() {
+
+    let a = [pista.startRoad];
+    let b = [];
+
+    let value;
+    let i;
+    let j;
+
+    while (a.length > 0) {
+
+        for (let x = 0; x < a.length; x++) {
+
+            value = a[x].value + 1;
+
+            i = a[x].i;
+            j = a[x].j + 1;
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i + 1;
+            j = a[x].j;
+
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i;
+            j = a[x].j - 1;
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+            i = a[x].i - 1;
+            j = a[x].j;
+            if (roads[i] !== undefined && roads[i][j] == 0) {
+                // Discovery new node.
+                roads[i][j] = value;
+                b.push({ i: i, j: j, value: value });
+            }
+
+        }
+
+        a = [...b];
+        b = [];
+
+    }
+
+    pista.trackSize = value;
+    pista.setPistaTimeOut();
+
+    console.log('Fronted..')
+
+}
+
+
+function showRoads(myFunc) {
+
+    // Esta função é lenta.
+
+    console.log("Showing track thermal map...")
+
+    pg.noStroke();
+
+    roads.forEach((subArray, i) => {
+        subArray.forEach((e, j) => {
+            myFunc(i, j, e)
+        })
+    });
+
+    console.log("done")
 }
