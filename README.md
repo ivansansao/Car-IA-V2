@@ -8,6 +8,12 @@ The genetic algorithm selects the first one, clones it to generate the next gene
 Sensors
 ![Alt Text](src/assets/p3-sensor.gif)
 
+Start runway
+![Alt Text](src/assets/p3-start.gif)
+
+Start braking
+![Alt Text](src/assets/p3-braking.gif)
+
 Track 3 with information about the cars
 ![Alt text](src/assets/p3-infocar.png?raw=true "track print")
 
