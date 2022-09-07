@@ -11,7 +11,7 @@ Sensors
 Start runway
 ![Alt Text](src/assets/p3-start.gif)
 
-Start braking
+Braking
 ![Alt Text](src/assets/p3-braking.gif)
 
 Track 3 with information about the cars
