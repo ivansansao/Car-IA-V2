@@ -5,6 +5,9 @@ This project uses Google TensorFlow for the car's neural network.
 
 The genetic algorithm selects the first one, clones it to generate the next generation in addition to keeping its superior and adding a new random one.
 
+Sensors
+![Alt Text](src/assets/p3-sensor.gif)
+
 Track 3 with information about the cars
 ![Alt text](src/assets/p3-infocar.png?raw=true "track print")
 
