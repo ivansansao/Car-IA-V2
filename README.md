@@ -14,6 +14,9 @@ Start runway
 Braking
 ![Alt Text](src/assets/p3-braking.gif)
 
+Heat map
+![Alt Text](src/assets/p3-heatmap.gif)
+
 Track 3 with information about the cars
 ![Alt text](src/assets/p3-infocar.png?raw=true "track print")
 
