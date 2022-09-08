@@ -37,7 +37,7 @@ class Pista {
     }
 
     setPistaTimeOut() {
-        this.pistaTimeOut = this.trackSize * 0.6 || this.pistaTimeOut;
+        this.pistaTimeOut = this.trackSize || this.pistaTimeOut;
         this.pistaTimeOut = Number(this.pistaTimeOut.toFixed(0));
     }
 
