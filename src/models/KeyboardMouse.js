@@ -16,7 +16,9 @@ function keyPressed() {
         engine.setFrequency(60);
     }
 
-    if (key == 'a') {       
+    if (key == 'a') {    
+        world.endsWhenFinishLine = !world.endsWhenFinishLine;
+        console.log(`Ends when hit finish line: ${world.endsWhenFinishLine}`);           
     } else if (key == 'b') {
         world.showCars = !world.showCars;
     } else if (key == 'c') { // Change pista.        

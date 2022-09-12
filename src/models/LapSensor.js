@@ -9,4 +9,6 @@ class LapSensor {
         fill(120)
         rect(this.pos.x, this.pos.y, this.width, this.height)
     }
+
 }
+

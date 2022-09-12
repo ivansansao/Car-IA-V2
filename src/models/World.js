@@ -8,6 +8,7 @@ class World {
         this.killOnFindBetter = false;
         this.startWeightSaved = true;
         this.engineSound = false;
+        this.endsWhenFinishLine = false;
 
     }
 }

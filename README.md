@@ -27,8 +27,9 @@ Command keys:
 
 Key | Action
 ----|-----------------
+a   | Ends generation when hit finish line
 b   | Stop rendering cars to improve training performance
-c   | Change lane
+c   | Change track layout
 e   | Enables/disables elitism
 f   | Activates the vehicle eliminator at the mouse tip
 g   | Shows the background

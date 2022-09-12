@@ -102,7 +102,7 @@ function draw() {
         console.log('Carregando game...')
         return;
     }
- 
+
 
     background(pista.backcolor);
     handleKeyIsDown();
@@ -299,10 +299,22 @@ function ShowMousePoint() {
             est = roads[mx][my];
         }
 
-        stroke(0)
-        strokeWeight(1);
+        
+        let px = mx;
+        let py = my;
+        
+        px = (mx > (windowWidth / 2)) ? mx - 200 : mx + 30
+        py = (my > (windowHeight / 2)) ? my - 20 : my + 30
+        
+        stroke(200)
+        strokeWeight(0);
         fill(255);
-        text(`(${mouseX},${mouseY}) km: ${est}`, mx - 80, my);
+        rect(px-4,py-20,180,28);
+        fill(50,50,255);
+        strokeWeight(0);
+        textStyle('bold')
+        text(`(${mouseX},${mouseY}) km: ${est}`, px, py);
+        textStyle('normal')
         // text(`${mx}, ${my} (km: ${est})`, mx - 80, my);
     }
 }

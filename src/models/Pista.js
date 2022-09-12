@@ -153,9 +153,9 @@ class Pista {
             wallsPista = getPista5();
             this.ranhuras = getRanhuras5();
             this.timeOutStopped = 100;
-            this.localNascimento = createVector(160, 770);
-            this.anguloNascimento = radians(-90);
-            this.startRoad = { i: 1750, j: 79, value: 0 };
+            this.localNascimento = createVector(1530, 372);
+            this.anguloNascimento = radians(90);
+            this.startRoad = { i: 490, j: 259, value: 0 };
             this.corDaPista = { r: 255, g: 255, b: 255 };
             this.lapSensor.pos.x = this.startRoad.i;
             this.lapSensor.pos.y = this.startRoad.j;

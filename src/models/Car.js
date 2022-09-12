@@ -92,10 +92,19 @@ class Car {
             8 - Vai pra esquerda
             */
 
-
             let resposta = this.ia.pensar(inputs);
             let maiorI;
             let maiorR;
+
+            // Defines the gear.
+
+            if (resposta[4] < resposta[5]) {
+                this.engageDinamic(); // Marcha D
+            } else if (resposta[4] > resposta[5]) {
+                this.engageReverse(); // Marcha R
+            }
+
+            // Defines the speed.
 
             maiorI = 0;
             maiorR = -Infinity;
@@ -117,12 +126,7 @@ class Car {
                 this.speedNoAction();
             }
 
-
-            if (resposta[4] > resposta[5]) {
-                this.engageDinamic(); // Marcha D
-            } else {
-                this.engageReverse(); // Marcha R
-            }
+            // Defines the direction.
 
             maiorI = 0;
             maiorR = -Infinity;
@@ -141,7 +145,9 @@ class Car {
                 this.vaiPraEsquerda();
             }
 
-            this.ia.selectedOutput = maiorI;
+            // End
+
+            // this.ia.selectedOutput = maiorI;
 
         }
     }
@@ -679,7 +685,12 @@ class Car {
     }
     lapSensorEntry(hr) {
         if (hr) {
-            this.lap++;
+            this.lap++;            
+            if (this.lap > 0) {
+                if (world.endsWhenFinishLine) {
+                    genetic.nextGeneration();
+                }
+            }
         } else {
             this.aposentar();
         }
