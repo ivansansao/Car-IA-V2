@@ -1,12 +1,17 @@
 let sensors = [];
-let bird;
+let birds = [];
 
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
-    sensors.push(new LapSensor('start', 200, 40, onHitSensor));
-    // sensors.push(new LapSensor('timeline', 100, 80, onHitSensor));
-    bird = new Bird(200, 70);
+    sensors.push(new LapSensor('Ana', 200, 40, onHitSensor));
+    sensors.push(new LapSensor('Beto', 100, 80, onHitSensor));
+
+    birds.push(new Bird('Azul', random(50, 300), 70, [0, 0, 200]));
+    birds.push(new Bird('Verde', random(50, 300), 70, [0, 200, 0]));
+    birds.push(new Bird('Amarelo', random(50, 300), 70, [200, 200, 0]));
+    birds.push(new Bird('Ciano', random(50, 300), 70, [0, 200, 200]));
+    birds.push(new Bird('Vermelho', random(50, 300), 70, [200, 0, 0]));
 
 
 }
@@ -15,37 +20,59 @@ function draw() {
 
     background(200, 200, 200);
 
-    bird.pos.x = mouseX;
-    bird.pos.y = mouseY;
-    for (const sensor of sensors) {
-        const hit = sensor.hit(bird, bird.pos.x, bird.pos.y, bird.dia);
+    for (const bird of birds) {
 
-        if (hit) {
-            sensor.show([100, 0, 0])
+        if (bird.name == 'Amarelo') {
+            bird.pos.x = mouseX;
+            bird.pos.y = mouseY;
         } else {
-            sensor.show([160])
-
+            bird.pos.x += random(-1, 1);
+            bird.pos.y += random(-1, 1);
         }
+        
+        bird.show(120);
+
+
+        for (const sensor of sensors) {
+            const hit = sensor.hit(bird, bird.pos.x, bird.pos.y, bird.dia);
+
+            if (hit) {
+                sensor.show([100, 0, 0])
+            } else {
+                sensor.show([160])
+
+            }
+        }
+
+
     }
-
-    bird.show(120);
-
 
 }
 
-function onHitSensor(what, where, entry) {
-    console.log(`On sensor '${what.name}' ${entry ? 'entry' : 'exit'} on ${where}`);
+function onHitSensor(who, sensor, where, entry) {
+    who.highlight = entry;
+    console.log(`${who.name} hits sensor '${sensor.name}' ${entry ? 'entry' : 'exit'} on ${where}`);
 }
 
 class Bird {
-    constructor(x, y) {
+    constructor(name, x, y, color) {
+        this.name = name;
         this.pos = createVector(x, y);
         this.dia = 20;
+        this.color = color;
+        this.highlight = false;
     }
     show() {
+
         noStroke();
-        fill(0, 255, 0)
+        fill(this.color);
         circle(this.pos.x, this.pos.y, this.dia)
+
+        if (this.highlight) {            
+            fill(255);
+            circle(this.pos.x, this.pos.y, this.dia/2)
+        } else {
+        }
     }
 }
 
@@ -53,7 +80,7 @@ class LapSensor {
     constructor(name, x, y, onHit) {
         this.name = name;
         this.pos = createVector(x, y);
-        this.width = 20;
+        this.width = 10;
         this.height = 80;
         this.onHit = onHit;
         this.whos = [];
@@ -65,34 +92,37 @@ class LapSensor {
         if (hit) {
 
             if (!this.whos.includes(who)) {
-                
+
                 this.whos.push(who);
-                                
+
                 const where = this.nearestLine(cx, cy);
-                
+
                 if (typeof this.onHit == 'function') {
-                    this.onHit(this, where, true);
+                    this.onHit(who, this, where, true);
                 }
 
             }
 
-            return true;
         } else {
+
             if (this.whos.includes(who)) {
+
                 this.whos.pop(who)
                 const where = this.nearestLine(cx, cy);
+
                 if (typeof this.onHit == 'function') {
-                    this.onHit(this, where, false);
+                    this.onHit(who, this, where, false);
                 }
+
             }
         }
 
-        return false
+        return hit
     }
     nearestLine(x, y) {
 
-        const disR = abs(this.pos.x - x)
-        const disL = abs(this.pos.x + this.width - x)
+        const disL = abs(this.pos.x - x)
+        const disR = abs(this.pos.x + this.width - x)
         const disT = abs(this.pos.y - y)
         const disB = abs(this.pos.y + this.height - y)
 
@@ -108,7 +138,7 @@ class LapSensor {
     show(colr) {
         noStroke();
         fill(colr)
-        rect(this.pos.x, this.pos.y, this.width, this.height)
+        rect(this.pos.x, this.pos.y, this.width, this.height,4)
     }
 
 }
