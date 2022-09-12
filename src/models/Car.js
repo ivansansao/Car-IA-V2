@@ -4,7 +4,6 @@ class Car {
 
         this.pos = pista.localNascimento.copy();
         this.lastPos = createVector();
-        this.overLapSensor = false;
         this.ray = 10;
         this.heading = randomHeading ? random(360) : pista.anguloNascimento;
         this.rotation = 0;
@@ -683,42 +682,7 @@ class Car {
             }
         }
     }
-    lapSensorEntry(hr) {
-        if (hr) {
-            this.lap++;            
-            if (this.lap > 0) {
-                if (world.endsWhenFinishLine) {
-                    genetic.nextGeneration();
-                }
-            }
-        } else {
-            this.aposentar();
-        }
-
-    }
-    lapSensorExit(hr) {
-
-    }
-    hitLapSensor(sensor) {
-        const hit = circRect(this.pos.x, this.pos.y, this.ray, sensor.pos.x, sensor.pos.y, sensor.width, sensor.height);
-
-        if (hit) {
-            if (!this.overLapSensor) {
-                const hr = hitRight(this.pos.x, sensor.pos.x, sensor.width);
-                this.lapSensorEntry(hr);
-            }
-
-        } else {
-            if (this.overLapSensor) {
-                const hr = hitRight(this.pos.x, sensor.pos.x, sensor.width);
-                this.lapSensorExit(hr);
-            }
-        }
-        this.overLapSensor = hit;
-
-        return hit;
-
-    }
+   
     drawCar() {
 
         // Fumaça de 'acelerada forte'.

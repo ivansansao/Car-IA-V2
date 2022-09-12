@@ -197,7 +197,7 @@ function draw() {
             car.runDemo(runDemo);
             car.verificaColisaoRanhura(pista.ranhuras);
 
-            car.hitLapSensor(pista.lapSensor);
+            pista.lapSensors[0].hit(car, car.pos.x, car.pos.y, car.ray);
 
             if (world.showCars) car.show();
 

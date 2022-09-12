@@ -23,7 +23,8 @@ class Pista {
         this.timeOutStopped = 100;
         this.backcolor = [68, 170, 0];
 
-        this.lapSensor = new LapSensor();
+        this.lapSensors = [];
+        this.lapSensors.push(new LapSensor('startend', 0, 0, this.onHitSensor))
         this.getSpriteFundo();
         this.pistaTimeOut = 20000;
         this.mutationCounter = 0;
@@ -32,8 +33,26 @@ class Pista {
         this.textBackColor = [255, 255, 255];
         this.spriteLoaded = false;
 
+
         this.make();
 
+    }
+
+    onHitSensor(car, sensor, where, entry) {
+
+        if (entry) {
+            if (where.includes('R')) {
+                sensor.color = car.cor;
+                car.lap++;
+                if (car.lap > 0) {
+                    if (world.endsWhenFinishLine) {
+                        genetic.nextGeneration();
+                    }
+                }
+            } else {
+                car.aposentar();
+            }
+        }
     }
 
     setPistaTimeOut() {
@@ -81,9 +100,9 @@ class Pista {
             this.anguloNascimento = radians(180);
             this.startRoad = { i: 1532, j: 135, value: 0 };
             this.corDaPista = { r: 204, g: 204, b: 204 };
-            this.lapSensor.pos.x = this.startRoad.i - 15;
-            this.lapSensor.pos.y = this.startRoad.j - 65;
-            this.lapSensor.height = 135;
+            this.lapSensors[0].pos.x = this.startRoad.i - 15;
+            this.lapSensors[0].pos.y = this.startRoad.j - 65;
+            this.lapSensors[0].height = 135;
 
 
         } else if (this.selectedPista == 2) {
@@ -99,9 +118,9 @@ class Pista {
             this.anguloNascimento = radians(180);
             this.startRoad = { i: 1579, j: 140, value: 0 };
             this.corDaPista = { r: 191, g: 191, b: 191 };
-            this.lapSensor.pos.x = this.startRoad.i - 10;
-            this.lapSensor.pos.y = this.startRoad.j - 85;
-            this.lapSensor.height = 170;
+            this.lapSensors[0].pos.x = this.startRoad.i - 10;
+            this.lapSensors[0].pos.y = this.startRoad.j - 85;
+            this.lapSensors[0].height = 170;
 
         } else if (this.selectedPista == 3) {
 
@@ -113,10 +132,10 @@ class Pista {
             this.backcolor = [154, 179, 161];
             this.startRoad = { i: 1192, j: 280, value: 0 };
             this.corDaPista = { r: 202, g: 202, b: 202 };
-            this.lapSensor.pos.x = 1153;
-            this.lapSensor.pos.y = 233;
-            this.lapSensor.width = 6;
-            this.lapSensor.height = 80;
+            this.lapSensors[0].pos.x = 1153;
+            this.lapSensors[0].pos.y = 233;
+            this.lapSensors[0].width = 6;
+            this.lapSensors[0].height = 80;
 
         } else if (this.selectedPista == 4) {
 
@@ -142,10 +161,10 @@ class Pista {
 
             this.startRoad = { i: 453, j: 66, value: 0 };
             this.corDaPista = { r: 224, g: 225, b: 243 };
-            this.lapSensor.pos.x = this.startRoad.i - 15;
-            this.lapSensor.pos.y = this.startRoad.j - 38;
-            this.lapSensor.width = 10;
-            this.lapSensor.height = 71;
+            this.lapSensors[0].pos.x = this.startRoad.i - 15;
+            this.lapSensors[0].pos.y = this.startRoad.j - 38;
+            this.lapSensors[0].width = 10;
+            this.lapSensors[0].height = 71;
 
         } else if (this.selectedPista == 5) {
 
@@ -157,8 +176,8 @@ class Pista {
             this.anguloNascimento = radians(90);
             this.startRoad = { i: 490, j: 259, value: 0 };
             this.corDaPista = { r: 255, g: 255, b: 255 };
-            this.lapSensor.pos.x = this.startRoad.i;
-            this.lapSensor.pos.y = this.startRoad.j;
+            this.lapSensors[0].pos.x = this.startRoad.i;
+            this.lapSensors[0].pos.y = this.startRoad.j;
 
         } else if (this.selectedPista == 6) {
 
@@ -171,8 +190,8 @@ class Pista {
             this.backcolor = [52, 126, 163];
             this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
             this.corDaPista = { r: 52, g: 126, b: 163 };
-            this.lapSensor.pos.x = this.startRoad.i + 10;
-            this.lapSensor.pos.y = this.startRoad.j - 10;
+            this.lapSensors[0].pos.x = this.startRoad.i + 10;
+            this.lapSensors[0].pos.y = this.startRoad.j - 10;
 
         }
 
@@ -286,7 +305,7 @@ class Pista {
             }
         }
 
-        this.lapSensor.show();
+        this.lapSensors[0].show();
 
         if (showRanhuras) {
 
