@@ -8,6 +8,8 @@ class Car {
         this.rotation = 0;
         this.marcha = 0;
         this.lastMarcha = 0;
+        this.rightDoorAngle = 0;
+        this.leftDoorAngle = 0;
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
         this.demoLado = '';
@@ -258,21 +260,21 @@ class Car {
         }
     }
     drawTrailPg() {
-                
+
         pg.push();
 
-        pg.translate(this.pos.x,this.pos.y);  
-        pg.rotate(this.heading);        
+        pg.translate(this.pos.x, this.pos.y);
+        pg.rotate(this.heading);
         pg.strokeWeight(0);
         pg.stroke(255);
         pg.noStroke();
-        
+
         pg.fill(50, 50, 50, 20);
         // pg.square(-6, -12, 6, 10); // Left
         // pg.square(-6, +6, 6, 10); // Right       
         // pg.circle(-6, -12, 10); // Left
         // pg.circle(-6, +6, 10); // Right
-               
+
         pg.rect(-6, -12, 4, 2, 10); // Left
         pg.rect(-6, -9, 4, 2, 10); // Left
 
@@ -295,7 +297,7 @@ class Car {
 
         push();
         translate(23, -12);
-        
+
         let mapLWeel
         let mapRWeel
 
@@ -307,11 +309,11 @@ class Car {
             mapLWeel = map(this.speed, 0, 2, 0.45, 0.0);
             mapRWeel = map(this.speed, 0, 2, 0.7, 0.1);
         }
-        
+
         if (this.volanteAngle == 'l') rotate(-mapLWeel);
         if (this.volanteAngle == 'r') rotate(mapLWeel);
         rect(-3, 0.5, 6, 4, 1); // Roda dianteira esquerda
-        
+
         pop();
 
         push();
@@ -321,6 +323,8 @@ class Car {
         rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
         pop();
 
+
+   
 
         // Corpo do carro.
         stroke(0);
@@ -386,6 +390,31 @@ class Car {
             point(28, 6);
 
         }
+
+        // Portas.
+
+        this.rightDoorAngle = map(mouseX, 0, windowWidth, 0, 1.2);
+        this.leftDoorAngle = map(mouseY, 0, windowHeight, 0, 1.2);
+        stroke(0)
+        fill(0);
+        strokeWeight(3);   
+
+        push();
+        // fill(255,0,0)
+        translate(19, -9.5)
+        rotate(this.leftDoorAngle)
+        line(-10,0,0,0)
+        noStroke();
+        arc(-3,-2,8,6,5.0, 1.0, CHORD)
+        pop();
+        
+        push();
+        translate(19, 9.5)
+        rotate(-this.rightDoorAngle)
+        line(-10,0,0,0)
+        noStroke();
+        arc(-3,2,8,6,-1.0,-5.0,CHORD)
+        pop();    
 
         noStroke();
 

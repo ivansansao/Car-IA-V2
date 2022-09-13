@@ -226,6 +226,8 @@ class Pista {
     }
     togglePista() {
 
+        genetic.melhor = null;
+        nGeracao = 0;        
         this.spriteLoaded = false;
         this.waveFronted = false;
 

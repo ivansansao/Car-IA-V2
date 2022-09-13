@@ -17,6 +17,8 @@ class Car {
         this.kmMax = 0;
         this.kmMin = 0;
         this.kmMMCount = 0;
+        this.rightDoorAngle = 0;
+        this.leftDoorAngle = 0;
         this.lastKm = 0;
         this.marca = marca;
         this.aliveTime = 0;
@@ -51,6 +53,14 @@ class Car {
 
         this.setColor();
 
+    }
+
+    openDoor(door, much) {
+        if (door == 'L') {
+            this.leftDoorAngle = much;
+        } else if (door == 'R') {
+            this.rightDoorAngle = much;
+        }
     }
 
     isParent() {
@@ -156,7 +166,7 @@ class Car {
     }
 
     speedUp() {
-        this.speed += 0.005;        
+        this.speed += 0.005;
 
         if (this.gear == 1) {
             // Limita a velocidade pra frente em 2
@@ -547,7 +557,7 @@ class Car {
             fill(255, 255, 255);
             strokeWeight(1);
             line(this.pos.x, y + 50, this.pos.x, this.pos.y);
-            rect(x, y, 130, 65, 4);
+            rect(x, y, 150, 65, 4);
 
             textSize(10);
             fill(0, 0, 255);
@@ -615,8 +625,27 @@ class Car {
         this.lastPos.y = this.pos.y;
         this.lastKm = this.km;
 
-        if (random() > 0.5) {
+        if (random() > 0.4) {
+
             this.luzes = !this.luzes;
+
+            if (this.speed < 0.4) {
+
+                if (random() > 0.5) {
+                    if (this.volanteAngle == 'r') {
+                        this.openDoor('L', random(0.5,1.2));
+                        this.openDoor('R', 0);
+                    } else if (this.volanteAngle == 'l') {
+                        this.openDoor('L', 0);
+                        this.openDoor('R', 0.5,1.2);
+                    }
+                }
+
+            } else {
+                if (random() > 0.4) this.openDoor('L', 0)
+                if (random() > 0.4) this.openDoor('R', 0)
+
+            }
         }
     }
 
@@ -682,7 +711,7 @@ class Car {
             }
         }
     }
-   
+
     drawCar() {
 
         // Fumaça de 'acelerada forte'.
@@ -737,6 +766,31 @@ class Car {
         if (this.volanteAngle == 'r') rotate(mapRWeel);
         rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
         pop();
+
+        // Portas.
+
+        // this.rightDoorAngle = map(mouseX, 0, windowWidth, 0, 1.2);
+        // this.leftDoorAngle = map(mouseY, 0, windowHeight, 0, 1.2);
+        stroke(0)
+        fill(0);
+        strokeWeight(3);
+
+        push();
+        translate(19, -9.5)
+        rotate(this.leftDoorAngle)
+        line(-10, 0, 0, 0)
+        noStroke();
+        arc(-3,-2,8,6,5.0, 1.0, CHORD)
+        pop();
+
+        push();
+        translate(19, 9.5)
+        rotate(-this.rightDoorAngle)
+        line(-10, 0, 0, 0)
+        noStroke();
+        arc(-3,2,8,6,-1.0,-5.0,CHORD)
+        pop();
+
 
         // Corpo do carro.
         stroke(0);

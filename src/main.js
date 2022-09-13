@@ -118,9 +118,9 @@ function draw() {
         }
     }
 
-    image(pg, 0, 0);
-
+    
     pista.show();
+    image(pg, 0, 0);
     showCredits();
 
     const wallsAndCars = [...pista.walls];

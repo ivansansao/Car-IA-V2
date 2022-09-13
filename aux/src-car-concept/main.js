@@ -42,6 +42,8 @@ function keyPressed() {
     }
 
 }
+
+let roda = 0.0
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
@@ -50,7 +52,7 @@ function setup() {
     pg.background(255, 255, 255, 0);
 
     world.cars.push(new Car());
-    world.cars[0].pos.x = 0;
+    world.cars[0].pos.x = 50;
     world.cars[0].pos.j = windowHeight / 2;
 
     for (let i = 0; i < 10; i++) {
@@ -90,6 +92,21 @@ function draw() {
         }
 
     }
+
+    push()
+    translate(windowWidth/2, windowHeight/2);
+    rotate(roda)
+    strokeWeight(2)
+    line(0,0,10,0)
+    strokeWeight(4)
+    point(10,0)
+    pop()
+
+    text(roda,10,25)
+    text(roda%(PI*2),10,50)
+    text(abs(roda)%(PI*2),10,75)
+
+    roda-=0.01
 
 }
 
