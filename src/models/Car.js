@@ -723,16 +723,16 @@ class Car {
             // rect(-14, -7, 5, 5, 4);
             // rect(-random(15, 19), -6, 5, 5, 4);
             // rect(-random(15, 19), -8, 5, 5, 4);
-            circle(-random(13, 14), -7, random(4,6));
-            circle(-random(15, 19), -6, random(4,6));
-            circle(-random(15, 19), -8, random(4,6));
+            circle(-random(13, 14), -7, random(4, 6));
+            circle(-random(15, 19), -6, random(4, 6));
+            circle(-random(15, 19), -8, random(4, 6));
 
 
         } else {
 
             strokeWeight(0);
             fill(255, 255, 255, this.speed * 100);
-            circle(-random(13, 15), -7, random(4,6));
+            circle(-random(13, 15), -7, random(4, 6));
             // rect(-17, -6, 5, 5, 4);
             // rect(-17, -8, 5, 5, 4);
 
@@ -771,12 +771,15 @@ class Car {
         rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
         pop();
 
-        // Portas.
+        // strokeWeight(0.5); // Contorno fino preto do carro
+        // stroke(0);
+        // fill(this.cor);
+        // rect(-9, -11, 42, 22, 5);
 
-        // this.rightDoorAngle = map(mouseX, 0, windowWidth, 0, 1.2);
-        // this.leftDoorAngle = map(mouseY, 0, windowHeight, 0, 1.2);
-        stroke(0)
-        fill(0);
+
+        // Portas.
+        stroke(this.cor)
+        fill(this.cor);
         strokeWeight(3);
 
         push();
@@ -797,9 +800,11 @@ class Car {
 
 
         // Corpo do carro.
-        stroke(0);
+        strokeWeight(2);
+        stroke(this.cor);
         fill(this.cor);
         rect(-8, -10, 40, 20, 5);
+
 
         // Vidros.
         noStroke();
@@ -808,7 +813,8 @@ class Car {
 
         // Teto.
         fill(this.cor);
-        rect(-2, -9, 15, 18, 4);
+        // rect(-2, -9, 15, 18, 4);
+        rect(-2, -8, 15, 16, 4);
 
         // Ré.
         if (this.braking) {
@@ -835,12 +841,6 @@ class Car {
 
         if (this.luzes) {
 
-            // Faróis dianteiros acesos.
-            // strokeWeight(6);
-            // stroke(255);
-            // point(28, -6);
-            // point(28, 6);
-
             noStroke();
 
             // Feixo de luz perto.                
@@ -852,6 +852,19 @@ class Car {
             rect(80, -25, -50, 50, 10);
 
         }
+
+        // Faróis dianteiros.
+        fill(this.luzes ? 180 : 100)
+        noStroke();
+        arc(27.5, -5, 9, 10, 4.6, 0.0, CHORD) // Left
+        arc(27.5, 5, 9, 10, 0.0, -4.6, CHORD) // Right
+        strokeWeight(0.1);
+        stroke(this.luzes ? 255 : this.cor);
+        noFill();
+        rect(29.5, -8.7, 0.5, 0.7);
+        line(29.5, -8.7, 28.5, -8.7);
+        rect(29.5, 8.0, 0.5, 0.7);
+        line(29.5, 8.7, 28.5, 8.7);
 
         noStroke();
 

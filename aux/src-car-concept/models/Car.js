@@ -2,7 +2,7 @@ class Car {
 
     constructor(marca = '?', inteligente = true, allowLazy = false, randomHeading = false) {
 
-        this.pos = createVector(100, 100);
+        this.pos = createVector(100, 50);
         this.lastPos = createVector();
         this.heading = randomHeading ? random(360) : 0;
         this.rotation = 0;
@@ -10,7 +10,7 @@ class Car {
         this.lastMarcha = 0;
         this.rightDoorAngle = 0;
         this.leftDoorAngle = 0;
-        this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
+        this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,1.0)';
         this.volanteAngle = '';
         this.demoLado = '';
         this.inteligente = inteligente;
@@ -150,6 +150,10 @@ class Car {
             return false;
         }
 
+        if (random() > 0.99) {
+            this.luzes = !this.luzes;
+        }
+
         this.heading += this.rotation * 0.3;
 
         let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
@@ -236,6 +240,7 @@ class Car {
     }
 
     drawTrail() {
+        return
         if (this.trail.length > 0) {
 
             this.trail.forEach(element => {
@@ -285,6 +290,49 @@ class Car {
 
     }
 
+    runDemo(run) {
+
+        if (!run) return
+
+        if (frameCount % 50 == 0) {
+
+            this.demo.think();
+
+        }
+        if (this.demo.brake) {
+            this.brake();
+        }
+        if (this.demo.speedUp) {
+            this.speedUp();
+        } else if (this.demo.freeSpeedUp) {
+            this.freeSpeedUp();
+        }
+
+        if (this.demo.gear == -1) {
+            this.engageReverse();
+        } else if (this.demo.gear == 1) {
+            this.engageDinamic();
+        }
+
+        if (this.demo.side == 'r')
+            this.vaiPraDireita();
+        else if (this.demo.side == 'l')
+            this.vaiPraEsquerda();
+
+        if (this.pos.x > width)
+            this.pos.x = 0;
+
+        if (this.pos.x < 0)
+            this.pos.x = width;
+
+        if (this.pos.y > height)
+            this.pos.y = 0;
+
+        if (this.pos.y < 0)
+            this.pos.y = height;
+    }
+
+
     drawCar() {
 
         stroke(100);
@@ -324,12 +372,18 @@ class Car {
         pop();
 
 
-   
+
 
         // Corpo do carro.
-        stroke(0);
+        strokeWeight(2);
+        stroke(this.cor);
         fill(this.cor);
         rect(-8, -10, 40, 20, 5);
+        strokeWeight(0.1);
+        stroke(0);
+        fill(this.cor);
+        rect(-9, -11, 42, 22, 5);
+
 
         // Vidros.
         noStroke();
@@ -382,14 +436,21 @@ class Car {
             fill(241, 255, 176, 40);
             rect(80, -25, -50, 50, 10);
 
-        } else {
-            // Faróis dianteiros apagados.
-            strokeWeight(6);
-            stroke(80);
-            point(28, -6);
-            point(28, 6);
-
         }
+
+        // Faróis dianteiros.
+        fill(this.luzes ? 180 : 100)
+        noStroke();
+        arc(27.5, -5, 9, 10, 4.6, 0.0, CHORD) // Left
+        arc(27.5, 5, 9, 10, 0.0, -4.6, CHORD) // Right
+        strokeWeight(0.1);
+        stroke(this.luzes ? 255 : this.cor);
+        noFill();
+        rect(29.5, -8.7, 0.5, 0.7);
+        line(29.5, -8.7, 28.5, -8.7);
+        rect(29.5, 8.0, 0.5, 0.7);
+        line(29.5, 8.7, 28.5, 8.7);
+
 
         // Portas.
 
@@ -397,70 +458,28 @@ class Car {
         this.leftDoorAngle = map(mouseY, 0, windowHeight, 0, 1.2);
         stroke(0)
         fill(0);
-        strokeWeight(3);   
+        strokeWeight(3);
 
         push();
         // fill(255,0,0)
         translate(19, -9.5)
         rotate(this.leftDoorAngle)
-        line(-10,0,0,0)
+        line(-10, 0, 0, 0)
         noStroke();
-        arc(-3,-2,8,6,5.0, 1.0, CHORD)
+        arc(-3, -2, 8, 6, 5.0, 1.0, CHORD)
         pop();
-        
+
         push();
         translate(19, 9.5)
         rotate(-this.rightDoorAngle)
-        line(-10,0,0,0)
+        line(-10, 0, 0, 0)
         noStroke();
-        arc(-3,2,8,6,-1.0,-5.0,CHORD)
-        pop();    
-
-        noStroke();
+        arc(-3, 2, 8, 6, -1.0, -5.0, CHORD)
+        pop();
 
 
     }
 
-    runDemo(run) {
 
-        if (!run) return
-
-        if (frameCount % 50 == 0) {
-
-            this.demo.think();
-
-        }
-        if (this.demo.brake) {
-            this.brake();
-        }
-        if (this.demo.speedUp) {
-            this.speedUp();
-        } else if (this.demo.freeSpeedUp) {
-            this.freeSpeedUp();
-        }
-
-        if (this.demo.gear == -1) {
-            this.engageReverse();
-        } else if (this.demo.gear == 1) {
-            this.engageDinamic();
-        }
-
-        if (this.demo.side == 'r')
-            this.vaiPraDireita();
-        else if (this.demo.side == 'l')
-            this.vaiPraEsquerda();
-
-        if (this.pos.x > width)
-            this.pos.x = 0;
-
-        if (this.pos.x < 0)
-            this.pos.x = width;
-
-        if (this.pos.y > height)
-            this.pos.y = 0;
-
-        if (this.pos.y < 0)
-            this.pos.y = height;
-    }
 
 }

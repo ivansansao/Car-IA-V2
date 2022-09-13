@@ -54,15 +54,16 @@ function setup() {
     world.cars.push(new Car());
     world.cars[0].pos.x = 50;
     world.cars[0].pos.j = windowHeight / 2;
+    world.cars[0].heading = PI*1.5;
 
     for (let i = 0; i < 10; i++) {
         world.cars.push(new Car());
         if (i > 0) world.cars[i].randomizePos();
     }
-
 }
 
 function draw() {
+    // scale(2)
 
     background(200, 200, 200);
     image(pg, 0, 0)
@@ -93,18 +94,18 @@ function draw() {
 
     }
 
-    push()
-    translate(windowWidth/2, windowHeight/2);
-    rotate(roda)
-    strokeWeight(2)
-    line(0,0,10,0)
-    strokeWeight(4)
-    point(10,0)
-    pop()
+    // push()
+    // translate(windowWidth/2, windowHeight/2);
+    // rotate(roda)
+    // strokeWeight(2)
+    // line(0,0,10,0)
+    // strokeWeight(4)
+    // point(10,0)
+    // pop()
 
-    text(roda,10,25)
-    text(roda%(PI*2),10,50)
-    text(abs(roda)%(PI*2),10,75)
+    // text(roda,10,25)
+    // text(roda%(PI*2),10,50)
+    // text(abs(roda)%(PI*2),10,75)
 
     roda-=0.01
 
