@@ -687,7 +687,7 @@ class Car {
             }
 
             ray.savedDistance = maisPerto;
-            ray.show()
+            // ray.show()
 
             if (menorHit && this.showRays) {
 

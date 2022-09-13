@@ -17,6 +17,8 @@ class Ray {
 
     show() {
 
+        return
+
         if (!this.showRay) {
             return;
         }
