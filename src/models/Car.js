@@ -633,11 +633,11 @@ class Car {
 
                 if (random() > 0.5) {
                     if (this.volanteAngle == 'r') {
-                        this.openDoor('L', random(0.5,1.2));
+                        this.openDoor('L', random(0.5, 1.2));
                         this.openDoor('R', 0);
                     } else if (this.volanteAngle == 'l') {
                         this.openDoor('L', 0);
-                        this.openDoor('R', 0.5,1.2);
+                        this.openDoor('R', 0.5, 1.2);
                     }
                 }
 
@@ -718,17 +718,21 @@ class Car {
         if (this.acceleration == 'up') {
 
             strokeWeight(0);
-            fill(160, 160, 160, 160);
-            rect(-14, -7, 5, 5, 4);
-            rect(-17, -6, 5, 5, 4);
-            rect(-17, -8, 5, 5, 4);
+            const alSmoke = map(this.speed, 0, 2, 180, 50)
+            fill(160, 160, 160, alSmoke);
+            // rect(-14, -7, 5, 5, 4);
+            // rect(-random(15, 19), -6, 5, 5, 4);
+            // rect(-random(15, 19), -8, 5, 5, 4);
+            circle(-random(13, 14), -7, random(4,6));
+            circle(-random(15, 19), -6, random(4,6));
+            circle(-random(15, 19), -8, random(4,6));
 
 
         } else {
 
             strokeWeight(0);
             fill(255, 255, 255, this.speed * 100);
-            rect(-14, -7, 5, 5, 4);
+            circle(-random(13, 15), -7, random(4,6));
             // rect(-17, -6, 5, 5, 4);
             // rect(-17, -8, 5, 5, 4);
 
@@ -780,7 +784,7 @@ class Car {
         rotate(this.leftDoorAngle)
         line(-10, 0, 0, 0)
         noStroke();
-        arc(-3,-2,8,6,5.0, 1.0, CHORD)
+        arc(-3, -2, 8, 6, 5.0, 1.0, CHORD)
         pop();
 
         push();
@@ -788,7 +792,7 @@ class Car {
         rotate(-this.rightDoorAngle)
         line(-10, 0, 0, 0)
         noStroke();
-        arc(-3,2,8,6,-1.0,-5.0,CHORD)
+        arc(-3, 2, 8, 6, -1.0, -5.0, CHORD)
         pop();
 
 
