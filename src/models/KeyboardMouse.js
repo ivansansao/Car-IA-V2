@@ -28,12 +28,7 @@ function keyPressed() {
     } else if (key == 'e') { // Toggle elitism
         elitism = !elitism;
         console.log('Elitism: ', elitism);
-    } else if (key == 'f') { // Mouse matador. 
-        for (const monster of pista.monsters) {
-            if (monster.useMouse) {
-                monster.ativo = !monster.ativo;
-            }
-        }
+    } else if (key == 'f') {
     } else if (key == 'g') { // Show Background 
         showBackground = !showBackground;
     } else if (key == 'h') { // Mostrar detalhes dos carros

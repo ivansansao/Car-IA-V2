@@ -48,7 +48,6 @@ let salvarMelhorCarro = true;
 let timer = 0;
 let timerOn = true;
 let showBatidos = false;
-let melhor = null;
 let collideCars = false;
 let showMousePoint = false;
 let elitism = true;
@@ -90,10 +89,9 @@ function setup() {
     }
 
     genetic.nextGeneration();
-    // background(255);
 
     clear()
-
+    
 }
 
 function draw() {
@@ -201,26 +199,11 @@ function draw() {
 
             if (world.showCars) car.show();
 
-            // if (vivos == 1) {
-            //     if (!car.batido) {
-            //         if (car.marca == 'c') {
-            //             if (car.km < 300) {
-            //                 car.aposentar();
-            //             }
-            //         }
-            //     }
-            // }
-
-            pista.monstersCollide(car);
-
         } else if (showBatidos) {
             car.show();
         }
 
     }
-
-    // pista.monstersUpdate();
-    // pista.monstersShow();
 
     if (vivos < maxCar) {
 

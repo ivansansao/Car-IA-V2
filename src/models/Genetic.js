@@ -74,21 +74,21 @@ class Genetic {
             return
 
         }
-       
+
         this.melhor = this.getMelhorCarro();
         this.gotCloserBest = this.getGotCloserBest();
-        
+
         if (this.gotCloserBest > this.recordCloser) {
-            this.recordCloser = this.gotCloserBest;            
+            this.recordCloser = this.gotCloserBest;
         }
 
         if (!this.melhor) {
             return
         }
         this.saveWeights(this.melhor);
-        
+
         console.log(`G${addZero(nGeracao + 1)} (${getHourMin()}) km: ${this.melhor.km} M: ${this.melhor.marca} Q: ${this.melhor.timer} R: ${this.melhor.ranhurasColetadas.length} Perto: ${addZero(this.gotCloserBest)} Muts: ${this.melhor.ia.mutated} NM: ${this.melhor.ia.mutatedNeurons}`);
-        
+
         if (this.melhor.ranhurasColetadas.length > record) {
             foo.speak(`Atingiu ${this.melhor.ranhurasColetadas.length}!`);
             record = this.melhor.ranhurasColetadas.length;
@@ -126,7 +126,7 @@ class Genetic {
 
             let child = new Car('m');
             child.ia.model.setWeights(weightCopies);
-            child.ia.mutate(0.1,1); // 0.1
+            child.ia.mutate(0.1, 1); // 0.1
             cars.push(child);
 
         }
@@ -196,7 +196,7 @@ class Genetic {
 
         let qtd = 0;
 
-        if (this.melhor) {            
+        if (this.melhor) {
             for (const car of cars) {
                 if (this.melhor.id != car.id) {
                     if (abs(this.melhor.km - car.km) < 100) {
@@ -212,30 +212,29 @@ class Genetic {
 
     getMelhorCarro() {
 
-        
         let melhor = null;
         let km = Infinity;
         let maisRanhuras = 0;
         let lap = 0;
-        let maisMuts = 0;
+        let maisMuts = -1;
 
         // Seleciona a maior volta.
+
         for (const car of cars) {
-            if (car.lap > lap) {
-                lap = car.lap;
-            }
+            if (car.lap > lap) lap = car.lap;
         }
 
-        // Mais perto do final da pista
+        // Mais perto do final da pista.
 
         for (const car of cars) {
 
             if (car.km > 0 && car.lap == lap) {
-                if (car.km < km && car.timer < pista.pistaTimeOut) {
+                if (car.km < km) {
                     km = car.km;
                     melhor = car;
                 }
             }
+
         }
 
         // Carros com mais mutações.
@@ -245,22 +244,23 @@ class Genetic {
             if (car.km == km && car.lap == lap) {
                 if (car.ia.mutated > maisMuts) {
                     maisMuts = car.ia.mutated;
-                    melhor = car;                    
+                    melhor = car;
                 }
-                
+
             }
+
         }
 
-        if (false) {
-            
+        if (pista.ranhuras.length > 0) {
+
             for (const car of cars) {
-    
+
                 if (car.ranhurasColetadas.length > maisRanhuras) {
                     maisRanhuras = car.ranhurasColetadas.length;
                     melhor = car;
                 }
             }
-    
+
             if (maisRanhuras < 7 && pista.selectedPista == 2) {
 
                 // Se empate, verifica desses qual tem melhor ângulo.
@@ -295,21 +295,11 @@ class Genetic {
             }
         }
 
-        //  // Se empate, soteia um.
-        //  for (const car of cars) {
-        //      if (car.ranhurasColetadas.length == maisRanhuras) {
-        //          if (random(1) > 0.5) {
-        //              melhor = car;
-        //              break;
-        //          }
-        //      }
-        //  }
-
-        // console.log('Mais KM() -> ', this.melhor.km, ' maisRanhuras: ', maisRanhuras, ' maisKm: ', maisKm);
-        // fill(0,0,255);
-        // circle(this.melhor.pos.x,this.melhor.pos.y,8);
-        // noLoop();
-
+        if (melhor == null) {
+            const msg = 'Erro: Não consegui determinar o melhor carro!'
+            console.log(msg);
+            foo.speak(msg);
+        }
 
         return melhor;
     }

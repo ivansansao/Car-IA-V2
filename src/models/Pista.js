@@ -12,7 +12,6 @@ class Pista {
         this.selectedPista = 4;
         this.spritesheet = null;
         this.spriteRip = null;
-        this.monsters = [];
         this.localNascimento = createVector(0, 0);
         this.anguloNascimento = radians(180);
         this.carMajorDistance = 0;
@@ -33,7 +32,6 @@ class Pista {
         this.textBackColor = [255, 255, 255];
         this.spriteLoaded = false;
 
-
         this.make();
 
     }
@@ -50,14 +48,20 @@ class Pista {
                     }
                 }
             } else {
-                car.aposentar();
+                car.kill(true, car.deadWayType.crashed);
             }
         }
     }
 
     setPistaTimeOut() {
-        this.pistaTimeOut = this.trackSize || this.pistaTimeOut;
+        
+        this.pistaTimeOut = this.trackSize;
         this.pistaTimeOut = Number(this.pistaTimeOut.toFixed(0));
+
+        if (this.pistaTimeOut < 100) {
+            this.pistaTimeOut = 1000;
+        }
+        
     }
 
     setFlag(x, y, text) {
@@ -70,10 +74,6 @@ class Pista {
 
         let wallsPista
         this.ranhuras = [];
-        this.monsters = [];
-
-        this.monsters.push(new Monster(1600, 130, -0.7, 0, 300, 50, true));
-        this.monsters[0].ativo = false;
         this.setPistaTimeOut();
 
 
@@ -94,8 +94,6 @@ class Pista {
             wallsPista = getPista1();
             this.ranhuras = getRanhuras1();
             this.timeOutStopped = 100;
-            // this.monsters.push(new Monster(1600, 130, -0.7, 0, 300, 150, false, true));
-            // this.monsters.push(new Monster(1300, -200, 0, 1, 600, 150, false, true));
             this.localNascimento = createVector(1500, 120);
             this.anguloNascimento = radians(180);
             this.startRoad = { i: 1532, j: 135, value: 0 };
@@ -112,8 +110,6 @@ class Pista {
             this.ranhuras = getRanhuras2();
             this.timeOutStopped = 100;
             this.population = 20;
-            // this.monsters.push(new Monster(1570, 120, 0, 0, this.pistaTimeOut, 100, false, true));
-            // this.monsters.push(new Monster(1080, 18, 0.2, 0.1, 2700, 100, false, true));
             this.localNascimento = createVector(1500, 120);
             this.anguloNascimento = radians(180);
             this.startRoad = { i: 1579, j: 140, value: 0 };
@@ -150,13 +146,9 @@ class Pista {
                 this.anguloNascimento = radians(180);
                 // this.localNascimento = createVector(1600, 150);
                 // this.anguloNascimento = radians(0);
-                // this.monsters.push(new Monster(580, 65, -2,0,600,100, false, false));
-                // this.monsters.push(new Monster(1600, 65, -2, 0, 800, 110, false, false));
-                // this.monsters.push(new Monster(470, 65, 0, 0, 110, 110, false, false));
             } else {
                 this.localNascimento = createVector(1780, 600);
                 this.anguloNascimento = radians(270);
-                this.monsters.push(new Monster(1770, 660, 0, -2, 600, 100, false, true));
             }
 
             this.startRoad = { i: 453, j: 66, value: 0 };
@@ -248,7 +240,6 @@ class Pista {
     reset() {
         this.carMajorDistance = 0;
         this.kmWheel = 0;
-        this.monstersResetPos();
         this.make();
         pg.clear();
     }
@@ -260,32 +251,6 @@ class Pista {
         }
 
     }
-
-
-    monstersResetPos() {
-        for (const monster of this.monsters) {
-            monster.resetPos();
-        }
-    }
-
-    monstersCollide(car) {
-        for (const monster of this.monsters) {
-            monster.collide(car);
-        }
-
-    }
-    monstersUpdate() {
-        for (const monster of this.monsters) {
-            monster.update();
-        }
-    }
-    monstersShow() {
-        for (const monster of this.monsters) {
-            monster.show();
-        }
-    }
-
-
 
     makeRandom() {
 

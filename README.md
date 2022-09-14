@@ -31,7 +31,6 @@ a   | Ends generation when hit finish line
 b   | Stop rendering cars to improve training performance
 c   | Change track layout
 e   | Enables/disables elitism
-f   | Activates the vehicle eliminator at the mouse tip
 g   | Shows the background
 h   | Shows car details
 i   | Shows information about the car

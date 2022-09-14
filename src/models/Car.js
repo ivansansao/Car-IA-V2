@@ -40,7 +40,9 @@ class Car {
         this.showRays = false;
         this.lap = 1;
         this.engineSound = new EngineSound();
-        this.reasonRetirement = 0; // 0-Nothing 1-Crased 2-Out of trail 3-Restart
+        this.deadWayType = { crashed: 0, stopped: 1, endOfTime: 2, offTrack: 3 };
+        this.deadWay = undefined;
+        this.normalDead = false;
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -325,8 +327,6 @@ class Car {
 
         pista.setMajorDistance(this.km);
 
-        // this.killLazier();
-
         if (this.aliveTime % pista.timeOutStopped == 0) {
             this.onEachTime();
         }
@@ -340,20 +340,10 @@ class Car {
                 console.log(`Carro '${this.marca}' vazou da pista`);
                 this.km = Infinity;
                 this.lap = 1;
-                this.aposentar(2);
+                this.kill(false, this.deadWayType.offTrack);
             }
         }
 
-
-    }
-    killLazier() {
-
-        if (!this.allowLazy) {
-            const distance = pista.carMajorDistance - this.km;
-            if (distance > 400) {
-                this.aposentar();
-            }
-        }
 
     }
 
@@ -458,28 +448,19 @@ class Car {
 
     }
 
-    aposentar(reasonRetirement) {
+    kill(normalDead, deadWay) {
 
         if (!this.batido) {
-
-            // if (this.marca == 'c') {
-            //     console.log(this);
-            //     console.log('SOU ERU MORIIIII')
-            //     noLoop()
-            // }
 
             vivos--;
             this.batido = true;
             genetic.setFlag();
             genetic.deads++;
 
-
-            // if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
-            //     console.log(`Carro ${this.id} morreu em: km ${this.km} (x,y) ${this.pos.x},${this.pos.y}`);
-            // }
-
             this.engineSound.stop();
-            this.reasonRetirement = reasonRetirement;
+            this.normalDead = normalDead;
+            this.deadWay = deadWay;
+
 
         }
     }
@@ -614,11 +595,11 @@ class Car {
     onEachTime() {
 
         if (this.pos.x == this.lastPos.x && this.pos.y == this.lastPos.y) {
-            this.aposentar();
+            this.kill(true, this.deadWayType.stopped);
         }
 
         if (this.km == this.lastKm) {
-            this.aposentar();
+            this.kill(true, this.deadWayType.stopped);
         }
 
         this.lastPos.x = this.pos.x;
@@ -706,7 +687,7 @@ class Car {
             }
 
             if (ray.savedDistance < 10) {
-                this.aposentar();
+                this.kill(true, this.deadWayType.crashed);
                 break;
             }
         }
@@ -718,14 +699,13 @@ class Car {
         if (this.acceleration == 'up') {
 
             strokeWeight(0);
-            const alSmoke = map(this.speed, 0, 2, 180, 50)
+            const alSmoke = map(this.speed, 0, 2, 180, 50);
+            const dist = map(this.speed, 0, 2, -2, 6);
             fill(160, 160, 160, alSmoke);
-            // rect(-14, -7, 5, 5, 4);
-            // rect(-random(15, 19), -6, 5, 5, 4);
-            // rect(-random(15, 19), -8, 5, 5, 4);
-            circle(-random(13, 14), -7, random(4, 6));
-            circle(-random(15, 19), -6, random(4, 6));
-            circle(-random(15, 19), -8, random(4, 6));
+            circle(-random(13, 14) - dist, -7, random(4, 6));
+            circle(-random(15, 19) - dist, -6, random(4, 6));
+            circle(-random(15, 19) - dist, -8, random(4, 6));
+            circle(-random(17, 21) - dist, -7, random(4, 6));
 
 
         } else {
@@ -771,10 +751,10 @@ class Car {
         rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
         pop();
 
-        // strokeWeight(0.5); // Contorno fino preto do carro
-        // stroke(0);
-        // fill(this.cor);
-        // rect(-9, -11, 42, 22, 5);
+        strokeWeight(1); // Contorno fino preto do carro
+        stroke(0);
+        fill(this.cor);
+        rect(-9, -11, 42, 22, 5);
 
 
         // Portas.
@@ -805,7 +785,6 @@ class Car {
         fill(this.cor);
         rect(-8, -10, 40, 20, 5);
 
-
         // Vidros.
         noStroke();
         fill(0);
@@ -813,8 +792,25 @@ class Car {
 
         // Teto.
         fill(this.cor);
-        // rect(-2, -9, 15, 18, 4);
-        rect(-2, -8, 15, 16, 4);
+        rect(-2, -8, 15, 16, 0);
+
+        // Colluns.
+
+        stroke(this.cor) // Frontal columns
+        // stroke(255,0,0)
+        strokeWeight(0.8);
+        line(19, 9, 10, 7);
+        line(19, -9, 10, -7);
+
+        strokeWeight(0.8); // Rear columns
+        line(-6.6, 9, 0, 7);
+        line(-6.6, -9, 0, -7);
+
+        // Hood frizes.
+        stroke(100)
+        strokeWeight(0.4);
+        line(32, 4, 20, 9);
+        line(32, 9 - 13, 20, 4 - 13);
 
         // Ré.
         if (this.braking) {
@@ -824,6 +820,11 @@ class Car {
             fill(0);
             rect(-9, 2, 3, 6, 4);
             rect(-9, -8, 3, 6, 4);
+
+            // // Reflex brake light.
+            // fill(255, 0, 0, 20);
+            // noStroke();
+            // rect(-20,-15,10,30,10);
 
             // Faixa
             // strokeWeight(4);
@@ -852,6 +853,19 @@ class Car {
             rect(80, -25, -50, 50, 10);
 
         }
+
+        // Frontal numeric.
+        push();
+        translate(24, 0)
+        rotate(PI * 1.5)
+        noStroke();
+        // fill(240);
+        // circle(0, 0, 8);
+        fill(0);
+        textSize(4);
+        textAlign(CENTER);
+        text(this.id, 0, 1)
+        pop();
 
         // Faróis dianteiros.
         fill(this.luzes ? 180 : 100)
@@ -915,8 +929,7 @@ class Car {
 }
 
 function eliminarTodosCars() {
-    // console.log('Eliminando todos os carros...');
     for (const car of cars) {
-        car.aposentar();
+        car.kill(false, car.deadWayType.endOfTime);
     }
 }
