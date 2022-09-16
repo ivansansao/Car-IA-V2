@@ -228,8 +228,9 @@ function draw() {
             noStroke();
             fill(pista.textBackColor);
             textSize(16);
+            const mapToKm = (genetic.melhor.km*0.001).toFixed(3).replace(/\./g, ',');
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-            const txtBetter = `Voltas: ${genetic.melhor.lap}. km: ${genetic.melhor.km.toFixed(0)} - ${percentComplete}%`;
+            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '': percentComplete + '%'}`;
 
             text(`Ativos: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
 
