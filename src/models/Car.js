@@ -38,7 +38,7 @@ class Car {
         this.demo = new Demo();
         this.rays = [];
         this.showRays = false;
-        this.lap = 1;
+        this.lap = 0;
         this.engineSound = new EngineSound();
         this.deadWayType = { crashed: 0, stopped: 1, endOfTime: 2, offTrack: 3 };
         this.deadWay = undefined;
@@ -85,8 +85,7 @@ class Car {
         }
     }
 
-
-    raciocinar(inputs) {
+    think(inputs) {
 
         if (!this.batido && this.inteligente) {
 
@@ -546,7 +545,7 @@ class Car {
             strokeWeight(1);
             switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
-            text(`km: ${this.km} Volta: ${this.lap}`, x + 2, y += 12);
+            text(`km: ${this.km} Voltas: ${this.lap}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
@@ -642,12 +641,18 @@ class Car {
             return false;
         }
 
+
+
         // Percorre todas as paredes para achar a parece mais perto.
 
-        for (ray of this.rays) {
+        // for (ray of this.rays) {
+        for (let i = 0; i < this.rays.length; i++) {
+
+            const ray = this.rays[i];
 
             let maisPerto = Infinity;
             let menorHit = null;
+            let rayIndex = null;
 
             for (const wall of walls) {
 
@@ -662,13 +667,13 @@ class Car {
                         if (d < maisPerto) {
                             maisPerto = d;
                             menorHit = hit;
+                            rayIndex = i;
                         }
                     }
                 }
             }
 
             ray.savedDistance = maisPerto;
-            // ray.show()
 
             if (menorHit && this.showRays) {
 
@@ -678,19 +683,53 @@ class Car {
                 lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
                 circle(menorHit.x, menorHit.y, 10);
 
+                text(rayIndex, menorHit.x, menorHit.y);
+
                 if (this.showSensorValue) {
                     noStroke();
                     fill(0, 0, 255);
                     text(`${maisPerto.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
                 }
 
+
+
             }
 
-            if (ray.savedDistance < 10) {
+            if (ray.savedDistance < this.getRayCollide(i)) {
                 this.kill(true, this.deadWayType.crashed);
                 break;
             }
         }
+    }
+
+    getRayCollide(rayIndex) {
+        const limits = [
+            { ray: 0, collide: 33 },
+
+            { ray: 1, collide: 32.5 },
+            { ray: 2, collide: 18.8 },
+            { ray: 3, collide: 13.7 },
+            { ray: 4, collide: 11.7 },
+            { ray: 5, collide: 11.1 },
+            { ray: 6, collide: 11.6 },
+            { ray: 7, collide: 12.2 },
+            { ray: 8, collide: 11.1 },
+            { ray: 9, collide: 9.6 },
+
+            { ray: 10, collide: 9.1 },
+
+            { ray: 11, collide: 9.6 },
+            { ray: 12, collide: 11.1 },
+            { ray: 13, collide: 12.2 },
+            { ray: 14, collide: 11.7 },
+            { ray: 15, collide: 11.1 },
+            { ray: 16, collide: 11.6 },
+            { ray: 17, collide: 13.7 },
+            { ray: 18, collide: 18.8 },
+            { ray: 19, collide: 32.5 },
+        ]
+
+        return limits[rayIndex].collide;
     }
 
     drawCar() {
@@ -855,17 +894,21 @@ class Car {
         }
 
         // Frontal numeric.
-        push();
-        translate(24, 0)
-        rotate(PI * 1.5)
-        noStroke();
-        // fill(240);
-        // circle(0, 0, 8);
-        fill(0);
-        textSize(4);
-        textAlign(CENTER);
-        text(this.id, 0, 1)
-        pop();
+        if (this.lap > 0) {
+
+            push();
+            translate(24, 0)
+            rotate(PI * 1.5)
+            noStroke();
+            // fill(240);
+            // circle(0, 0, 8);
+            fill(0);
+            textSize(4);
+            textAlign(CENTER);
+            text(this.id, 0, 1)
+            pop();
+
+        }
 
         // Faróis dianteiros.
         fill(this.luzes ? 180 : 100)

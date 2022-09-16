@@ -91,7 +91,7 @@ function setup() {
     genetic.nextGeneration();
 
     clear()
-    
+
 }
 
 function draw() {
@@ -101,25 +101,25 @@ function draw() {
         return;
     }
 
-
-    background(pista.backcolor);
-    handleKeyIsDown();
-
     if (timerOn) {
         timer++;
     }
 
-    if (showBackground) {
+    if (!world.trainigMode) {
+
+        background(pista.backcolor);
+        handleKeyIsDown();
+
         imageMode(CORNER);
         if (pista.spritesheet) {
             image(pista.spritesheet, 0, 0);
         }
-    }
 
-    
-    pista.show();
-    image(pg, 0, 0);
-    showCredits();
+        pista.show();
+        image(pg, 0, 0);
+        showCredits();
+
+    }
 
     const wallsAndCars = [...pista.walls];
 
@@ -154,20 +154,6 @@ function draw() {
             car.update();
             car.look(wallsAndCars);
 
-            // if (car.marca == 'c' || car.marca == 'X') {
-            //     if (car.braking) console.log(`braking`);
-            //     if (car.acceleration != '') console.log(car.acceleration);
-            //     console.log(car.gear);
-            // }
-
-            if (showFunctionalities) {
-                if (frameCount > 900 && frameCount < 1200) {
-                    car.showRays = true;
-                } else if (frameCount > 1200 && frameCount < 1210) {
-                    car.showRays = false;
-                }
-            }
-
             carInputs.push(car.gear);
             carInputs.push(car.speed);
             carInputs.push(car.rays[0].savedDistance);
@@ -191,13 +177,15 @@ function draw() {
             carInputs.push(car.rays[18].savedDistance);
             carInputs.push(car.rays[19].savedDistance);
 
-            car.raciocinar(carInputs);
-            car.runDemo(runDemo);
+            car.think(carInputs);
             car.verificaColisaoRanhura(pista.ranhuras);
 
             pista.lapSensors[0].hit(car, car.pos.x, car.pos.y, car.ray);
 
-            if (world.showCars) car.show();
+            if (!world.trainigMode) {
+                car.show();
+            }
+
 
         } else if (showBatidos) {
             car.show();
@@ -225,22 +213,28 @@ function draw() {
 
     if (vivos == 0) {
         timer = 0;
-
         genetic.nextGeneration();
-
     }
 
-    if (timer % 100 == 0) {
-        genetic.setFlag();
-    }
-
-    noStroke();
-
-    fill(pista.textBackColor);
-    textSize(16);
     if (genetic.melhor) {
-        const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-        text(`Ativos: ${vivos}. FC: ${frameCount} Timer: ${timer} / ${pista.pistaTimeOut} Volta: ${genetic.melhor.lap} Record: ${genetic.melhor.km.toFixed(0)} km Completo: ${percentComplete}% Pista: ${pista.selectedPista} G${nGeracao + 1}`, 10, 20);
+
+        if (!world.trainigMode || (world.trainigMode && frameCount % 40 == 0)) {
+
+            if (timer % 100 == 0) {
+                genetic.setFlag();
+            }
+
+            if (world.trainigMode) background(pista.backcolor);
+            noStroke();
+            fill(pista.textBackColor);
+            textSize(16);
+            const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
+            const txtBetter = `Voltas: ${genetic.melhor.lap}. km: ${genetic.melhor.km.toFixed(0)} - ${percentComplete}%`;
+
+            text(`Ativos: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
+
+        }
+
     }
 
     if (genetic.melhorCorrente && nGeracao > 0) {
@@ -268,7 +262,7 @@ function draw() {
 
     }
 
-    ShowMousePoint()
+    if (!world.trainigMode) ShowMousePoint()
 
 }
 
@@ -282,18 +276,18 @@ function ShowMousePoint() {
             est = roads[mx][my];
         }
 
-        
+
         let px = mx;
         let py = my;
-        
+
         px = (mx > (windowWidth / 2)) ? mx - 200 : mx + 30
         py = (my > (windowHeight / 2)) ? my - 20 : my + 30
-        
+
         stroke(200)
         strokeWeight(0);
         fill(255);
-        rect(px-4,py-20,180,28);
-        fill(50,50,255);
+        rect(px - 4, py - 20, 180, 28);
+        fill(50, 50, 255);
         strokeWeight(0);
         textStyle('bold')
         text(`(${mouseX},${mouseY}) km: ${est}`, px, py);

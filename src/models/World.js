@@ -9,6 +9,7 @@ class World {
         this.startWeightSaved = true;
         this.engineSound = false;
         this.endsWhenFinishLine = false;
+        this.trainigMode = false;
 
     }
 }

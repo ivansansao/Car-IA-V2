@@ -20,11 +20,13 @@ function keyPressed() {
         world.endsWhenFinishLine = !world.endsWhenFinishLine;
         console.log(`Ends when hit finish line: ${world.endsWhenFinishLine}`);           
     } else if (key == 'b') {
-        world.showCars = !world.showCars;
+        // world.showCars = !world.showCars;
+        world.trainigMode = !world.trainigMode;
+        console.log(`Training mode: ${world.trainigMode}`);
     } else if (key == 'c') { // Change pista.        
         pista.togglePista();
     } else if (key == 'd') {
-        showFunctionalities = !showFunctionalities;
+        // showFunctionalities = !showFunctionalities;
     } else if (key == 'e') { // Toggle elitism
         elitism = !elitism;
         console.log('Elitism: ', elitism);

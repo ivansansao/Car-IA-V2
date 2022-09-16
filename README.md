@@ -28,7 +28,7 @@ Command keys:
 Key | Action
 ----|-----------------
 a   | Ends generation when hit finish line
-b   | Stop rendering cars to improve training performance
+b   | Trainig mode, stop rendering the things to improve training performance
 c   | Change track layout
 e   | Enables/disables elitism
 g   | Shows the background
