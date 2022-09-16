@@ -683,7 +683,7 @@ class Car {
                 lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
                 circle(menorHit.x, menorHit.y, 10);
 
-                text(rayIndex, menorHit.x, menorHit.y);
+                // text(rayIndex, menorHit.x, menorHit.y);
 
                 if (this.showSensorValue) {
                     noStroke();
