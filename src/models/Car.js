@@ -32,7 +32,7 @@ class Car {
         this.lapCount = 0;
         this.showInfo = false;
         this.speed = 0;
-        this.gear = 1; // -1 Reverse, 1 Dinamic
+        this.gear = 0; // -1 Reverse, 1 Dinamic
         this.braking = false;
         this.acceleration = '';
         this.demo = new Demo();
@@ -43,6 +43,7 @@ class Car {
         this.deadWayType = { crashed: 0, stopped: 1, endOfTime: 2, offTrack: 3 };
         this.deadWay = undefined;
         this.normalDead = false;
+        this.accHistory = [];
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -54,6 +55,16 @@ class Car {
         }
 
         this.setColor();
+
+    }
+
+    addAccHistory(action) {
+
+        const last = this.accHistory[this.accHistory.length-1];
+
+        if (last != action) {
+            this.accHistory.push(action);
+        }
 
     }
 
@@ -281,12 +292,14 @@ class Car {
     engageDinamic() {
         if (this.speed == 0) {
             this.gear = 1;
+            this.addAccHistory('D');
         }
     }
 
     engageReverse() {
         if (this.speed == 0) {
             this.gear = -1;
+            this.addAccHistory('R');
         }
     }
 
