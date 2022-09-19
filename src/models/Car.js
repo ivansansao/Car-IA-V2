@@ -53,6 +53,10 @@ class Car {
             this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
 
         }
+        // for (let i = 270; i < 450; i += 9) {
+        //     this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
+
+        // }
 
         this.setColor();
 
@@ -608,10 +612,13 @@ class Car {
 
         if (this.pos.x == this.lastPos.x && this.pos.y == this.lastPos.y) {
             this.kill(true, this.deadWayType.stopped);
-        }
 
-        if (this.km == this.lastKm) {
-            this.kill(true, this.deadWayType.stopped);
+        }
+        if (this.lastKm > 0) {
+
+            if (abs(this.lastKm - this.km) < 2) {
+                this.kill(true, this.deadWayType.stopped);
+            }
         }
 
         this.lastPos.x = this.pos.x;

@@ -195,11 +195,12 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (getFrameRate() > 61 || vivos < 10) {
+        if (getFrameRate() > 50 || vivos < 10) {
 
             const perToEnd = 100 - (timer / pista.pistaTimeOut * 100)
 
-            if (perToEnd > 50) {
+            // if (perToEnd > 60) {
+            if (timer < 800) {
                 addMoreCar();
             }
 
@@ -230,7 +231,7 @@ function draw() {
             textSize(16);
             const mapToKm = (genetic.melhor.km*0.001).toFixed(3).replace(/\./g, ',');
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '': percentComplete + '%'}`;
+            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '': percentComplete + '%'}`;            
 
             text(`Ativos: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
 
