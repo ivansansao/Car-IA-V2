@@ -44,6 +44,8 @@ class Car {
         this.deadWay = undefined;
         this.normalDead = false;
         this.accHistory = [];
+        this.initialTime = frameCount;
+        this.finalTime = this.initialTime;
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -320,6 +322,7 @@ class Car {
         this.pos.add(irPara);
 
         this.aliveTime++;
+        this.finalTime = frameCount;
 
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
@@ -464,6 +467,22 @@ class Car {
 
     }
 
+    getTravelledDistance() {
+        return pista.trackSize - this.km;
+    }
+
+    getTravelledTime() {
+        return this.finalTime - this.initialTime;
+    }
+
+    getAverageSpeed() {
+        let as = this.getTravelledDistance() / this.getTravelledTime();
+
+        if (as == Infinity) as = 0.0;
+
+        return as;
+    }
+
     kill(normalDead, deadWay) {
 
         if (!this.batido) {
@@ -475,8 +494,7 @@ class Car {
 
             this.engineSound.stop();
             this.normalDead = normalDead;
-            this.deadWay = deadWay;
-
+            this.deadWay = deadWay;            
 
         }
     }
@@ -562,7 +580,7 @@ class Car {
             strokeWeight(1);
             switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
-            text(`km: ${this.km} Voltas: ${this.lap}`, x + 2, y += 12);
+            text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.getAverageSpeed()}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);

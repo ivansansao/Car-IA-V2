@@ -222,7 +222,7 @@ function draw() {
         if (!world.trainigMode || (world.trainigMode && frameCount % 40 == 0)) {
 
             if (timer % 100 == 0) {
-                genetic.setFlag();
+                if (showFlag) genetic.setFlag();
             }
 
             if (world.trainigMode) background(pista.backcolor);
