@@ -219,9 +219,7 @@ class RedeNeural {
 
     }
     mutate(rate, maxMutations = Infinity) {
-
-        maxMutations = Infinity;
-        
+       
         tf.tidy(() => {
 
             // maxMutations = Number(random(1,4).toFixed(0));
