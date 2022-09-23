@@ -195,12 +195,11 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (getFrameRate() > 50 || vivos < 10) {
+        if (getFrameRate() > 59 || vivos < 10) {
 
             const perToEnd = 100 - (timer / pista.pistaTimeOut * 100)
 
-            // if (perToEnd > 60) {
-            if (timer < 800) {
+            if (perToEnd > 50) {
                 addMoreCar();
             }
 
@@ -311,7 +310,7 @@ function addMoreCar() {
         let child = new Car('m', true, true, false);
         // pista.anguloNascimento = radians(random(0, 360));
         child.ia.model.setWeights(weightCopies);
-        if (frameCount % 4 == 0)
+        if (frameCount % 5 == 0)
             child.mutate(Number(random(0.01, 0.6).toFixed(15)));
         else
             child.mutate(Number(random(0.01, 0.015).toFixed(15)), 1);
