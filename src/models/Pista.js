@@ -141,15 +141,9 @@ class Pista {
             this.timeOutStopped = 90;
 
 
-            if (random(1) > 0.5 || true) {
-                this.localNascimento = createVector(400, 65);
-                this.anguloNascimento = radians(180);
-                // this.localNascimento = createVector(1600, 150);
-                // this.anguloNascimento = radians(0);
-            } else {
-                this.localNascimento = createVector(1780, 600);
-                this.anguloNascimento = radians(270);
-            }
+            this.localNascimento = createVector(787, 653);
+            this.localNascimento = createVector(400, 65);
+            this.anguloNascimento = radians(180);
 
             this.startRoad = { i: 453, j: 66, value: 0 };
             this.corDaPista = { r: 224, g: 225, b: 243 };
@@ -218,6 +212,7 @@ class Pista {
     }
     togglePista() {
 
+        cars = [];
         genetic.melhor = null;
         nGeracao = 0;        
         this.spriteLoaded = false;
@@ -231,7 +226,7 @@ class Pista {
 
         this.reset();
         this.getSpriteFundo();
-        genetic.firstGeneration();
+        genetic.nextGeneration();
 
 
 

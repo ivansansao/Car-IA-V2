@@ -358,7 +358,7 @@ class Car {
                 foo.speak('Carro vazou da pista');
                 console.log(`Carro '${this.marca}' vazou da pista`);
                 this.km = Infinity;
-                this.lap = 1;
+                this.lap = 0;
                 this.kill(false, this.deadWayType.offTrack);
             }
         }
