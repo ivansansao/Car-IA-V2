@@ -489,7 +489,7 @@ class Car {
 
             vivos--;
             this.batido = true;
-            genetic.setFlag();
+            // genetic.setFlag();
             genetic.deads++;
 
             this.engineSound.stop();

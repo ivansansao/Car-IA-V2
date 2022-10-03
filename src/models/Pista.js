@@ -75,6 +75,7 @@ class Pista {
         let wallsPista
         this.ranhuras = [];
         this.setPistaTimeOut();
+        pg.clear();
 
 
         // // Track map.
@@ -123,6 +124,7 @@ class Pista {
             collideCars = false;
             wallsPista = getPista3();
             this.timeOutStopped = 100;
+            this.localNascimento = createVector(434, 790);
             this.localNascimento = createVector(1140, 280);
             this.anguloNascimento = radians(180);
             this.backcolor = [154, 179, 161];
@@ -211,8 +213,7 @@ class Pista {
         this.spriteRip = getSpriteRip1();
     }
     togglePista() {
-
-        cars = [];
+        
         genetic.melhor = null;
         nGeracao = 0;        
         this.spriteLoaded = false;
@@ -224,19 +225,13 @@ class Pista {
             this.selectedPista++;
         }
 
-        this.reset();
+        this.carMajorDistance = 0;
+        this.kmWheel = 0;
+        this.make(); 
         this.getSpriteFundo();
         genetic.nextGeneration();
 
 
-
-    }
-
-    reset() {
-        this.carMajorDistance = 0;
-        this.kmWheel = 0;
-        this.make();
-        pg.clear();
     }
 
     setMajorDistance(distance) {
