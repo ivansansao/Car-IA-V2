@@ -19,6 +19,7 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+let showDeadCars = false;
 let showFunctionalities = false;
 let roads = [];
 // const startRoad = { i: 500, j: 65, value: 0 }; // linha, coluna, valor

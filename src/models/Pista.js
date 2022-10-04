@@ -169,7 +169,7 @@ class Pista {
 
         } else if (this.selectedPista == 6) {
 
-            collideCars = true;
+            collideCars = false;
             wallsPista = getPista6();
             this.ranhuras = getRanhuras6();
             this.timeOutStopped = 1000;

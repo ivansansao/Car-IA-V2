@@ -66,7 +66,7 @@ class Car {
 
     addAccHistory(action) {
 
-        const last = this.accHistory[this.accHistory.length-1];
+        const last = this.accHistory[this.accHistory.length - 1];
 
         if (last != action) {
             this.accHistory.push(action);
@@ -494,7 +494,7 @@ class Car {
 
             this.engineSound.stop();
             this.normalDead = normalDead;
-            this.deadWay = deadWay;            
+            this.deadWay = deadWay;
 
         }
     }
@@ -525,28 +525,22 @@ class Car {
         this.showInfoCar();
 
         if (this.batido) {
-            // imageMode(CENTER);
-            // image(pista.spriteRip, this.pos.x, this.pos.y);
-            strokeWeight(1);
-            fill(0, 0, 255);
-            stroke(255);
-            circle(this.pos.x, this.pos.y, 5);
-        } else {
 
+            if (showDeadCars) {
+                pg.push();
+                pg.translate(this.pos.x, this.pos.y);
+                pg.rotate(this.heading);
+                this.drawDeadCar();
+                pg.pop();
+            }
+
+        } else {
 
             push();
             translate(this.pos.x, this.pos.y);
             rotate(this.heading);
             this.drawCar();
-
             pop();
-
-            // stroke(255, 255, 255);
-            // fill(0, 0, 0);
-            // strokeWeight(4);
-            // textSize(14);
-            // text(`${this.km}`, this.pos.x, this.pos.y);
-
 
         }
 
@@ -768,6 +762,154 @@ class Car {
         ]
 
         return limits[rayIndex].collide;
+    }
+
+    drawDeadCar() {
+
+        pg.stroke(100);
+        pg.strokeWeight(2);
+
+        pg.fill(100);
+        pg.rect(-3, -11.5, 6, 4, 1); // Roda traseira esquerda
+        pg.rect(-3, 7.5, 6, 4, 1); // Roda traseira direita
+
+        pg.push();
+        pg.translate(23, -12);
+
+        let mapLWeel
+        let mapRWeel
+
+        if (this.volanteAngle == 'l') {
+            mapLWeel = map(this.speed, 0, 2, 0.50, 0.02);
+            mapRWeel = map(this.speed, 0, 2, 0.25, 0.01);
+        }
+        if (this.volanteAngle == 'r') {
+            mapLWeel = map(this.speed, 0, 2, 0.25, 0.01);
+            mapRWeel = map(this.speed, 0, 2, 0.50, 0.02);
+        }
+
+        if (this.volanteAngle == 'l') pg.rotate(-mapLWeel);
+        if (this.volanteAngle == 'r') pg.rotate(mapLWeel);
+        pg.rect(-3, 0.5, 6, 4, 1); // Roda dianteira esquerda        
+        pg.pop();
+
+        pg.push();
+        pg.translate(23, 12);
+        if (this.volanteAngle == 'l') pg.rotate(-mapRWeel);
+        if (this.volanteAngle == 'r') pg.rotate(mapRWeel);
+        pg.rect(-3, -4.5, 6, 4, 1); // Roda dianteira direita
+        pg.pop();
+
+        pg.strokeWeight(1); // Contorno fino preto do carro
+        pg.stroke(0);
+        pg.fill(this.cor);
+        pg.rect(-9, -11, 42, 22, 5);
+
+        // Portas.
+        pg.stroke(this.cor)
+        pg.fill(this.cor);
+        pg.strokeWeight(3);
+
+        pg.push();
+        pg.translate(19, -9.5)
+        pg.rotate(this.leftDoorAngle)
+        pg.line(-10, 0, 0, 0)
+        pg.noStroke();
+        pg.arc(-3, -2, 8, 6, 5.0, 1.0, CHORD)
+        pg.pop();
+
+        pg.push();
+        pg.translate(19, 9.5)
+        pg.rotate(-this.rightDoorAngle)
+        pg.line(-10, 0, 0, 0)
+        pg.noStroke();
+        pg.arc(-3, 2, 8, 6, -1.0, -5.0, CHORD)
+        pg.pop();
+
+
+        // Corpo do carro.
+        pg.strokeWeight(2);
+        pg.stroke(this.cor);
+        pg.fill(this.cor);
+        pg.rect(-8, -10, 40, 20, 5);
+
+        // Vidros.
+        pg.noStroke();
+        pg.fill(0);
+        pg.rect(-8, -10, 28, 20, 4);
+
+        // Teto.
+        pg.fill(this.cor);
+        pg.rect(-2, -8, 15, 16, 0);
+
+        // Colluns.
+
+        pg.stroke(this.cor) // Frontal columns
+        // stroke(255,0,0)
+        pg.strokeWeight(0.8);
+        pg.line(19, 9, 10, 7);
+        pg.line(19, -9, 10, -7);
+
+        pg.strokeWeight(0.8); // Rear columns
+        pg.line(-6.6, 9, 0, 7);
+        pg.line(-6.6, -9, 0, -7);
+
+        // Hood frizes.
+        pg.stroke(100)
+        pg.strokeWeight(0.4);
+        pg.line(32, 4, 20, 9);
+        pg.line(32, 9 - 13, 20, 4 - 13);
+
+        // Ré.
+        if (this.braking) {
+
+            pg.stroke(255, 0, 0);
+            pg.strokeWeight(2);
+            pg.fill(0);
+            pg.rect(-9, 2, 3, 6, 4);
+            pg.rect(-9, -8, 3, 6, 4);         
+
+        } else if (this.gear == -1) {
+
+            pg.stroke(255, 255, 0);
+            pg.strokeWeight(2);
+            pg.fill(0);
+            pg.rect(-9, 2, 3, 6, 4);
+            pg.rect(-9, -8, 3, 6, 4);
+        }       
+
+        // Frontal numeric.
+        if (this.lap > 0) {
+
+            pg.push();
+            pg.translate(24, 0)
+            pg.rotate(PI * 1.5)
+            pg.noStroke();
+            // fill(240);
+            // circle(0, 0, 8);
+            pg.fill(0);
+            pg.textSize(4);
+            pg.textAlign(CENTER);
+            pg.text(this.id, 0, 1)
+            pg.pop();
+
+        }
+
+        // Faróis dianteiros.
+        pg.fill(this.luzes ? 180 : 100)
+        pg.noStroke();
+        pg.arc(27.5, -5, 9, 10, 4.6, 0.0, CHORD) // Left
+        pg.arc(27.5, 5, 9, 10, 0.0, -4.6, CHORD) // Right
+        pg.strokeWeight(0.1);
+        pg.stroke(this.luzes ? 255 : this.cor);
+        pg.noFill();
+        pg.rect(29.5, -8.7, 0.5, 0.7);
+        pg.line(29.5, -8.7, 28.5, -8.7);
+        pg.rect(29.5, 8.0, 0.5, 0.7);
+        pg.line(29.5, 8.7, 28.5, 8.7);
+
+        pg.noStroke();
+
     }
 
     drawCar() {

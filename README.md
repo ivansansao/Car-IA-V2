@@ -31,6 +31,7 @@ a   | Ends generation when hit finish line
 b   | Trainig mode, stop rendering the things to improve training performance
 c   | Change track layout
 e   | Enables/disables elitism
+f   | Shows crashed cars
 g   | Shows the background
 h   | Shows car details
 i   | Shows information about the car

@@ -31,6 +31,7 @@ function keyPressed() {
         elitism = !elitism;
         console.log('Elitism: ', elitism);
     } else if (key == 'f') {
+        showDeadCars = !showDeadCars;
     } else if (key == 'g') { // Show Background 
         showBackground = !showBackground;
     } else if (key == 'h') { // Mostrar detalhes dos carros
