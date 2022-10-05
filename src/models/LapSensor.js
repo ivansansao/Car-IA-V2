@@ -31,7 +31,7 @@ class LapSensor {
 
             if (this.whos.includes(who)) {
 
-                this.whos.pop(who)
+                this.whos = this.whos.filter((e) => e != who) // Delete specific object from array!
                 
                 const where = this.nearestLine(cx, cy);
 

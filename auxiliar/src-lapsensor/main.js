@@ -5,7 +5,7 @@ function setup() {
 
     createCanvas(windowWidth, windowHeight);
     sensors.push(new LapSensor('Ana', 200, 40, onHitSensor));
-    sensors.push(new LapSensor('Beto', 100, 80, onHitSensor));
+    // sensors.push(new LapSensor('Beto', 100, 80, onHitSensor));
 
     birds.push(new Bird('Azul', random(50, 300), 70, [0, 0, 200]));
     birds.push(new Bird('Verde', random(50, 300), 70, [0, 200, 0]));
@@ -29,10 +29,10 @@ function draw() {
             bird.pos.x += random(-1, 1);
             bird.pos.y += random(-1, 1);
         }
-        
+
         bird.show(120);
 
-
+        let y = 150;
         for (const sensor of sensors) {
             const hit = sensor.hit(bird, bird.pos.x, bird.pos.y, bird.dia);
 
@@ -42,6 +42,11 @@ function draw() {
                 sensor.show([160])
 
             }
+            for (let i = 0; i < sensor.whos.length; i++) {
+                text(sensor.whos[i].name, sensor.pos.x, y + (i * 15))
+            }
+
+            y += 20;
         }
 
 
@@ -51,6 +56,12 @@ function draw() {
 
 function onHitSensor(who, sensor, where, entry) {
     who.highlight = entry;
+    if (entry) {
+        who.lap++;
+
+    } else {
+        who.lap--;
+    }
     console.log(`${who.name} hits sensor '${sensor.name}' ${entry ? 'entry' : 'exit'} on ${where}`);
 }
 
@@ -61,18 +72,22 @@ class Bird {
         this.dia = 20;
         this.color = color;
         this.highlight = false;
+        this.lap = 0;
     }
     show() {
 
         noStroke();
         fill(this.color);
         circle(this.pos.x, this.pos.y, this.dia)
-
-        if (this.highlight) {            
+        
+        if (this.highlight) {
             fill(255);
-            circle(this.pos.x, this.pos.y, this.dia/2)
+            circle(this.pos.x, this.pos.y, this.dia / 2)            
         } else {
         }
+        textSize(8)
+        fill(0)
+        text(this.lap, this.pos.x-2, this.pos.y+2);
     }
 }
 
@@ -107,7 +122,8 @@ class LapSensor {
 
             if (this.whos.includes(who)) {
 
-                this.whos.pop(who)
+                this.whos = this.whos.filter((e) => e != who)
+                
                 const where = this.nearestLine(cx, cy);
 
                 if (typeof this.onHit == 'function') {
@@ -138,7 +154,7 @@ class LapSensor {
     show(colr) {
         noStroke();
         fill(colr)
-        rect(this.pos.x, this.pos.y, this.width, this.height,4)
+        rect(this.pos.x, this.pos.y, this.width, this.height, 4)
     }
 
 }
