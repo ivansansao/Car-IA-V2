@@ -127,8 +127,9 @@ class Pista {
             this.localNascimento = createVector(1140, 280);
             this.localNascimento = createVector(434, 790);
             this.localNascimento = createVector(345, 650);
-            this.anguloNascimento = radians(180);
+            this.localNascimento = createVector(1273, 790);
             this.anguloNascimento = radians(0);
+            this.anguloNascimento = radians(180);
             this.backcolor = [154, 179, 161];
             this.startRoad = { i: 1192, j: 280, value: 0 };
             this.corDaPista = { r: 202, g: 202, b: 202 };
