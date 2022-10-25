@@ -667,6 +667,16 @@ class Car {
         }
         this.setColor();
     }
+
+    getExternDistanceWall(i) {
+        
+        const fullDistance = this.rays[i].savedDistance;
+        const offSet = this.getRayCollide(i);
+
+        return fullDistance - offSet;
+
+    }
+
     look(walls) {
 
         if (this.batido) {
@@ -677,12 +687,12 @@ class Car {
 
         // Percorre todas as paredes para achar a parece mais perto.
 
-        // for (ray of this.rays) {
+        // Scan rays
         for (let i = 0; i < this.rays.length; i++) {
 
             const ray = this.rays[i];
 
-            let maisPerto = Infinity;
+            let nearestWall = Infinity;
             let menorHit = null;
             let rayIndex = null;
 
@@ -696,8 +706,8 @@ class Car {
 
                     if (hit) {
                         const d = p5.Vector.dist(ray.pos, hit);
-                        if (d < maisPerto) {
-                            maisPerto = d;
+                        if (d < nearestWall) {
+                            nearestWall = d;
                             menorHit = hit;
                             rayIndex = i;
                         }
@@ -705,7 +715,7 @@ class Car {
                 }
             }
 
-            ray.savedDistance = maisPerto;
+            ray.savedDistance = nearestWall;
 
             if (menorHit && this.showRays) {
 
@@ -720,7 +730,7 @@ class Car {
                 if (this.showSensorValue) {
                     noStroke();
                     fill(0, 0, 255);
-                    text(`${maisPerto.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
+                    text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
                 }
 
 

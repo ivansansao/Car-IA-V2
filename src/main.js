@@ -157,26 +157,36 @@ function draw() {
 
             carInputs.push(car.gear);
             carInputs.push(car.speed);
-            carInputs.push(car.rays[0].savedDistance);
-            carInputs.push(car.rays[1].savedDistance);
-            carInputs.push(car.rays[2].savedDistance);
-            carInputs.push(car.rays[3].savedDistance);
-            carInputs.push(car.rays[4].savedDistance);
-            carInputs.push(car.rays[5].savedDistance);
-            carInputs.push(car.rays[6].savedDistance);
-            carInputs.push(car.rays[7].savedDistance);
-            carInputs.push(car.rays[8].savedDistance);
-            carInputs.push(car.rays[9].savedDistance);
-            carInputs.push(car.rays[10].savedDistance);
-            carInputs.push(car.rays[11].savedDistance);
-            carInputs.push(car.rays[12].savedDistance);
-            carInputs.push(car.rays[13].savedDistance);
-            carInputs.push(car.rays[14].savedDistance);
-            carInputs.push(car.rays[15].savedDistance);
-            carInputs.push(car.rays[16].savedDistance);
-            carInputs.push(car.rays[17].savedDistance);
-            carInputs.push(car.rays[18].savedDistance);
-            carInputs.push(car.rays[19].savedDistance);
+
+            // for (let i = 0; i < 20; i++) {
+            //     if (car.marca == 'c' || car.marca == 'X') {
+            //         carInputs.push(car.getExternDistanceWall(i));
+            //     } else {                    
+            //         // carInputs.push(car.rays[i].savedDistance);
+            //         carInputs.push(car.getExternDistanceWall(i));
+            //     }
+            // }
+            
+            carInputs.push(car.getExternDistanceWall(0));
+            carInputs.push(car.getExternDistanceWall(1));
+            carInputs.push(car.getExternDistanceWall(2));
+            carInputs.push(car.getExternDistanceWall(3));
+            carInputs.push(car.getExternDistanceWall(4));
+            carInputs.push(car.getExternDistanceWall(5));
+            carInputs.push(car.getExternDistanceWall(6));
+            carInputs.push(car.getExternDistanceWall(7));
+            carInputs.push(car.getExternDistanceWall(8));
+            carInputs.push(car.getExternDistanceWall(9));
+            carInputs.push(car.getExternDistanceWall(10));
+            carInputs.push(car.getExternDistanceWall(11));
+            carInputs.push(car.getExternDistanceWall(12));
+            carInputs.push(car.getExternDistanceWall(13));
+            carInputs.push(car.getExternDistanceWall(14));
+            carInputs.push(car.getExternDistanceWall(15));
+            carInputs.push(car.getExternDistanceWall(16));
+            carInputs.push(car.getExternDistanceWall(17));
+            carInputs.push(car.getExternDistanceWall(18));
+            carInputs.push(car.getExternDistanceWall(19));
 
             car.think(carInputs);
             car.verificaColisaoRanhura(pista.ranhuras);
