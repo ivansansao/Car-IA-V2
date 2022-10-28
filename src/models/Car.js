@@ -363,7 +363,6 @@ class Car {
             }
         }
 
-
     }
 
     getPontoAfrente(offset = 0) {
@@ -696,6 +695,7 @@ class Car {
             let menorHit = null;
             let rayIndex = null;
 
+            // Scan walls
             for (const wall of walls) {
 
                 if (wall.id == this.id) {
@@ -725,15 +725,11 @@ class Car {
                 lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
                 circle(menorHit.x, menorHit.y, 10);
 
-                // text(rayIndex, menorHit.x, menorHit.y);
-
                 if (this.showSensorValue) {
                     noStroke();
                     fill(0, 0, 255);
                     text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
                 }
-
-
 
             }
 
@@ -948,7 +944,7 @@ class Car {
         }
 
         stroke(100);
-        strokeWeight(2);
+        strokeWeight(3);
 
         fill(100);
         rect(-3, -11.5, 6, 4, 1); // Roda traseira esquerda
@@ -960,12 +956,12 @@ class Car {
         let mapRWeel
 
         if (this.volanteAngle == 'l') {
-            mapLWeel = map(this.speed, 0, 2, 0.50, 0.02);
-            mapRWeel = map(this.speed, 0, 2, 0.25, 0.01);
+            mapRWeel = map(this.speed, 0, 2, 0.50, 0.01);
+            mapLWeel = map(this.speed, 0, 2, 0.75, 0.02);
         }
         if (this.volanteAngle == 'r') {
-            mapLWeel = map(this.speed, 0, 2, 0.25, 0.01);
-            mapRWeel = map(this.speed, 0, 2, 0.50, 0.02);
+            mapLWeel = map(this.speed, 0, 2, 0.50, 0.01);
+            mapRWeel = map(this.speed, 0, 2, 0.75, 0.02);
         }
 
         if (this.volanteAngle == 'l') rotate(-mapLWeel);
@@ -1038,8 +1034,8 @@ class Car {
         // Hood frizes.
         stroke(100)
         strokeWeight(0.4);
-        line(32, 4, 20, 9);
-        line(32, 9 - 13, 20, 4 - 13);
+        line(32,  4, 21,  5);
+        line(32, -4, 21, -5);
 
         // Ré.
         if (this.braking) {
