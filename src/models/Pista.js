@@ -131,10 +131,10 @@ class Pista {
             this.lapSensors[0].pos.y = 233;
             this.lapSensors[0].width = 5;
             this.lapSensors[0].height = 80;
-            this.localNascimento = createVector(1140, 280);
             this.localNascimento = createVector(434, 790);
             this.localNascimento = createVector(345, 650);
             this.localNascimento = createVector(1273, 790);
+            this.localNascimento = createVector(1128, 280);
             
             // if (nGeracao % 2 == 0 ) {                
             //     this.anguloNascimento = radians(180);

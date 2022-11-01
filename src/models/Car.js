@@ -27,7 +27,7 @@ class Car {
         this.qtdReh = 0;
         this.ranhurasColetadas = [];
         this.allowLazy = allowLazy;
-        this.id = Number(random(0, 9999).toFixed(0));
+        this.id = newCarId();
         this.luzes = true;
         this.lapCount = 0;
         this.showInfo = false;
@@ -565,7 +565,7 @@ class Car {
             fill(255, 255, 255);
             strokeWeight(1);
             line(this.pos.x, y + 50, this.pos.x, this.pos.y);
-            rect(x, y, 150, 65, 4);
+            rect(x, y, 160, 65, 4);
 
             textSize(10);
             fill(0, 0, 255);
@@ -573,11 +573,11 @@ class Car {
             strokeWeight(1);
             switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
-            text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.getAverageSpeed()}`, x + 2, y += 12);
+            text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.getAverageSpeed().toFixed(3)}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
-            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated}`, x + 2, y += 12);
+            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated} ID: ${this.id}`, x + 2, y += 12);
 
 
         }
@@ -668,7 +668,7 @@ class Car {
     }
 
     getExternDistanceWall(i) {
-        
+
         const fullDistance = this.rays[i].savedDistance;
         const offSet = this.getRayCollide(i);
 
@@ -719,16 +719,20 @@ class Car {
 
             if (menorHit && this.showRays) {
 
-                fill(255, 0, 0);
-                stroke(255, 0, 0);
-                strokeWeight(1);
-                lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
-                circle(menorHit.x, menorHit.y, 10);
+                if ([0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19].includes(i)) {
 
-                if (this.showSensorValue) {
-                    noStroke();
-                    fill(0, 0, 255);
-                    text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
+                    fill(255, 0, 0);
+                    stroke(255, 0, 0);
+                    strokeWeight(1);
+                    lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
+                    circle(menorHit.x, menorHit.y, 10);
+                    text(i, menorHit.x, menorHit.y);
+
+                    if (this.showSensorValue) {
+                        noStroke();
+                        fill(0, 0, 255);
+                        text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
+                    }
                 }
 
             }
@@ -873,7 +877,7 @@ class Car {
             pg.strokeWeight(2);
             pg.fill(0);
             pg.rect(-9, 2, 3, 6, 4);
-            pg.rect(-9, -8, 3, 6, 4);         
+            pg.rect(-9, -8, 3, 6, 4);
 
         } else if (this.gear == -1) {
 
@@ -882,7 +886,7 @@ class Car {
             pg.fill(0);
             pg.rect(-9, 2, 3, 6, 4);
             pg.rect(-9, -8, 3, 6, 4);
-        }       
+        }
 
         // Frontal numeric.
         if (this.lap > 0) {
@@ -1034,7 +1038,7 @@ class Car {
         // Hood frizes.
         stroke(100)
         strokeWeight(0.4);
-        line(32,  4, 21,  5);
+        line(32, 4, 21, 5);
         line(32, -4, 21, -5);
 
         // Ré.
@@ -1162,3 +1166,4 @@ function eliminarTodosCars() {
         car.kill(false, car.deadWayType.endOfTime);
     }
 }
+

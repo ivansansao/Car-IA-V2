@@ -56,6 +56,7 @@ let running = true;
 let showInfoCar = false;
 let showFlag = false;
 let luzes = true;
+let carId = 0;
 
 let soundBrake;
 let audio;
@@ -173,15 +174,17 @@ function draw() {
             carInputs.push(car.getExternDistanceWall(3));
             carInputs.push(car.getExternDistanceWall(4));
             carInputs.push(car.getExternDistanceWall(5));
-            carInputs.push(car.getExternDistanceWall(6));
-            carInputs.push(car.getExternDistanceWall(7));
-            carInputs.push(car.getExternDistanceWall(8));
-            carInputs.push(car.getExternDistanceWall(9));
-            carInputs.push(car.getExternDistanceWall(10));
-            carInputs.push(car.getExternDistanceWall(11));
-            carInputs.push(car.getExternDistanceWall(12));
-            carInputs.push(car.getExternDistanceWall(13));
-            carInputs.push(car.getExternDistanceWall(14));
+
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+            carInputs.push(0.0);
+
             carInputs.push(car.getExternDistanceWall(15));
             carInputs.push(car.getExternDistanceWall(16));
             carInputs.push(car.getExternDistanceWall(17));
@@ -241,7 +244,7 @@ function draw() {
             textSize(16);
             const mapToKm = (genetic.melhor.km*0.001).toFixed(3).replace(/\./g, ',');
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '': percentComplete + '%'}`;            
+            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '': percentComplete + '%'}  ID: ${genetic.melhor.id}`;            
 
             text(`Ativos: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
 
@@ -356,4 +359,9 @@ function showCredits() {
 
 function zerarFrota() {    
     cars = [];
+}
+
+function newCarId() {
+    carId++;
+    return carId;
 }
