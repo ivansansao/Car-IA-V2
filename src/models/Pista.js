@@ -53,7 +53,6 @@ class Pista {
                 }
 
                 pista.pistaTimeOut = pista.trackSize * (car.lap + 1);
-                console.log(pista.pistaTimeOut, car.lap)
 
             } else {
                 car.kill(true, car.deadWayType.crashed);
