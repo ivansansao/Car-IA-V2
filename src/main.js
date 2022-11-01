@@ -211,7 +211,7 @@ function draw() {
 
         if (getFrameRate() > 59 || vivos < 10) {
 
-            const perToEnd = 100 - (timer / pista.pistaTimeOut * 100)
+            const perToEnd = 100 - (timer / pista.trackSize * 100)
 
             if (perToEnd > 50) {
                 addMoreCar();

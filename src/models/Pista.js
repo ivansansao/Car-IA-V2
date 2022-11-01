@@ -1,6 +1,7 @@
 // https://www.base64-image.de/
 
 class Pista {
+
     constructor() {
 
         this.waveFronted = false;
@@ -17,6 +18,8 @@ class Pista {
         this.carMajorDistance = 0;
         this.recordFlag = new Flag();
         this.recordKm = Infinity;
+        this.recordLap = 0;
+
         this.recordRanhuras = 0;
         this.population = 25;
         this.timeOutStopped = 100;
@@ -34,6 +37,7 @@ class Pista {
 
         this.make();
 
+
     }
 
     onHitSensor(car, sensor, where, entry) {
@@ -47,6 +51,10 @@ class Pista {
                         genetic.nextGeneration();
                     }
                 }
+
+                pista.pistaTimeOut = pista.trackSize * (car.lap + 1);
+                console.log(pista.pistaTimeOut, car.lap)
+
             } else {
                 car.kill(true, car.deadWayType.crashed);
             }
@@ -54,14 +62,14 @@ class Pista {
     }
 
     setPistaTimeOut() {
-        
+
         this.pistaTimeOut = this.trackSize;
         this.pistaTimeOut = Number(this.pistaTimeOut.toFixed(0));
 
         if (this.pistaTimeOut < 100) {
             this.pistaTimeOut = 1000;
         }
-        
+
     }
 
     setFlag(x, y, text) {
@@ -73,6 +81,7 @@ class Pista {
     make() {
 
         let wallsPista
+        this.carsSensorHitted = [];
         this.ranhuras = [];
         this.setPistaTimeOut();
         pg.clear();
@@ -135,7 +144,7 @@ class Pista {
             this.localNascimento = createVector(345, 650);
             this.localNascimento = createVector(1273, 790);
             this.localNascimento = createVector(1128, 280);
-            
+
             // if (nGeracao % 2 == 0 ) {                
             //     this.anguloNascimento = radians(180);
             //     this.localNascimento = createVector(1125, 285);
@@ -222,10 +231,12 @@ class Pista {
         this.spriteRip = getSpriteRip1();
     }
     togglePista() {
-        
+
         genetic.melhor = null;
         genetic.melhores = [];
-        nGeracao = 0;        
+        nGeracao = 0;
+        this.recordKm = Infinity;
+        this.recordLap = 0;
         this.spriteLoaded = false;
         this.waveFronted = false;
 
@@ -237,7 +248,7 @@ class Pista {
 
         this.carMajorDistance = 0;
         this.kmWheel = 0;
-        this.make(); 
+        this.make();
         this.getSpriteFundo();
         genetic.nextGeneration();
 
