@@ -175,15 +175,15 @@ function draw() {
             carInputs.push(car.getExternDistanceWall(4));
             carInputs.push(car.getExternDistanceWall(5));
 
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
-            carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
+            // carInputs.push(0.0);
 
             carInputs.push(car.getExternDistanceWall(15));
             carInputs.push(car.getExternDistanceWall(16));
@@ -315,7 +315,11 @@ function addMoreCar() {
 
     if (genetic.melhor) {
 
-        const weights = genetic.melhor.ia.model.getWeights();
+        const index = frameCount % genetic.melhores.length;
+        const melhor = genetic.melhores[index];
+        // console.log('Index: ',index, ' melhor.id: ', melhor.id, ' melhores len:  ',genetic.melhores.length)
+
+        const weights = melhor.ia.model.getWeights();
         const weightCopies = [];
         for (let i = 0; i < weights.length; i++) {
             weightCopies[i] = weights[i].clone();

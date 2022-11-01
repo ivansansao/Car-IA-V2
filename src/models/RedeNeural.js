@@ -10,8 +10,8 @@ class RedeNeural {
 
     constructor() {
 
-        this.input_nodes = 22;
-        this.hidden_nodes = 8;
+        this.input_nodes = 13; // 22
+        this.hidden_nodes = 5;
         this.output_nodes = 9;
         this.f1 = "linear"; // this.getAnyActivation();
         this.f2 = "selu"; // this.getAnyActivation();
@@ -309,11 +309,19 @@ class RedeNeural {
                 const newValues = new Float32Array(anValues);
                 const newShapes = aShapes[i].split(',').map((e) => { return Number(e) });
 
-                loadedWeights[i] = tf.tensor(newValues, newShapes);
+                try {
+                    loadedWeights[i] = tf.tensor(newValues, newShapes);                    
+                } catch (error) {
+                    console.log(error)
+                }
 
             }
 
-            this.model.setWeights(loadedWeights);
+            try {
+                this.model.setWeights(loadedWeights);                
+            } catch (error) {
+                console.log(error)
+            }
 
         });
     }
