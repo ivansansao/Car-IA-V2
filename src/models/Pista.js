@@ -46,13 +46,12 @@ class Pista {
             if (where.includes('R')) {
                 sensor.color = car.cor;
                 car.lap++;
-                if (car.lap > 0) {
-                    if (world.endsWhenFinishLine) {
-                        genetic.nextGeneration();
-                    }
+                
+                if (world.endsWhenFinishLine) {
+                    genetic.nextGeneration();
+                } else {
+                    pista.pistaTimeOut = pista.trackSize * (car.lap + 1);
                 }
-
-                pista.pistaTimeOut = pista.trackSize * (car.lap + 1);
 
             } else {
                 car.kill(true, car.deadWayType.crashed);
