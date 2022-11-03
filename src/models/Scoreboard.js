@@ -19,7 +19,7 @@ class Scoreboard {
     move(top, left) {
         this.top = top;
         this.left = left;
-        this.cols = [14, 40, 100, 200, 290, 350, 430].map(e => this.left + e);
+        this.cols = [14, 40, 100, 200, 280, 350, 430].map(e => this.left + e);
     }
     update() {
 
@@ -93,8 +93,8 @@ class Scoreboard {
         text('POS', this.cols[icol++], row);
         text('CARRO', this.cols[icol++], row);
         text('KM', this.cols[icol++], row);
-        text('MUT', this.cols[icol++], row);
         text('KM/H', this.cols[icol++], row);
+        text('MUT', this.cols[icol++], row);
         text('MUTAÇÕES', this.cols[icol++], row);
 
         // Table.        
@@ -111,8 +111,8 @@ class Scoreboard {
             text(i + 1 + "º", this.cols[icol++], row);
             text(car.id + ' ' + car.marca, this.cols[icol++], row);
             text(car.km + (car.lap > 0 ? ' (' + car.lap + ')' : ''), this.cols[icol++], row);
-            text(car.mut, this.cols[icol++], row);
             text(car.vm, this.cols[icol++], row);
+            text(car.mut, this.cols[icol++], row);
             text(car.mn, this.cols[icol++], row);
         }
 

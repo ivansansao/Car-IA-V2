@@ -489,7 +489,7 @@ class Car {
         const mut = String(this.ia.mutated).padStart(3,'0');
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7,'0');
 
-        return lap+'-'+km+'-'+mut+'-'+vm;
+        return lap+'-'+km+'-'+vm+'-'+mut;
     }
 
     kill(normalDead, deadWay) {
