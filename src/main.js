@@ -57,7 +57,7 @@ let showInfoCar = false;
 let showFlag = false;
 let luzes = true;
 let carId = 0;
-
+let scoreboard = null;
 let soundBrake;
 let audio;
 let engine;
@@ -85,6 +85,7 @@ function setup() {
     genetic = new Genetic();
 
     pista = new Pista();
+    scoreboard = new Scoreboard();
 
     for (let i = 0; i < 8; i++) {
         walls.push(new Wall());
@@ -120,6 +121,9 @@ function draw() {
         pista.show();
         image(pg, 0, 0);
         showCredits();
+
+        scoreboard.update();
+        scoreboard.show();
 
     }
 
