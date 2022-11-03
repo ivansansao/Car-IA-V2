@@ -34,7 +34,7 @@ class Scoreboard {
                     lap: car.lap,
                     km: car.km,
                     mut: car.ia.mutated,
-                    vm: map(car.getAverageSpeed(),0,3,0,100).toFixed(0),
+                    vm: map(car.getAverageSpeed(),0,3.5,0,100).toFixed(0),
                     cor: car.cor,
                     marca: car.marca,
                     alive: car.batido ? 'X' : '',
