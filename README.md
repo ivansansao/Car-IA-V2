@@ -27,6 +27,7 @@ Command keys:
 
 Key | Action
 ----|-----------------
+1   | Toggle scoreboard show
 a   | Ends generation when hit finish line
 b   | Trainig mode, stop rendering the things to improve training performance
 c   | Change track layout

@@ -73,6 +73,8 @@ function preload() {
 
 function setup() {
 
+
+
     createCanvas(windowWidth, windowHeight);
 
     pg = createGraphics(windowWidth, windowHeight);
@@ -122,8 +124,10 @@ function draw() {
         image(pg, 0, 0);
         showCredits();
 
-        scoreboard.update();
-        scoreboard.show();
+        if (world.showScoreboard) {
+            scoreboard.update();
+            scoreboard.show();
+        }
 
     }
 
@@ -171,7 +175,7 @@ function draw() {
             //         carInputs.push(car.getExternDistanceWall(i));
             //     }
             // }
-            
+
             carInputs.push(car.getExternDistanceWall(0));
             carInputs.push(car.getExternDistanceWall(1));
             carInputs.push(car.getExternDistanceWall(2));
@@ -246,9 +250,9 @@ function draw() {
             noStroke();
             fill(pista.textBackColor);
             textSize(16);
-            const mapToKm = (genetic.melhor.km*0.001).toFixed(3).replace(/\./g, ',');
+            const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '': percentComplete + '%'}  ID: ${genetic.melhor.id}`;            
+            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
 
             text(`Ativos: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
 
@@ -365,7 +369,7 @@ function showCredits() {
 
 }
 
-function zerarFrota() {    
+function zerarFrota() {
     cars = [];
 }
 

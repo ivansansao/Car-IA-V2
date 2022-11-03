@@ -8,12 +8,14 @@ function keyPressed() {
     if (key == '9') {
         engine.stop();
     }
-
     if (key == '8') {
         engine.setFrequency(90);
     }
     if (key == '2') {
         engine.setFrequency(60);
+    }
+    if (key == '1') {
+        world.showScoreboard = !world.showScoreboard;
     }
 
     if (key == 'a') {    
