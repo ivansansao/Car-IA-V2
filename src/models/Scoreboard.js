@@ -3,7 +3,7 @@ class Scoreboard {
         this.cars = [];
         this.mouseOver = false;
         this.mouseOff = null;
-        this.width = 600;
+        this.width = 840;
         this.height = 250;
         this.rowHeight = 25;
         this.centerize();
@@ -19,7 +19,7 @@ class Scoreboard {
     move(top, left) {
         this.top = top;
         this.left = left;
-        this.cols = [14, 40, 100, 200, 280, 350, 430].map(e => this.left + e);
+        this.cols = [14, 40, 100, 200, 290, 350, 430,600].map(e => this.left + e);
     }
     update() {
 
@@ -38,7 +38,8 @@ class Scoreboard {
                     cor: car.cor,
                     marca: car.marca,
                     alive: car.batido ? 'X' : '',
-                    mn: car.ia.mutatedNeurons.substring(0,18)
+                    mn: car.ia.mutatedNeurons.substring(0,18),
+                    ranking: car.ranking()
                 })
             }
         }
@@ -93,9 +94,10 @@ class Scoreboard {
         text('POS', this.cols[icol++], row);
         text('CARRO', this.cols[icol++], row);
         text('KM', this.cols[icol++], row);
-        text('KM/H', this.cols[icol++], row);
+        text('VM', this.cols[icol++], row);
         text('MUT', this.cols[icol++], row);
         text('MUTAÇÕES', this.cols[icol++], row);
+        text('CHAVE', this.cols[icol++], row);
 
         // Table.        
         row += this.rowHeight;
@@ -114,6 +116,7 @@ class Scoreboard {
             text(car.vm, this.cols[icol++], row);
             text(car.mut, this.cols[icol++], row);
             text(car.mn, this.cols[icol++], row);
+            text(car.ranking, this.cols[icol++], row);
         }
 
         textAlign(LEFT);
