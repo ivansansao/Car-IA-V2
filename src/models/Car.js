@@ -467,7 +467,7 @@ class Car {
     }
 
     getTravelledDistance() {
-        return pista.trackSize - this.km;
+        return ((this.lap * pista.trackSize) + pista.trackSize - this.km);
     }
 
     getTravelledTime() {
@@ -484,12 +484,12 @@ class Car {
 
     ranking() {
 
-        const lap = String(this.lap).padStart(4,'0');
-        const km = String(pista.trackSize-this.km).padStart(5,'0');
-        const mut = String(this.ia.mutated).padStart(3,'0');
-        const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7,'0');
+        const lap = String(this.lap).padStart(4, '0');
+        const km = String(pista.trackSize - this.km).padStart(5, '0');
+        const mut = String(this.ia.mutated).padStart(3, '0');
+        const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
-        return lap+'-'+km+'-'+vm+'-'+mut;
+        return lap + '-' + km + '-' + vm + '-' + mut;
     }
 
     kill(normalDead, deadWay) {
