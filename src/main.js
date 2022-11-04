@@ -218,7 +218,7 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (getFrameRate() > 59 || vivos < 10) {
+        if (getFrameRate() > 59 || vivos < 1) {
 
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 

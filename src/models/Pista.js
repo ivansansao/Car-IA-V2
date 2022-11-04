@@ -46,11 +46,12 @@ class Pista {
             if (where.includes('R')) {
                 sensor.color = car.cor;
                 car.lap++;
-                
+
                 if (world.endsWhenFinishLine) {
                     genetic.nextGeneration();
                 } else {
-                    pista.pistaTimeOut = pista.trackSize * (car.lap + 1);
+                    const newTimeOut = pista.trackSize * (car.lap + 1);
+                    pista.pistaTimeOut = max(pista.pistaTimeOut, newTimeOut);
                 }
 
             } else {
