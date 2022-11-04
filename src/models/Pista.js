@@ -81,6 +81,7 @@ class Pista {
         let wallsPista
         this.carsSensorHitted = [];
         this.ranhuras = [];
+        globalMutations = [];
         this.setPistaTimeOut();
         pg.clear();
 

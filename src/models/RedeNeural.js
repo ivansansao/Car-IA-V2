@@ -218,8 +218,26 @@ class RedeNeural {
         });
 
     }
+
+    mutateNoRepeat(rate, maxMutations = Infinity) {
+
+        while (true) {
+            this.mutate(rate, maxMutations = Infinity);
+
+            if (this.mutated > 0) {
+                const mn = this.mutatedNeurons;
+                if (!globalMutations.includes(mn)) {
+                    globalMutations.push(mn);
+                    break;
+                }
+            }
+        }
+
+    }
+
+
     mutate(rate, maxMutations = Infinity) {
-       
+
         tf.tidy(() => {
 
             // maxMutations = Number(random(1,4).toFixed(0));
@@ -237,7 +255,7 @@ class RedeNeural {
                     if (random(1) < rate) {
                         if (this.mutated < maxMutations) {
 
-                            const n = Number(random(0,values.length-1).toFixed(0));
+                            const n = Number(random(0, values.length - 1).toFixed(0));
 
                             if (!this.mutatedNeurons.includes(`(${i}.${n})`)) {
                                 const w = values[n];
@@ -310,7 +328,7 @@ class RedeNeural {
                 const newShapes = aShapes[i].split(',').map((e) => { return Number(e) });
 
                 try {
-                    loadedWeights[i] = tf.tensor(newValues, newShapes);                    
+                    loadedWeights[i] = tf.tensor(newValues, newShapes);
                 } catch (error) {
                     console.log(error)
                 }
@@ -318,7 +336,7 @@ class RedeNeural {
             }
 
             try {
-                this.model.setWeights(loadedWeights);                
+                this.model.setWeights(loadedWeights);
             } catch (error) {
                 console.log(error)
             }

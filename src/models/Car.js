@@ -670,9 +670,10 @@ class Car {
         }
     }
 
+
     mutate(rate, maxMutations) {
         while (this.ia.mutated == 0) {
-            this.ia.mutate(rate, maxMutations);
+            this.ia.mutateNoRepeat(rate, maxMutations);
         }
         this.setColor();
     }

@@ -9,6 +9,7 @@ class World {
         this.engineSound = false;
         this.endsWhenFinishLine = false;
         this.trainigMode = false;
+        this.showScoreboard = false;
 
     }
 }

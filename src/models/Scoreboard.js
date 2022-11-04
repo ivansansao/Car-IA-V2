@@ -4,8 +4,9 @@ class Scoreboard {
         this.mouseOver = false;
         this.mouseOff = null;
         this.width = 840;
-        this.height = 250;
+        this.height = 500;
         this.rowHeight = 25;
+        this.rows = 17;
         this.centerize();
     }
     centerize() {
@@ -27,7 +28,7 @@ class Scoreboard {
 
             this.cars = [];
             cars.sort((a, b) => (a.ranking() < b.ranking() ? 1 : -1));
-            for (let i = 0; i < min(cars.length, 7); i++) {
+            for (let i = 0; i < min(cars.length, this.rows); i++) {
                 const car = cars[i];
                 this.cars.push({
                     id: car.id,

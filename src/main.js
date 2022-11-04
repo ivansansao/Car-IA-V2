@@ -62,6 +62,7 @@ let soundBrake;
 let audio;
 let engine;
 let pg;
+let globalMutations = [];
 
 function preload() {
     // soundFormats('mp3', 'ogg');
@@ -254,7 +255,7 @@ function draw() {
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
 
-            text(`Ativos: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
+            text(`Carros: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
 
         }
 
