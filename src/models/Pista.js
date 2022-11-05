@@ -283,7 +283,7 @@ class Pista {
             }
         }
 
-        this.lapSensors[0].show();
+        // this.lapSensors[0].show();
 
         if (showRanhuras) {
 

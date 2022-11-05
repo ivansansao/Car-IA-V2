@@ -203,7 +203,7 @@ function draw() {
             car.think(carInputs);
             car.verificaColisaoRanhura(pista.ranhuras);
 
-            pista.lapSensors[0].hit(car, car.pos.x, car.pos.y, car.ray);
+            // pista.lapSensors[0].hit(car, car.pos.x, car.pos.y, car.ray);
 
             if (!world.trainigMode) {
                 car.show();

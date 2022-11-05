@@ -19,7 +19,9 @@ class Car {
         this.kmMMCount = 0;
         this.rightDoorAngle = 0;
         this.leftDoorAngle = 0;
+        this.lastKmVerified = 0;
         this.lastKm = 0;
+        this.step = 0; // Length of step or moviment of car
         this.marca = marca;
         this.aliveTime = 0;
         this.updates = 0;
@@ -315,6 +317,7 @@ class Car {
             return false;
         }
 
+        this.lastKm = this.km;
         this.heading += this.rotation * 0.3;
 
         let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
@@ -361,6 +364,34 @@ class Car {
                 this.lap = 0;
                 this.kill(false, this.deadWayType.offTrack);
             }
+        }
+
+        this.step = this.lastKm - this.km;
+
+        if (this.step == Infinity) {
+            this.step = 0;
+        }
+
+        if (abs(this.step) > 100) {
+            this.hitFinishLine(this.step < 0)
+        }
+
+    }
+
+    hitFinishLine(allowedMove) {
+
+        if (allowedMove) {
+            this.lap++;
+
+            if (world.endsWhenFinishLine) {
+                genetic.nextGeneration();
+            } else {
+                const newTimeOut = pista.trackSize * (this.lap + 1);
+                pista.pistaTimeOut = max(pista.pistaTimeOut, newTimeOut);
+            }
+
+        } else {
+            this.kill(true, this.deadWayType.crashed);
         }
 
     }
@@ -584,7 +615,7 @@ class Car {
             switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
             text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.getAverageSpeed().toFixed(3)}`, x + 2, y += 12);
-            text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length}`, x + 2, y += 12);
+            text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length} ${this.lastKm} ${this.step}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
             text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated} ID: ${this.id}`, x + 2, y += 12);
@@ -635,16 +666,16 @@ class Car {
             this.kill(true, this.deadWayType.stopped);
 
         }
-        if (this.lastKm > 0) {
+        if (this.lastKmVerified > 0) {
 
-            if (abs(this.lastKm - this.km) < 2) {
+            if (abs(this.lastKmVerified - this.km) < 2) {
                 this.kill(true, this.deadWayType.stopped);
             }
         }
 
         this.lastPos.x = this.pos.x;
         this.lastPos.y = this.pos.y;
-        this.lastKm = this.km;
+        this.lastKmVerified = this.km;
 
         if (random() > 0.4) {
 
