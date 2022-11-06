@@ -20,7 +20,7 @@ class Scoreboard {
     move(top, left) {
         this.top = top;
         this.left = left;
-        this.cols = [14, 40, 100, 200, 290, 350, 430,600].map(e => this.left + e);
+        this.cols = [14, 40, 100, 190, 290, 350, 430,600].map(e => this.left + e);
     }
     update() {
 
@@ -112,7 +112,7 @@ class Scoreboard {
             row += this.rowHeight;
             text(car.alive, this.cols[icol++], row);
             text(i + 1 + "º", this.cols[icol++], row);
-            text(car.id + ' ' + car.marca, this.cols[icol++], row);
+            text(car.marca+car.id, this.cols[icol++], row);
             text((car.lap > 0 ? '(' + car.lap + ') ' : '')+car.km, this.cols[icol++], row);
             text(car.vm, this.cols[icol++], row);
             text(car.mut, this.cols[icol++], row);

@@ -391,6 +391,7 @@ class Car {
             }
 
         } else {
+            this.km = Infinity;
             this.kill(true, this.deadWayType.crashed);
         }
 
@@ -584,14 +585,14 @@ class Car {
 
         }
 
-        if (this.speed > 1 && this.volanteAngle != '') {
+        // if (this.speed > 1 && this.volanteAngle != '') {
 
-            if (random(0, 4) > 3) {
-                pg.noStroke();
-                pg.fill(127, 127, 127, 0.6);
-                pg.circle(this.pos.x, this.pos.y, random(12, 22));
-            }
-        }
+        //     if (random(0, 4) > 3) {
+        //         pg.noStroke();
+        //         pg.fill(127, 127, 127, 0.6);
+        //         pg.circle(this.pos.x, this.pos.y, random(12, 22));
+        //     }
+        // }
 
     }
 
@@ -633,7 +634,7 @@ class Car {
         pg.strokeWeight(0);
         pg.stroke(255);
 
-        pg.fill(50, 50, 50, 20);
+        pg.fill(140, 140, 140, 20);
         // pg.square(-6, -12, 6, 10); // Left
         // pg.square(-6, +6, 6, 10); // Right
 
