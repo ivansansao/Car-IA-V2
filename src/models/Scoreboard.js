@@ -33,7 +33,7 @@ class Scoreboard {
                 this.cars.push({
                     id: car.id,
                     lap: car.lap,
-                    km: car.km,
+                    km: pista.trackSize - car.km,
                     mut: car.ia.mutated,
                     vm: map(car.getAverageSpeed(),0,3.5,0,100).toFixed(0),
                     cor: car.cor,
@@ -113,7 +113,7 @@ class Scoreboard {
             text(car.alive, this.cols[icol++], row);
             text(i + 1 + "º", this.cols[icol++], row);
             text(car.id + ' ' + car.marca, this.cols[icol++], row);
-            text(car.km + (car.lap > 0 ? ' (' + car.lap + ')' : ''), this.cols[icol++], row);
+            text((car.lap > 0 ? '(' + car.lap + ') ' : '')+car.km, this.cols[icol++], row);
             text(car.vm, this.cols[icol++], row);
             text(car.mut, this.cols[icol++], row);
             text(car.mn, this.cols[icol++], row);
