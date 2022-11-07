@@ -1210,3 +1210,11 @@ function eliminarTodosCars() {
     }
 }
 
+function killAllClearingWeights() {
+    timer = pista.pistaTimeOut;
+    eliminarTodosCars();
+    genetic.pesos[pista.selectedPista] = '';
+    genetic.melhor = null;
+    genetic.melhores = [];
+    genetic.empatados = [];
+}

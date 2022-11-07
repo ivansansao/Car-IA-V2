@@ -44,7 +44,7 @@ n   | Show flag
 o   | Activates collision between cars
 p   | Pause
 q   | Start using saved weights or not
-r   | Shows a list of track slots
+r   | Deletes all vehices clearing weights to start from the zero
 s   | Shows sensors
 t   | Stop the 'timer'
 w   | Toggle slot display

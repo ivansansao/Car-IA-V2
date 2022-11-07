@@ -68,7 +68,7 @@ function keyPressed() {
     } else if (key == 'q') {
         world.startWeightSaved = !world.startWeightSaved;
     } else if (key == 'r') {
-        showRanhurasNormalized();
+        killAllClearingWeights()
     } else if (key == 's') { // Mostrar sensores
         for (const car of cars) {
             car.showRays = !car.showRays;

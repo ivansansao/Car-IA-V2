@@ -324,8 +324,7 @@ function addMoreCar() {
 
     if (genetic.melhor) {
 
-        const index = frameCount % genetic.melhores.length;
-        const melhor = genetic.melhores[index];
+        const melhor = genetic.getOneOfBetters();
         // console.log('Index: ',index, ' melhor.id: ', melhor.id, ' melhores len:  ',genetic.melhores.length)
 
         const weights = melhor.ia.model.getWeights();
