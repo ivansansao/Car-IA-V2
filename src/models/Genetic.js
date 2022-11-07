@@ -70,7 +70,7 @@ class Genetic {
 
         }
 
-        this.melhores = [];        
+        this.melhores = [];
         this.calcColocacao();
         this.melhor = cars[0];
         this.gotCloserBest = this.getGotCloserBest();
@@ -78,6 +78,9 @@ class Genetic {
         for (const firsts of this.getFirsts(this.melhor)) {
             this.melhores.push(firsts);
         }
+
+        const sons = this.makeSons();
+
 
         if (this.gotCloserBest > this.recordCloser) {
             this.recordCloser = this.gotCloserBest;
@@ -112,50 +115,18 @@ class Genetic {
         nGeracao++;
         hue = 0;
 
-        // Adiciona os filhos do casamento.
-        for (const son of this.currentSons) {
-            let child = new Car('s', true, true, false);
-            child.ia.setWeightsFromString(son, this.shapes);
-            cars.push(child);
-        }
+        for (const son of sons) {
+            
+            let mutated = new Car('S', true, true, false);
+            mutated.ia.model.setWeights(son.ia.getCopiedWeights());
+            mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
-        // Adiciona os filhos do casamento mutados.
-        for (const son of this.currentSons) {
-            let child = new Car('y', true, true, false);
-            child.ia.setWeightsFromString(son, this.shapes);
-            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
-            cars.push(child);
-        }
+            cars.push(son);
+            cars.push(mutated);            
+        }        
 
+        const weightCopies = this.melhor.ia.getCopiedWeights();
 
-        const weights = this.melhor.ia.model.getWeights();
-
-        const weightCopies = [];
-        for (let i = 0; i < weights.length; i++) {
-            weightCopies[i] = weights[i].clone();
-        }
-
-        // Clonado e mutado.
-        for (let i = 1; i < (quantidade / 3) * 0; i++) {
-
-            let child = new Car('m', true, true, false);
-            child.ia.model.setWeights(weightCopies);
-            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 4);
-            cars.push(child);
-
-        }
-
-        // Clonado e mutado.
-        for (let i = 1; i < (quantidade / 3) * 3; i++) {
-
-            let child = new Car('m', true, true, false);
-            child.ia.model.setWeights(weightCopies);
-            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 20);
-            cars.push(child);
-
-        }
-
-        // Clonado (elitismo)
         if (elitism) {
 
             let child = new Car('c');
@@ -292,15 +263,29 @@ class Genetic {
         cars.sort((a, b) => (a.ranking() < b.ranking() ? 1 : -1));
     }
 
-    makeSons(melhor) {
+    makeSons() {
 
+        const reproduzed = [];
         const sons = [];
-        const dad = melhor.ia.showWeights(true);
 
-        for (const mother of this.melhores) {
+        while (reproduzed.length < this.melhores.length - 1) {
 
-            const mom = mother.ia.showWeights(true);
-            sons.push(this.makeSon(dad, mom));
+            let i = Number(random(0, this.melhores.length - 1).toFixed(0));
+            let j = Number(random(0, this.melhores.length - 1).toFixed(0));
+
+            if (!reproduzed.includes(i) && !reproduzed.includes(j) && i != j) {
+
+                reproduzed.push(i);
+                reproduzed.push(j);
+
+                const weightDad = this.melhores[i].ia.showWeights(true);
+                const weightMom = this.melhores[j].ia.showWeights(true);
+                const weightSon = this.makeWeightSon(weightDad, weightMom);
+
+                let child = new Car('s', true, true, false);
+                child.ia.setWeightsFromString(weightSon, this.shapes);
+                sons.push(child);
+            }
 
         }
 
@@ -308,7 +293,7 @@ class Genetic {
 
     }
 
-    makeSon(father = '', mother = '') {
+    makeWeightSon(father = '', mother = '') {
 
         const aFather = father.split(';');
         const aMother = mother.split(';');
@@ -355,6 +340,7 @@ class Genetic {
         const index = cars.length % this.melhores.length;
         const one = this.melhores[index];
         return one;
-        
+
     }
+
 }
