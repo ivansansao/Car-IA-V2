@@ -350,7 +350,7 @@ class Genetic {
         return primeiros;
     }
 
-    getOneOfBetters() {
+    getNextOfBetters() {
 
         const index = cars.length % this.melhores.length;
         const one = this.melhores[index];

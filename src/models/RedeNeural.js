@@ -313,6 +313,16 @@ class RedeNeural {
 
     }
 
+    getCopiedWeights() {
+
+        const weights = this.model.getWeights();
+        const weightCopies = [];
+        for (let i = 0; i < weights.length; i++) {
+            weightCopies[i] = weights[i].clone();
+        }
+        return weightCopies;
+    }
+
     setWeightsFromString(sValues, sShapes) {
 
         tf.tidy(() => {

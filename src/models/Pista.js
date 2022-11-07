@@ -1436,7 +1436,7 @@ function funShowRoads(i, j, e) {
     if (e > 0) {
 
         // const mapX = map(roads[i][j], pista.trackSize, 0, 0, 255);
-        const mapX = Math.floor(map(roads[i][j], pista.trackSize, 0, 0, 250));
+        const mapX = Math.floor(map(roads[i][j], pista.trackSize, 0, 250, 0));
         const cor = 'hsla(' + mapX + ',100%,50%,0.8)';
 
 

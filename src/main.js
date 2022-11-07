@@ -324,18 +324,10 @@ function addMoreCar() {
 
     if (genetic.melhor) {
 
-        const melhor = genetic.getOneOfBetters();
-        // console.log('Index: ',index, ' melhor.id: ', melhor.id, ' melhores len:  ',genetic.melhores.length)
-
-        const weights = melhor.ia.model.getWeights();
-        const weightCopies = [];
-        for (let i = 0; i < weights.length; i++) {
-            weightCopies[i] = weights[i].clone();
-        }
+        const melhor = genetic.getNextOfBetters();
 
         let child = new Car('m', true, true, false);
-        // pista.anguloNascimento = radians(random(0, 360));
-        child.ia.model.setWeights(weightCopies);
+        child.ia.model.setWeights(melhor.ia.getCopiedWeights());
         if (frameCount % 5 == 0)
             child.mutate(Number(random(0.01, 0.6).toFixed(15)));
         else
