@@ -296,7 +296,7 @@ class Genetic {
     makeWeightSon(father = '', mother = '') {
 
         const aFather = father.split(';');
-        const aMother = mother.split(';');
+        const aMother = mother.split(';');        
         let son = 'i';
 
         for (let i = 0; i < aFather.length; i++) {
