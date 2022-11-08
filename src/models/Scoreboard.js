@@ -12,15 +12,12 @@ class Scoreboard {
     centerize() {
         const top = ((windowHeight + this.height) / 2) - this.height;
         const left = ((windowWidth + this.width) / 2) - this.width;
-
-        console.log(top, left);
-
         this.move(top, left);
     }
     move(top, left) {
         this.top = top;
         this.left = left;
-        this.cols = [14, 40, 100, 190, 290, 350, 430,600].map(e => this.left + e);
+        this.cols = [14, 40, 100, 190, 290, 350, 430, 600].map(e => this.left + e);
     }
     update() {
 
@@ -35,11 +32,11 @@ class Scoreboard {
                     lap: car.lap,
                     km: pista.trackSize - car.km,
                     mut: car.ia.mutated,
-                    vm: map(car.getAverageSpeed(),0,3.5,0,100).toFixed(0),
+                    vm: map(car.getAverageSpeed(), 0, 3.5, 0, 100).toFixed(0),
                     cor: car.cor,
                     marca: car.marca,
                     alive: car.batido ? 'X' : '',
-                    mn: car.ia.mutatedNeurons.substring(0,18),
+                    mn: car.ia.mutatedNeurons.substring(0, 18),
                     ranking: car.ranking()
                 })
             }
@@ -112,8 +109,8 @@ class Scoreboard {
             row += this.rowHeight;
             text(car.alive, this.cols[icol++], row);
             text(i + 1 + "º", this.cols[icol++], row);
-            text(car.marca+car.id, this.cols[icol++], row);
-            text((car.lap > 0 ? '(' + car.lap + ') ' : '')+car.km, this.cols[icol++], row);
+            text(car.marca + car.id, this.cols[icol++], row);
+            text((car.lap > 0 ? '(' + car.lap + ') ' : '') + car.km, this.cols[icol++], row);
             text(car.vm, this.cols[icol++], row);
             text(car.mut, this.cols[icol++], row);
             text(car.mn, this.cols[icol++], row);

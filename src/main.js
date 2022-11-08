@@ -74,8 +74,6 @@ function preload() {
 
 function setup() {
 
-
-
     createCanvas(windowWidth, windowHeight);
 
     pg = createGraphics(windowWidth, windowHeight);
@@ -103,7 +101,6 @@ function setup() {
 function draw() {
 
     if (pista.spriteLoaded == false) {
-        console.log('Carregando game...')
         return;
     }
 
