@@ -63,7 +63,6 @@ class Genetic {
 
         if (!this.melhor) {
 
-            console.log('Primeira geração!')
             zerarFrota();
             this.getFirstWeights();
             return

@@ -1536,8 +1536,6 @@ function waveFront() {
     pista.trackSize = value;
     pista.setPistaTimeOut();
 
-    console.log('Fronted..')
-
 }
 
 
