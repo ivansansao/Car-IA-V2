@@ -516,6 +516,10 @@ class Car {
 
     ranking() {
 
+        if (this.km == Infinity) {
+            return '0000-00000-00.0000-000';
+        }
+
         const lap = String(this.lap).padStart(4, '0');
         const km = String(pista.trackSize - this.km).padStart(5, '0');
         const mut = String(this.ia.mutated).padStart(3, '0');
