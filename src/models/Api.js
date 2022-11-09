@@ -26,7 +26,11 @@ class Api {
             console.error(xhr.statusText);
         };
 
-        xhr.send(JSON.stringify(content));
+        try {
+            xhr.send(JSON.stringify(content));            
+        } catch (error) {
+            return '';
+        }
         return xhr.responseText;
 
     }

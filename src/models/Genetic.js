@@ -86,13 +86,13 @@ class Genetic {
         for (const firsts of this.getFirsts(this.melhor)) {
             this.melhores.push(firsts);
         }
-        
+
         const sons = this.makeSons();
 
 
         if (this.gotCloserBest > this.recordCloser) {
             this.recordCloser = this.gotCloserBest;
-        }        
+        }
 
         console.log(`G${addZero(nGeracao + 1)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated} NM: ${this.melhor.ia.mutatedNeurons}`);
 
@@ -101,7 +101,7 @@ class Genetic {
             pista.recordKm = this.melhor.km;
             pista.recordLap = this.melhor.lap;
             pista.recordRanhuras = this.melhor.ranhurasColetadas.length;
-            
+
             if (nGeracao > 0) {
                 this.saveWeights(this.melhor);
                 foo.speak(`${pista.recordKm.toFixed(0)}`);
@@ -343,10 +343,25 @@ class Genetic {
     }
 
     saveWeights(car) {
-        api.saveWeights('track'+pista.selectedPista, car.ia.showWeights(true));
+        
+        const data = {
+            time: getDateTime(),
+            lap: car.lap,
+            km: car.km,
+            weights: car.ia.showWeights(true),
+        }
+        api.saveWeights('track' + pista.selectedPista, JSON.stringify(data));
+
     }
     loadWeights(track) {
-        return api.loadWeights('track'+track);
+        try {
+            const data = JSON.parse(api.loadWeights('track' + track));
+            return data.weights;
+        } catch (error) {
+            console.log("Pista: "+track);
+            console.error(error);
+            return '';
+        }
     }
 
 
