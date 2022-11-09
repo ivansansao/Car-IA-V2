@@ -1,10 +1,11 @@
 import { createServer } from "http";
+import { Model } from "./model.js"
 
 const host = 'localhost';
 const port = 1905;
+const model = new Model();
 
 const requestListener = function (req, res) {
-
 
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -18,21 +19,23 @@ const requestListener = function (req, res) {
     switch (req.url) {
         case "/weights/save":
             req.on('end', function () {
+                const ret = model.weightsSave(body);
                 res.writeHead(200);
-                res.end(body);
-                console.log('end ' + body)
+                res.end(ret);
             });
             break
         case "/weights/load":
-            res.writeHead(200);
-            res.end('{loaded: true}');
+            req.on('end', function () {
+                const ret = model.weightsLoad(body);
+                res.writeHead(200);
+                res.end(ret);
+            });
             break
     };
 }
 
-
 const server = createServer(requestListener);
-const http = server.listen(port, host, () => {
+server.listen(port, host, () => {
     console.log(`Server is running on http://${host}:${port}`);
 });
 
