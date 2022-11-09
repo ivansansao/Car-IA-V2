@@ -13,20 +13,20 @@ const requestListener = function (req, res) {
     // res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
     // res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
 
-    let body = '';
-    req.on('data', chunk => body += chunk);
+    let content = '';
+    req.on('data', chunk => content += chunk);
 
     switch (req.url) {
         case "/weights/save":
             req.on('end', function () {
-                const ret = model.weightsSave(body);
+                const ret = model.weightsSave(content);
                 res.writeHead(200);
                 res.end(ret);
             });
             break
         case "/weights/load":
             req.on('end', function () {
-                const ret = model.weightsLoad(body);
+                const ret = model.weightsLoad(content);
                 res.writeHead(200);
                 res.end(ret);
             });

@@ -8,18 +8,19 @@ class Model {
         return `./dat/${data.name}.dat`;
     }
 
-    weightsSave(body) {
-        const data = JSON.parse(body);
-        const xData = data.weights + "\r\n";
+    weightsSave(content) {
 
+        const data = JSON.parse(content);
+        const xData = data.weights + "\r\n";
         fs.appendFileSync(this.file(data), xData);
 
-        return this.weightsLoad(body);
+        return '';
+        
     }
 
-    weightsLoad(body) {
+    weightsLoad(content) {
 
-        const data = JSON.parse(body);
+        const data = JSON.parse(content);
         const file = this.file(data);
         let weights = '';
 
@@ -38,7 +39,7 @@ class Model {
 
             
         }
-               
+
         return weights;
     }
 }
