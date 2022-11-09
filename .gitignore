@@ -5,4 +5,3 @@ testes*.js
 .nuxt
 .eslintrc.*
 dist
-pista*.dat

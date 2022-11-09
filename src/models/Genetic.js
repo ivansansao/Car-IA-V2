@@ -101,10 +101,9 @@ class Genetic {
             pista.recordKm = this.melhor.km;
             pista.recordLap = this.melhor.lap;
             pista.recordRanhuras = this.melhor.ranhurasColetadas.length;
-
-            this.saveWeights(this.melhor);
-
+            
             if (nGeracao > 0) {
+                this.saveWeights(this.melhor);
                 foo.speak(`${pista.recordKm.toFixed(0)}`);
                 this.melhor.ia.showWeights();
             }
@@ -344,11 +343,7 @@ class Genetic {
     }
 
     saveWeights(car) {
-        // const w = car.ia.showWeights(true);
-        // localStorage.setItem('melhor', w);
-
         api.saveWeights('track'+pista.selectedPista, car.ia.showWeights(true));
-
     }
     loadWeights(track) {
         return api.loadWeights('track'+track);
