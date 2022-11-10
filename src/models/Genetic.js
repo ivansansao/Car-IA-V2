@@ -326,9 +326,21 @@ class Genetic {
     getFirsts() {
 
         let primeiros = [];
+        let lastKm = 0;
+        let q = 0;
 
-        for (let i = 0; i < min(cars.length, 7); i++) {
-            primeiros.push(cars[i]);
+        for (let i = 0; i < cars.length; i++) {
+
+            if (lastKm != cars[i].km) {
+                
+                primeiros.push(cars[i]);
+                lastKm = cars[i].km;
+                q++;
+                if (q > 6) {
+                    break;
+                }
+
+            }
         }
 
         return primeiros;
