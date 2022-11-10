@@ -321,7 +321,7 @@ class Genetic {
     }
 
     /*
-    Retorna os 7 primeiros colocados.
+    Retorna os primeiros colocados.
      */
     getFirsts() {
 
@@ -331,12 +331,13 @@ class Genetic {
 
         for (let i = 0; i < cars.length; i++) {
 
-            if (lastKm != cars[i].km) {
-                
+            if (abs(lastKm - cars[i].km) > 2) {                
+
                 primeiros.push(cars[i]);
                 lastKm = cars[i].km;
                 q++;
-                if (q > 6) {
+                
+                if (q > 2) {
                     break;
                 }
 

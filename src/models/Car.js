@@ -48,6 +48,13 @@ class Car {
         this.accHistory = [];
         this.initialTime = frameCount;
         this.finalTime = this.initialTime;
+        this.palette = [
+            { name: 'verde água', cor: 157 },
+            { name: 'azul água', cor: 186 },
+            { name: 'amarelo', cor: 60 },
+            { name: 'rosa', cor: 321 },
+            { name: 'azul', cor: 219 },
+        ];
 
         if (this.pos.x == -1) {
             this.pos = createVector(random(20, 1700), random(20, 800));
@@ -93,11 +100,16 @@ class Car {
             this.cor = 'rgb(255,255,255)';
         } else {
 
-            let indexMut = this.ia.mutated;
+            let indexColor = 0;
+            if (this.ia.mutated <= this.palette.length) {
+                indexColor = this.palette[this.ia.mutated-1].cor;
+            } else {
 
-            if (indexMut > 20) indexMut = 20;
-
-            const indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
+                
+                let indexMut = this.ia.mutated;
+                if (indexMut > 20) indexMut = 20;
+                indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
+            }
 
             this.cor = 'hsla(' + indexColor + ',100%,50%,1)';
 

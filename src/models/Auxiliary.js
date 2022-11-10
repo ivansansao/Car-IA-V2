@@ -98,7 +98,7 @@ function getHourMin() {
 
 function getDateTime() {
     const date = new Date();   
-    return addZero(date.getDay())+'/'+addZero(date.getMonth())+'/'+date.getFullYear()+' '+addZero(date.getHours()) + ':' + addZero(date.getMinutes());
+    return addZero(date.getDate())+'/'+addZero(date.getMonth()+1)+'/'+date.getFullYear()+' '+addZero(date.getHours()) + ':' + addZero(date.getMinutes());
 }
 
 function oppositeBright(color) {
