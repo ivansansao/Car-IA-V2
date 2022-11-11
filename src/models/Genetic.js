@@ -304,9 +304,7 @@ class Genetic {
         const arrRep = [];
         const arrAnc = anc.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() });
 
-        // console.log('Ancestral: ', crc32(anc));
         for (const r of rep) {
-            // console.log('Daddy: ', crc32(r));
             arrRep.push(r.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() }));
         }
 
@@ -316,7 +314,6 @@ class Genetic {
 
             for (let r = 0; r < arrRep.length; r++) {
                 const genRep = arrRep[r][i];
-
                 if (gen != genRep) {
                     gen = genRep;
                     break;
@@ -353,7 +350,7 @@ class Genetic {
                 lastKm = cars[i].km;
                 q++;
 
-                if (q > 8) {
+                if (q > 3) {
                     break;
                 }
 
