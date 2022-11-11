@@ -1,9 +1,10 @@
 class Flag {
-    
+
     constructor() {
         this.pos = createVector();
         this.visible = false;
         this.text = '';
+        this.color = [255, 0, 0];
     }
     setPos(x, y) {
         this.pos.x = x;
@@ -11,7 +12,7 @@ class Flag {
     }
     setVisible(visible) {
         this.visible = visible;
-    } 
+    }
     setText(text) {
         this.text = text;
     }
@@ -28,20 +29,19 @@ class Flag {
             const x = this.pos.x;
             const y = this.pos.y;
 
-            textSize(14);            
+            textSize(14);
             strokeWeight(2);
             stroke(255);
             fill(0);
-            text(this.text,x+12,y-30+5)    
-                        
-            strokeWeight(2);
-            stroke(255,0,0);
-            line(x,y,x,y-30);
+            text(this.text, x + 12, y - 30 + 5)
 
-            strokeWeight(5);
-            stroke(200,80,100);
-            fill(255);
-            circle(x,y-30,10);
+            strokeWeight(2);
+            stroke(255, 0, 0);
+            line(x, y, x, y - 30);
+
+            strokeWeight(4);
+            fill(this.color);
+            circle(x, y - 30, 10);
 
         }
 

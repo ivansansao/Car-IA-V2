@@ -102,10 +102,10 @@ class Car {
 
             let indexColor = 0;
             if (this.ia.mutated <= this.palette.length) {
-                indexColor = this.palette[this.ia.mutated-1].cor;
+                indexColor = this.palette[this.ia.mutated - 1].cor;
             } else {
 
-                
+
                 let indexMut = this.ia.mutated;
                 if (indexMut > 20) indexMut = 20;
                 indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
@@ -534,7 +534,7 @@ class Car {
 
         const lap = String(this.lap).padStart(4, '0');
         const km = String(pista.trackSize - this.km).padStart(5, '0');
-        const mut = String(999-this.ia.mutated).padStart(3, '0');
+        const mut = String(999 - this.ia.mutated).padStart(3, '0');
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
         return lap + '-' + km + '-' + '-' + mut;
@@ -578,9 +578,6 @@ class Car {
             this.drawTrailPg();
         }
 
-
-        this.showInfoCar();
-
         if (this.batido) {
 
             if (showDeadCars) {
@@ -592,6 +589,8 @@ class Car {
             }
 
         } else {
+
+            this.showInfoCar();
 
             push();
             translate(this.pos.x, this.pos.y);
@@ -978,6 +977,13 @@ class Car {
         pg.line(29.5, 8.7, 28.5, 8.7);
 
         pg.noStroke();
+
+        if (showFlag) {
+            pg.strokeWeight(1.5);
+            pg.stroke(255);
+            pg.fill(0)
+            pg.text(this.km, 0, 0);
+        }
 
     }
 

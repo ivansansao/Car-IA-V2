@@ -91,7 +91,6 @@ class Genetic {
         // Create sons doing reprodutive process.
 
         const sons = [];
-
         for (let i = 0; i < this.melhores.length - 1; i++) {
             sons.push(this.makeSon(ancestral, this.melhores, i + 2));
         }
@@ -177,7 +176,7 @@ class Genetic {
 
                 const tmpMelhor = cars[0];
                 if (tmpMelhor) {
-                    pista.setFlag(tmpMelhor.pos.x, tmpMelhor.pos.y, tmpMelhor.km);
+                    pista.setFlag(tmpMelhor.pos.x, tmpMelhor.pos.y, tmpMelhor.km, tmpMelhor.cor);
                     this.melhorCorrente = tmpMelhor;
                 }
             }
@@ -346,13 +345,15 @@ class Genetic {
 
         for (let i = 0; i < cars.length; i++) {
 
-            if (abs(lastKm - cars[i].km) > 2) {
+            const dif = abs(lastKm - cars[i].km);
+
+            if (dif > 0 && dif != Infinity) {
 
                 primeiros.push(cars[i]);
                 lastKm = cars[i].km;
                 q++;
 
-                if (q > 2) {
+                if (q > 8) {
                     break;
                 }
 
