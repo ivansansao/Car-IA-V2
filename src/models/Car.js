@@ -534,10 +534,10 @@ class Car {
 
         const lap = String(this.lap).padStart(4, '0');
         const km = String(pista.trackSize - this.km).padStart(5, '0');
-        const mut = String(this.ia.mutated).padStart(3, '0');
+        const mut = String(999-this.ia.mutated).padStart(3, '0');
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
-        return lap + '-' + km + '-' + vm + '-' + mut;
+        return lap + '-' + km + '-' + '-' + mut;
     }
 
     kill(normalDead, deadWay) {
@@ -685,7 +685,7 @@ class Car {
         }
         if (this.lastKmVerified > 0) {
 
-            if (abs(this.lastKmVerified - this.km) < 2) {
+            if (abs(this.lastKmVerified - this.km) < 10) {
                 this.kill(true, this.deadWayType.stopped);
             }
         }

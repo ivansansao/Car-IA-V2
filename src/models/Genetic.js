@@ -320,6 +320,40 @@ class Genetic {
 
     }
 
+    reproduce(anc = '', rep = []) {
+
+        let son = '@';
+        const arrRep = [];
+        const arrAnc = anc.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() });
+    
+        for (const r of rep) {
+            arrRep.push(r.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() }));
+        }
+    
+        for (let i = 0; i < arrAnc.length; i++) {
+    
+            let gen = arrAnc[i];
+    
+            for (let r = 0; r < arrRep.length; r++) {
+                const genRep = arrRep[r][i];
+    
+                if (gen != genRep) {
+                    gen = genRep;
+                    break;
+                }
+            }
+    
+            son += ',' + gen;
+    
+        }
+    
+        son = son.replace(/@,/g, '');
+        son = son.replace(/;,/g, ';');
+    
+        return son;
+    
+    }
+
     /*
     Retorna os primeiros colocados.
      */

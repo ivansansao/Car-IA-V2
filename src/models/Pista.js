@@ -278,7 +278,7 @@ class Pista {
                 wall.update()
                 if (showWalls) {
                     wall.show();
-                    text(i, wall.a.x, wall.a.y);
+                    text(wall.a.x, wall.a.x, wall.a.y);
                 }
             }
         }
@@ -786,11 +786,16 @@ function getPista4() {
     points.push({ a: 501, b: 354, c: 419, d: 340, m: 0, t: 0 });
     points.push({ a: 419, b: 340, c: 421, d: 319, m: 0, t: 0 });
     points.push({ a: 421, b: 319, c: 416, d: 290, m: 0, t: 0 });
-    points.push({ a: 416, b: 290, c: 788, d: 241, m: 0, t: 0 });
-    points.push({ a: 788, b: 241, c: 807, d: 240, m: 0, t: 0 });
-    points.push({ a: 807, b: 240, c: 810, d: 246, m: 0, t: 0 });
-    points.push({ a: 810, b: 246, c: 791, d: 248, m: 0, t: 0 });
-    points.push({ a: 791, b: 248, c: 790, d: 620, m: 0, t: 0 });
+    
+    points.push({ a: 416, b: 290, c: 780, d: 245, m: 0, t: 0 });
+
+    points.push({ a: 780, b: 245, c: 788, d: 248, m: 0, t: 0 });
+
+    // points.push({ a: 807, b: 240, c: 810, d: 246, m: 0, t: 0 });
+    // points.push({ a: 810, b: 246, c: 791, d: 248, m: 0, t: 0 });
+
+    points.push({ a: 788, b: 248, c: 790, d: 620, m: 0, t: 0 });
+    
     points.push({ a: 790, b: 620, c: 671, d: 622, m: 0, t: 0 });
     points.push({ a: 671, b: 622, c: 622, d: 634, m: 0, t: 0 });
     points.push({ a: 622, b: 634, c: 593, d: 669, m: 0, t: 0 });
