@@ -97,8 +97,8 @@ function getHourMin() {
 }
 
 function getDateTime() {
-    const date = new Date();   
-    return addZero(date.getDate())+'/'+addZero(date.getMonth()+1)+'/'+date.getFullYear()+' '+addZero(date.getHours()) + ':' + addZero(date.getMinutes());
+    const date = new Date();
+    return addZero(date.getDate()) + '/' + addZero(date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + addZero(date.getHours()) + ':' + addZero(date.getMinutes());
 }
 
 function oppositeBright(color) {
@@ -112,7 +112,7 @@ function oppositeBright(color) {
 }
 
 function hexToRGBArray(color) {
-    
+
     if (color.length === 3)
         color = color.charAt(0) + color.charAt(0) + color.charAt(1) + color.charAt(1) + color.charAt(2) + color.charAt(2);
     else if (color.length !== 6)
@@ -121,5 +121,24 @@ function hexToRGBArray(color) {
     for (var i = 0; i <= 2; i++)
         rgb[i] = parseInt(color.substr(i * 2, 2), 16);
     return rgb;
+
+}
+
+function numsNoRepeat(from, to, quantity) {
+
+    const nums = [];
+
+    if (from < to && to - from >= quantity) {
+        let q = 0;
+        while (q < quantity) {
+            const newOne = Math.floor(Math.random() * (to - from + 1) + from);
+            if (!nums.includes(newOne)) {
+                nums.push(newOne)
+                q++
+            }
+        }
+    }
+
+    return nums;
 
 }

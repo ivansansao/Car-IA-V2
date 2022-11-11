@@ -3,13 +3,14 @@ class Scoreboard {
         this.cars = [];
         this.mouseOver = false;
         this.mouseOff = null;
-        this.width = 840;
+        this.width = 950;
         this.height = 250;
         this.rowHeight = 25;
         this.rows = 7;
         this.centerize();
     }
     centerize() {
+
         const top = ((windowHeight + this.height) / 2) - this.height;
         const left = ((windowWidth + this.width) / 2) - this.width;
         this.move(top, left);
@@ -17,7 +18,7 @@ class Scoreboard {
     move(top, left) {
         this.top = top;
         this.left = left;
-        this.cols = [14, 40, 100, 190, 290, 350, 430, 600].map(e => this.left + e);
+        this.cols = [14, 40, 100, 190, 290, 350, 430, 600, 780].map(e => this.left + e);
     }
     update() {
 
@@ -37,7 +38,8 @@ class Scoreboard {
                     marca: car.marca,
                     alive: car.batido ? 'X' : '',
                     mn: car.ia.mutatedNeurons.substring(0, 18),
-                    ranking: car.ranking()
+                    ranking: car.ranking(),
+                    crc: crc32(car.ia.showWeights(true))
                 })
             }
         }
@@ -96,6 +98,7 @@ class Scoreboard {
         text('MUT', this.cols[icol++], row);
         text('MUTAÇÕES', this.cols[icol++], row);
         text('CHAVE', this.cols[icol++], row);
+        text('CRC PESOS', this.cols[icol++], row);
 
         // Table.        
         row += this.rowHeight;
@@ -115,6 +118,7 @@ class Scoreboard {
             text(car.mut, this.cols[icol++], row);
             text(car.mn, this.cols[icol++], row);
             text(car.ranking, this.cols[icol++], row);
+            text(car.crc, this.cols[icol++], row);
         }
 
         textAlign(LEFT);

@@ -77,6 +77,7 @@ class Genetic {
             return
 
         }
+        const ancestral = this.melhor.ia.showWeights(true);
 
         this.melhores = [];
         this.calcColocacao();
@@ -87,12 +88,22 @@ class Genetic {
             this.melhores.push(firsts);
         }
 
-        const sons = this.makeSons();
+        // Create sons doing reprodutive process.
 
+        const sons = [];
+
+        for (let i = 0; i < this.melhores.length - 1; i++) {
+            sons.push(this.makeSon(ancestral, this.melhores, i + 2));
+        }
+        for (let i = 0; i < 7; i++) {
+            sons.push(this.makeSon(ancestral, cars, i + 2));
+        }
 
         if (this.gotCloserBest > this.recordCloser) {
             this.recordCloser = this.gotCloserBest;
         }
+
+        this.melhores.push(this.makeSon(ancestral, this.melhores));
 
         console.log(`G${addZero(nGeracao + 1)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated} NM: ${this.melhor.ia.mutatedNeurons}`);
 
@@ -120,7 +131,7 @@ class Genetic {
 
         for (const son of sons) {
 
-            let mutated = new Car('S', true, true, false);
+            let mutated = new Car('sm', true, true, false);
             mutated.ia.model.setWeights(son.ia.getCopiedWeights());
             mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
@@ -262,61 +273,29 @@ class Genetic {
         cars.sort((a, b) => (a.ranking() < b.ranking() ? 1 : -1));
     }
 
-    makeSons() {
+    makeSon(ancestral = '', carList = [], crosses = 0) {
 
-        const reproduzed = [];
-        const sons = [];
+        const quantity = min(crosses, carList.length - 1);
+        const indexParents = numsNoRepeat(0, quantity, quantity)
+        const reproductives = [];
 
-        while (reproduzed.length < this.melhores.length - 1) {
+        // console.log(indexParents);
 
-            let i = Number(random(0, this.melhores.length - 1).toFixed(0));
-            let j = Number(random(0, this.melhores.length - 1).toFixed(0));
+        // Add better first cause first one has priority in reproduce method.
+        reproductives.push(carList[0].ia.showWeights(true))
 
-            if (!reproduzed.includes(i) && !reproduzed.includes(j) && i != j) {
-
-                reproduzed.push(i);
-                reproduzed.push(j);
-
-                const weightDad = this.melhores[i].ia.showWeights(true);
-                const weightMom = this.melhores[j].ia.showWeights(true);
-                const weightSon = this.makeWeightSon(weightDad, weightMom);
-
-                let child = new Car('s', true, true, false);
-                child.ia.setWeightsFromString(weightSon, this.shapes);
-                sons.push(child);
-            }
-
+        for (const i of indexParents) {
+            reproductives.push(carList[i].ia.showWeights(true));
         }
 
-        return sons;
+        const weightSon = this.reproduce(ancestral, reproductives);
 
-    }
+        let child = new Car('s', true, true, false);
+        child.ia.setWeightsFromString(weightSon, this.shapes);
+        child.ia.mutated = 1;
+        child.setColor();
 
-    makeWeightSon(father = '', mother = '') {
-
-        const aFather = father.split(';');
-        const aMother = mother.split(';');
-        let son = 'i';
-
-        for (let i = 0; i < aFather.length; i++) {
-
-            const anFather = aFather[i].split(',').map((e) => { return Number(e) });
-            const anMother = aMother[i].split(',').map((e) => { return Number(e) });
-            son += ";";
-
-            for (let i = 0; i < anFather.length; i++) {
-                const f = anFather[i];
-                const m = anMother[i];
-                son += ",";
-                son += (f + m) / 2;
-            }
-
-        }
-
-        son = son.replace(/i;,/g, '');
-        son = son.replace(/;,/g, ';');
-
-        return son;
+        return child;
 
     }
 
@@ -325,33 +304,35 @@ class Genetic {
         let son = '@';
         const arrRep = [];
         const arrAnc = anc.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() });
-    
+
+        // console.log('Ancestral: ', crc32(anc));
         for (const r of rep) {
+            // console.log('Daddy: ', crc32(r));
             arrRep.push(r.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() }));
         }
-    
+
         for (let i = 0; i < arrAnc.length; i++) {
-    
+
             let gen = arrAnc[i];
-    
+
             for (let r = 0; r < arrRep.length; r++) {
                 const genRep = arrRep[r][i];
-    
+
                 if (gen != genRep) {
                     gen = genRep;
                     break;
                 }
             }
-    
+
             son += ',' + gen;
-    
+
         }
-    
+
         son = son.replace(/@,/g, '');
         son = son.replace(/;,/g, ';');
-    
+
         return son;
-    
+
     }
 
     /*
@@ -365,12 +346,12 @@ class Genetic {
 
         for (let i = 0; i < cars.length; i++) {
 
-            if (abs(lastKm - cars[i].km) > 2) {                
+            if (abs(lastKm - cars[i].km) > 2) {
 
                 primeiros.push(cars[i]);
                 lastKm = cars[i].km;
                 q++;
-                
+
                 if (q > 2) {
                     break;
                 }
@@ -390,7 +371,7 @@ class Genetic {
     }
 
     saveWeights(car) {
-        
+
         const data = {
             time: getDateTime(),
             lap: car.lap,
@@ -405,7 +386,7 @@ class Genetic {
             const data = JSON.parse(api.loadWeights('track' + track));
             return data.weights;
         } catch (error) {
-            console.log("Pista: "+track);
+            console.log("Pista: " + track);
             console.error(error);
             return '';
         }
