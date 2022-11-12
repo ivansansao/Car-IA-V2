@@ -1,6 +1,6 @@
 class Car {
 
-    constructor(marca = '?', inteligente = true, allowLazy = false, randomHeading = false) {
+    constructor({ marca, parent, inteligente, randomHeading, f1, f2 }) {
 
         this.pos = pista.localNascimento.copy();
         this.lastPos = createVector();
@@ -9,8 +9,8 @@ class Car {
         this.rotation = 0;
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
-        this.ia = new RedeNeural();
-        this.inteligente = inteligente;
+        this.ia = new RedeNeural({ f1, f2 });
+        this.inteligente = inteligente || true;
         this.batido = false;
         this.timer = 0;
         this.km = Infinity;
@@ -22,13 +22,13 @@ class Car {
         this.lastKmVerified = 0;
         this.lastKm = 0;
         this.step = 0; // Length of step or moviment of car
-        this.marca = marca;
+        this.marca = marca || '?';
+        this.parent = parent || '';
         this.aliveTime = 0;
         this.updates = 0;
         this.showSensorValue = false;
         this.qtdReh = 0;
         this.ranhurasColetadas = [];
-        this.allowLazy = allowLazy;
         this.id = newCarId();
         this.luzes = true;
         this.lapCount = 0;
@@ -1235,7 +1235,7 @@ function eliminarTodosCars() {
 function killAllClearingWeights() {
     timer = pista.pistaTimeOut;
     eliminarTodosCars();
-    genetic.pesos[pista.selectedPista] = '';
+    genetic.pesos[pista.selectedPista] = null;
     genetic.melhor = null;
     genetic.melhores = [];
     genetic.empatados = [];

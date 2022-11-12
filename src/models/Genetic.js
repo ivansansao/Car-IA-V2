@@ -34,26 +34,20 @@ class Genetic {
         // // Pista 6
         // this.pesos.push('');
 
-        this.pesos.push('');
-        this.pesos.push(this.loadWeights('1'));
-        this.pesos.push(this.loadWeights('2'));
-        this.pesos.push(this.loadWeights('3'));
-        this.pesos.push(this.loadWeights('4'));
-        this.pesos.push(this.loadWeights('5'));
-        this.pesos.push(this.loadWeights('6'));
+        for (let i = 0; i <= 6; i++) {
+            this.pesos.push(this.loadWeights(i));
+        }
 
+    }
+
+    getData() {
+        return this.pesos[pista.selectedPista];
     }
 
     getFirstWeights() {
 
-        let child = new Car('X');
-        let pesos;
-        if (pesosForcados != undefined) {
-            pesos = this.pesos[pesosForcados];
-            console.log(`Pesos da pista ${pesosForcados}`);
-        } else {
-            pesos = this.pesos[pista.selectedPista];
-        }
+        let child = new Car({ ...genetic.getData(), marca: 'X' });
+        let pesos = this.pesos[pista.selectedPista].weights;
 
         if (pesos.length > 0) {
             if (world.startWeightSaved) {
@@ -130,7 +124,7 @@ class Genetic {
 
         for (const son of sons) {
 
-            let mutated = new Car('sm', true, true, false);
+            let mutated = new Car({ ...genetic.getData(), marca: 'sm', parent: son.marca });
             mutated.ia.model.setWeights(son.ia.getCopiedWeights());
             mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
@@ -142,7 +136,7 @@ class Genetic {
 
         if (elitism) {
 
-            let child = new Car('c');
+            let child = new Car({ ...genetic.getData(), marca: 'c', parent: this.melhor.marca });
             child.ia.model.setWeights(weightCopies);
             cars.push(child);
         }
@@ -289,7 +283,7 @@ class Genetic {
 
         const weightSon = this.reproduce(ancestral, reproductives);
 
-        let child = new Car('s', true, true, false);
+        let child = new Car({ ...genetic.getData(), marca: 's', parent: '' });
         child.ia.setWeightsFromString(weightSon, this.shapes);
         child.ia.mutated = 1;
         child.setColor();
@@ -374,15 +368,26 @@ class Genetic {
             time: getDateTime(),
             lap: car.lap,
             km: car.km,
+            marca: car.marca,
+            parent: car.parent,
+            generation: nGeracao,
+            acc: (this.gotCloserBest / cars.length * 100).toFixed(0) + "%",
+            closest: this.gotCloserBest,
+            carsLength: cars.length,
+            f1: car.ia.f1,
+            f2: car.ia.f2,
             weights: car.ia.showWeights(true),
         }
         api.saveWeights('track' + pista.selectedPista, JSON.stringify(data));
 
     }
     loadWeights(track) {
+
         try {
-            const data = JSON.parse(api.loadWeights('track' + track));
-            return data.weights;
+
+            const weights = api.loadWeights('track' + track).toString().trim() || '{}';
+            return JSON.parse(weights);
+
         } catch (error) {
             console.log("Pista: " + track);
             console.error(error);

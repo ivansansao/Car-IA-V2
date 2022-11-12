@@ -8,13 +8,13 @@
 
 class RedeNeural {
 
-    constructor() {
+    constructor({ f1, f2 } = {}) {
 
         this.input_nodes = 13; // 22
         this.hidden_nodes = 5;
         this.output_nodes = 9;
-        this.f1 = "linear"; // this.getAnyActivation();
-        this.f2 = "selu"; // this.getAnyActivation();
+        this.f1 = f1 || "linear"; // this.getAnyActivation();
+        this.f2 = f2 || "selu"; // this.getAnyActivation();
         this.mutated = 0; // Number of genes mutateds, zero is not mutated
         this.mutatedNeurons = '';
 
