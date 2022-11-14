@@ -5,3 +5,4 @@ testes*.js
 .nuxt
 .eslintrc.*
 dist
+package-lock.json
