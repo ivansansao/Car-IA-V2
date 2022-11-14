@@ -1235,7 +1235,9 @@ function eliminarTodosCars() {
 function killAllClearingWeights() {
     timer = pista.pistaTimeOut;
     eliminarTodosCars();
-    genetic.pesos[pista.selectedPista] = null;
+
+    const data = genetic.loadWeights(pista.selectedPista)
+    genetic.pesos[pista.selectedPista] = { f1: data.f1, f2: data.f2, weights: '' };
     genetic.melhor = null;
     genetic.melhores = [];
     genetic.empatados = [];

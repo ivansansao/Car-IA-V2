@@ -1,12 +1,14 @@
 import { createServer } from "http";
+import { botSay } from "./bot/telegram/Telegram.js";
 import { Model } from "./model.js";
-import { theBot } from "./bot/telegram/Telegram.js";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const host = 'localhost';
-const port = 1905;
+const host = process.env.SERVER_HOST;
+const port = process.env.SERVER_PORT;
 const model = new Model();
 
-theBot('Heyyy, seu servidor Telegram CARIA está no ar!');
+botSay('Olá, seu servidor CARIA está no ar!');
 
 const requestListener = function (req, res) {
 
@@ -25,7 +27,6 @@ const requestListener = function (req, res) {
                 const ret = model.weightsSave(content);
                 res.writeHead(200);
                 res.end(ret);
-                theBot(`Novos pesos: ${content}`);
             });
             break
         case "/weights/load":

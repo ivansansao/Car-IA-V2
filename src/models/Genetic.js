@@ -361,11 +361,11 @@ class Genetic {
         return one;
 
     }
-
     saveWeights(car) {
 
         const data = {
             time: getDateTime(),
+            track: pista.selectedPista,
             lap: car.lap,
             km: car.km,
             marca: car.marca,

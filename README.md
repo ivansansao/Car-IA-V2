@@ -23,7 +23,9 @@ Track 3 with information about the cars
 Track 3 runway heatmap
 ![Alt text](src/assets/p3-thermalmap.png?raw=true "track print")
 
-Run the server with: node src/server/main.js
+Run the server with: 
+cd src/server
+node main.js
 
 Command keys:
 

@@ -247,14 +247,16 @@ function draw() {
             }
 
             if (world.trainigMode) background(pista.backcolor);
-            noStroke();
+            strokeWeight(1);
+            stroke(50);
             fill(pista.textBackColor);
             textSize(16);
+            const { f1, f2 } = cars[0].ia;
             const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
 
-            text(`Carros: ${vivos}. FC: ${frameCount} Tempo: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MELHOR: ${txtBetter} ]`, 10, 20);
+            text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2}`, 10, 20);
 
         }
 

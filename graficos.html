@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <canvas id="myChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        function revKm(nKm) {
+            return 9000 - nKm;
+        }
+        const ctx = document.getElementById('myChart');
+
+        const dados = [
+            ["linear-softsign", 1, 8164],
+            ["selu-softmax", 1, 8164],
+            ["relu-tanh", 1, 8142],
+            ["relu-softplus", 1, 8131],
+            ["linear-tanh", 1, 8129],
+            ["selu-softsign", 1, 8127],
+            ["linear-softplus", 1, 8124],
+            ["elu-tanh", 1, 8117],
+            ["softmax-softmax", 1, 8117],
+            ["softplus-softplus", 1, 8100],
+            ["linear-selu", 1, 8099],
+            ["selu-sigmoid", 1, 8097],
+            ["tanh-tanh", 1, 8075],
+            ["elu-softsign", 1, 8052],
+            ["elu-softplus", 1, 8046],
+            ["elu-sigmoid", 1, 8014],
+            ["elu-elu", 1, 8002],
+            ["softsign-softsign", 1, 8001],
+            ["relu-selu", 1, 7922],
+            ["selu-softplus", 1, 7902],
+            ["selu-selu", 1, 7893],
+            ["linear-linear", 1, 7857],
+            ["selu-selu", 1, 7682],
+            ["sigmoid-sigmoid", 1, 7680],
+            ["relu-softsign", 1, 7454],
+            ["relu-sigmoid", 1, 7379],
+            ["relu-relu", 1, 7373],
+            ["linear-sigmoid", 1, 7366],
+            ["elu-selu", 2, 8138],
+            ["linear-tanh", 2, 8127],
+            ["relu-tanh", 2, 8120],
+            ["softmax-softmax", 2, 8116],
+            ["linear-softplus", 2, 8101],
+            ["selu-sigmoid", 2, 8022],
+            ["softsign-softsign", 2, 7971],
+            ["relu-softplus", 2, 7957],
+            ["elu-elu", 2, 7949],
+            ["linear-softsign", 2, 7947],
+            ["elu-tanh", 2, 7912],
+            ["elu-softplus", 2, 7867],
+            ["linear-selu", 2, 7836],
+            ["selu-softsign", 2, 7701],
+            ["selu-softmax", 2, 7689],
+            ["selu-selu", 2, 7579],
+            ["tanh-tanh", 2, 7579],
+            ["elu-sigmoid", 2, 7425],
+            ["relu-softsign", 2, 7387],
+            ["selu-softplus", 2, 7382],
+            ["elu-softsign", 2, 7380],
+            ["selu-selu", 2, 7379],
+            ["relu-selu", 2, 7374],
+            ["sigmoid-sigmoid", 2, 7373],
+            ["relu-sigmoid", 2, 7371],
+            ["softplus-softplus", 2, 7371],
+            ["relu-relu", 2, 7370],
+            ["linear-sigmoid", 2, 7230],
+            ["linear-linear", 2, 7166],
+            ["relu-softmax", 3, 8132],
+            ["elu-selu", 3, 8129],
+            ["linear-tanh", 3, 8090],
+            ["linear-softplus", 3, 8087],
+            ["elu-elu", 3, 7940],
+            ["selu-sigmoid", 3, 7887],
+            ["elu-softplus", 3, 7858],
+            ["softsign-softsign", 3, 7756],
+            ["elu-tanh", 3, 7702],
+            ["softmax-softmax", 3, 7667],
+            ["linear-softsign", 3, 7651],
+            ["linear-selu", 3, 7640],
+            ["selu-selu", 3, 7548],
+            ["selu-softsign", 3, 7384],
+            ["tanh-tanh", 3, 7384],
+            ["relu-softplus", 3, 7380],
+            ["elu-sigmoid", 3, 7380],
+            ["relu-softsign", 3, 7379],
+            ["selu-softmax", 3, 7379],
+            ["relu-sigmoid", 3, 7369],
+            ["relu-relu", 3, 7365],
+            ["relu-selu", 3, 7362],
+            ["sigmoid-sigmoid", 3, 7362],
+            ["selu-softplus", 3, 7361],
+            ["softplus-softplus", 3, 7356],
+            ["selu-selu", 3, 7280],
+            ["linear-linear", 3, 6880],
+            ["linear-sigmoid", 3, 6697],
+            ["elu-selu", 4, 8088],
+            ["linear-softplus", 4, 8082],
+            ["linear-tanh", 4, 8081],
+            ["relu-softmax", 4, 8065],
+            ["selu-sigmoid", 4, 7872],
+            ["elu-softplus", 4, 7683],
+            ["softmax-softmax", 4, 7555],
+            ["linear-softsign", 4, 7412],
+            ["linear-selu", 4, 7389],
+            ["selu-softsign", 4, 7382],
+            ["relu-softplus", 4, 7377],
+            ["elu-softsign", 4, 7377],
+            ["tanh-tanh", 4, 7374],
+            ["selu-softmax", 4, 7372],
+            ["relu-softsign", 4, 7366],
+            ["relu-relu", 4, 7361],
+            ["relu-selu", 4, 7359],
+            ["elu-tanh", 4, 7358],
+            ["selu-softplus", 4, 7357],
+            ["relu-sigmoid", 4, 7354],
+            ["softsign-softsign", 4, 7318],
+            ["selu-selu", 4, 7289],
+            ["elu-sigmoid", 4, 7184],
+            ["sigmoid-sigmoid", 4, 7178],
+            ["selu-selu", 4, 7092],
+            ["softplus-softplus", 4, 6814],
+            ["linear-linear", 4, 6645],
+            ["linear-sigmoid", 4, 6622],
+            ["linear-softplus", 5, 8075],
+            ["linear-tanh", 5, 7935],
+            ["relu-softmax", 5, 7929],
+            ["selu-sigmoid", 5, 7868],
+            ["linear-selu", 5, 7388],
+            ["linear-softsign", 5, 7381],
+            ["selu-softsign", 5, 7381],
+            ["elu-softplus", 5, 7378],
+            ["softmax-softmax", 5, 7378],
+            ["relu-softplus", 5, 7375],
+            ["elu-softsign", 5, 7373],
+            ["elu-selu", 5, 7356],
+            ["relu-selu", 5, 7355],
+            ["selu-softmax", 5, 7355],
+            ["relu-sigmoid", 5, 7353],
+            ["selu-softplus", 5, 7351],
+            ["softsign-softsign", 5, 7317],
+            ["elu-tanh", 5, 7239],
+            ["selu-selu", 5, 7038],
+            ["selu-selu", 5, 6846],
+            ["relu-relu", 5, 6803],
+            ["softplus-softplus", 5, 6799],
+            ["linear-linear", 5, 6640],
+            ["linear-sigmoid", 5, 6621],
+            ["sigmoid-sigmoid", 5, 6569],
+            ["tanh-tanh", 5, 6560],
+            ["elu-sigmoid", 5, 6501],
+            ["linear-softplus", 6, 8071],
+            ["elu-elu", 6, 7935],
+            ["relu-softmax", 6, 7896],
+            ["linear-tanh", 6, 7871],
+            ["selu-sigmoid", 6, 7859],
+            ["linear-selu", 6, 7384],
+            ["linear-softsign", 6, 7380],
+            ["softmax-softmax", 6, 7377],
+            ["elu-softplus", 6, 7374],
+            ["selu-softsign", 6, 7367],
+            ["relu-softsign", 6, 7364],
+            ["relu-softplus", 6, 7363],
+            ["elu-softsign", 6, 7363],
+            ["relu-sigmoid", 6, 7348],
+            ["elu-tanh", 6, 6936],
+            ["selu-softplus", 6, 6904],
+            ["selu-selu", 6, 6882],
+            ["selu-selu", 6, 6837],
+            ["softplus-softplus", 6, 6772],
+            ["elu-selu", 6, 6708],
+            ["linear-linear", 6, 6637],
+            ["sigmoid-sigmoid", 6, 6566],
+            ["relu-relu", 6, 6504],
+            ["selu-softmax", 6, 6468],
+            ["tanh-tanh", 6, 6444],
+            ["linear-softplus", 7, 8068],
+            ["elu-elu", 7, 7933],
+            ["relu-softmax", 7, 7855],
+            ["selu-sigmoid", 7, 7845],
+            ["linear-tanh", 7, 7484],
+            ["linear-softsign", 7, 7379],
+            ["elu-softplus", 7, 7372],
+            ["linear-selu", 7, 7369],
+            ["selu-softsign", 7, 7365],
+            ["relu-softsign", 7, 7360],
+            ["elu-softsign", 7, 7360],
+            ["relu-sigmoid", 7, 7345],
+            ["relu-selu", 7, 7341],
+            ["selu-selu", 7, 6855],
+            ["softplus-softplus", 7, 6712],
+            ["elu-selu", 7, 6692],
+            ["relu-softplus", 7, 6627],
+            ["linear-sigmoid", 7, 6616],
+            ["sigmoid-sigmoid", 7, 6558],
+            ["selu-selu", 7, 6556],
+            ["selu-softplus", 7, 6551],
+            ["elu-tanh", 7, 6516],
+            ["elu-sigmoid", 7, 6497],
+            ["relu-relu", 7, 6494],
+            ["linear-linear", 7, 6472],
+            ["tanh-tanh", 7, 6403],
+            ["linear-softmax", 8, 8113],
+            ["relu-tanh", 8, 8013],
+            ["selu-sigmoid", 8, 7840],
+            ["relu-softmax", 8, 7378],
+            ["linear-selu", 8, 7364],
+            ["selu-softsign", 8, 7364],
+            ["linear-tanh", 8, 7362],
+            ["relu-softsign", 8, 7356],
+            ["elu-softsign", 8, 7259],
+            ["elu-softplus", 8, 6879],
+            ["relu-sigmoid", 8, 6856],
+            ["selu-selu", 8, 6852],
+            ["softplus-softplus", 8, 6701],
+            ["elu-selu", 8, 6675],
+            ["linear-sigmoid", 8, 6615],
+            ["sigmoid-sigmoid", 8, 6556],
+            ["selu-selu", 8, 6555],
+            ["selu-softplus", 8, 6549],
+            ["relu-selu", 8, 6508],
+            ["elu-tanh", 8, 6500],
+            ["relu-softplus", 8, 6498],
+            ["relu-relu", 8, 6473],
+            ["linear-linear", 8, 6470],
+            ["elu-sigmoid", 8, 6467],
+            ["selu-softmax", 8, 6458]
+        ]
+
+        const datasets = []
+
+        const funcoesUnicas = [...new Set(dados.map((e) => { return e[0] }))].sort();
+        const geracoesUnicas = [...new Set(dados.map((e) => { return e[1] }))].sort();
+        const kmsUnicas = [...new Set(dados.map((e) => { return e[2] }))].sort();
+
+        const funcoes = dados.map((e) => { return e[0] });
+        const geracoes = dados.map((e) => { return e[1] });
+        const kms = dados.map((e) => { return e[2] });
+
+        let maxFuncs = 0;
+
+        for (let ifu = 0; ifu < funcoesUnicas.length; ifu++) {
+
+            const fu = funcoesUnicas[ifu]
+
+            if (fu == 'linear-softmax') {
+
+                const cor = 'hsla(' + ifu * 30 + ',100%,50%,0.8)'
+
+                const tmpDataset = {
+                    label: fu,
+                    data: [],
+                    borderColor: cor,
+                    backgroundColor: cor,
+                    yAxisID: 'y',
+                }
+
+                const geracoesFiltrada = dados.filter((e) => { return e[0] == fu });
+
+                console.log(geracoesFiltrada)
+                console.log(geracoesUnicas)
+                let last = 0; // geracoesFiltrada[0][2];
+                console.log('inicial ', last)
+
+
+                // Números ex:  de 1 - 7
+                for (let i = 0; i <= geracoesUnicas.length; i++) {
+
+                    // Busco se tem essa geração.
+                    const g = geracoesFiltrada.filter((e) => e[1] == geracoesUnicas[i])
+
+                    if (g) {
+                        if (g[0]) { // if has i
+                            console.log(g, g[0][1], revKm(g[0][2]))
+                            tmpDataset.data.push(revKm(g[0][2])); // add km
+                            last = revKm(g[0][2]);
+                        } else {
+                            tmpDataset.data.push(last);
+                        }
+                    } else {
+                        tmpDataset.data.push(last);
+                    }
+
+                }
+                console.log('fim')
+                datasets.push(tmpDataset);
+            }
+
+            maxFuncs++;
+            if (maxFuncs > 10) break;
+        }
+
+
+
+
+        const DATA_COUNT = 7;
+        const NUMBER_CFG = { count: DATA_COUNT, min: 6400, max: 8529 };
+
+        const labels = geracoesUnicas;
+        const data = {
+            labels: labels,
+            datasets: datasets
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                stacked: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Análise das gerações de carros'
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+
+                        // grid line settings
+                        grid: {
+                            drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        },
+                    },
+                }
+            },
+        };
+
+        const myChart = new Chart(ctx, config);
+    </script>
+    <title>Gráficos</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>

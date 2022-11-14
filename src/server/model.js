@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { botSay } from './bot/telegram/Telegram.js';
 
 class Model {
     constructor() {
@@ -12,10 +13,13 @@ class Model {
 
         const data = JSON.parse(content);
         const xData = data.weights + "\r\n";
+        const w = JSON.parse(data.weights);
         fs.appendFileSync(this.file(data), xData);
 
+        botSay(`Recorde na pista ${w.track}, lap: ${w.lap} km: ${w.km}`);
+
         return '';
-        
+
     }
 
     weightsLoad(content) {
@@ -37,7 +41,7 @@ class Model {
                 }
             }
 
-            
+
         }
 
         return weights;

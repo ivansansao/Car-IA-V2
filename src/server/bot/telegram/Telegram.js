@@ -1,25 +1,29 @@
 import telegramBot from 'node-telegram-bot-api';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-import get from 'superagent';
-import { load } from 'cheerio';
-const token = '';
+// import get from 'superagent';
+// import { load } from 'cheerio';
+
+
+const token = process.env.TELEGRAM_TOKEN;
 const bot = new telegramBot(token, { polling: true });
-const staticUseId = '';
+const staticUseId = process.env.TELEGRAM_USERID;
 
-export function theBot(msg) {
+function botSay(msg) {
 
     bot.sendMessage(staticUseId, msg).catch((error) => {
         bot.sendMessage(userID, errorMessage);
     });
 }
 
-
 bot.on('message', (msg) => {
-    console.log(msg)
+
     let userID = msg.chat.id;
     let messageUser = msg.text;
 
     let answer = 'Certo, você digitou: ' + messageUser + ' e se seu id é: ' + msg.chat.id;
+    msg.enableHtml(true);
 
     bot.sendMessage(userID, answer).catch((error) => {
         bot.sendMessage(userID, errorMessage);
@@ -39,4 +43,4 @@ bot.on('message', (msg) => {
     // });
 });
 
-export { bot };
+export { bot, botSay };
