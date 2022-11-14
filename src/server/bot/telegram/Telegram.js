@@ -2,9 +2,9 @@ import telegramBot from 'node-telegram-bot-api';
 
 import get from 'superagent';
 import { load } from 'cheerio';
-const token = '5768182661:AAGazPHP7M3fy_dQc_IWTOxW9xK-EYGOxcI';
+const token = '';
 const bot = new telegramBot(token, { polling: true });
-const staticUseId = '5603843556';
+const staticUseId = '';
 
 export function theBot(msg) {
 
