@@ -23,7 +23,7 @@ bot.on('message', (msg) => {
     let messageUser = msg.text;
 
     let answer = 'Certo, você digitou: ' + messageUser + ' e se seu id é: ' + msg.chat.id;
-    msg.enableHtml(true);
+    // msg.enableHtml(true);
 
     bot.sendMessage(userID, answer).catch((error) => {
         bot.sendMessage(userID, errorMessage);
