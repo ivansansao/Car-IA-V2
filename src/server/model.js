@@ -16,7 +16,7 @@ class Model {
         const w = JSON.parse(data.weights);
         fs.appendFileSync(this.file(data), xData);
 
-        botSay(`Recorde na pista ${w.track}, lap: ${w.lap} km: ${w.km}`);
+        botSay(`Recorde na pista ${w.track}, G${w.generation} lap: ${w.lap} km: ${w.km}`);
 
         return '';
 

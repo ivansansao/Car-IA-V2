@@ -14,6 +14,16 @@
         }
         const ctx = document.getElementById('myChart');
 
+        window.addEventListener('resize', resizeCanvas, false);
+
+        function resizeCanvas() {
+            ctx.width = window.innerWidth;
+            ctx.height = window.innerHeight;
+
+        }
+
+        resizeCanvas();
+
         const dados = [
             ["linear-softsign", 1, 8164],
             ["selu-softmax", 1, 8164],
@@ -249,7 +259,7 @@
 
             const fu = funcoesUnicas[ifu]
 
-            if (fu == 'linear-softmax') {
+            if (fu == 'linear-softmax' || true) {
 
                 const cor = 'hsla(' + ifu * 30 + ',100%,50%,0.8)'
 
@@ -293,11 +303,8 @@
             }
 
             maxFuncs++;
-            if (maxFuncs > 10) break;
+            if (maxFuncs > 10000) break;
         }
-
-
-
 
         const DATA_COUNT = 7;
         const NUMBER_CFG = { count: DATA_COUNT, min: 6400, max: 8529 };
@@ -314,7 +321,7 @@
             options: {
                 responsive: true,
                 interaction: {
-                    mode: 'index',
+                    mode: 'point',
                     intersect: false,
                 },
                 stacked: false,
