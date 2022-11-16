@@ -48,7 +48,6 @@ let carregarCarroSalvo = true;
 let salvarMelhorCarro = true;
 let timer = 0;
 let timerOn = true;
-let showBatidos = false;
 let collideCars = false;
 let showMousePoint = false;
 let elitism = true;
@@ -209,7 +208,7 @@ function draw() {
             }
 
 
-        } else if (showBatidos) {
+        } else if (showDeadCars) {
             car.show();
         }
 
@@ -277,8 +276,7 @@ function draw() {
                     text('> 50', 2, 65)
                     if (genetic.melhorCorrente.km < genetic.melhor.km) {
                         text('C < M', 2, 75)
-                        eliminarTodosCars();
-                        timer = pista.pistaTimeOut;
+                        stopCreateNewCars();
                     }
 
                 }

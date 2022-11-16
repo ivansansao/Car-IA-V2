@@ -41,7 +41,7 @@ g   | Shows the background
 h   | Shows car details
 i   | Shows information about the car
 j   | Shows the heat map of the track
-k   | Reset if the current race has a record
+k   | Stop create new cars if the current race has a record
 l   | Shows the limits of the track
 m   | Deletes all vehicles
 n   | Show flag
@@ -52,6 +52,6 @@ r   | Deletes all vehices clearing weights to start from the zero
 s   | Shows sensors
 t   | Stop the 'timer'
 w   | Toggle slot display
-x   | Shows crashed vehicles
+x   | Stop create new cars
 y   | Enables/disables engine sound
 z   | Lights

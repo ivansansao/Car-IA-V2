@@ -18,9 +18,9 @@ function keyPressed() {
         world.showScoreboard = !world.showScoreboard;
     }
 
-    if (key == 'a') {    
+    if (key == 'a') {
         world.endsWhenFinishLine = !world.endsWhenFinishLine;
-        console.log(`Ends when hit finish line: ${world.endsWhenFinishLine}`);           
+        console.log(`Ends when hit finish line: ${world.endsWhenFinishLine}`);
     } else if (key == 'b') {
         // world.showCars = !world.showCars;
         world.trainigMode = !world.trainigMode;
@@ -84,7 +84,7 @@ function keyPressed() {
     } else if (key == 'w') { // Mostrar ranhuras
         showRanhuras = !showRanhuras;
     } else if (key == 'x') {
-        showBatidos = !showBatidos;
+        stopCreateNewCars();
     } else if (key == 'z') {
         luzes = !luzes;
     }
@@ -126,7 +126,7 @@ function mouseClicked() {
     // gain.gain.value = 0.2;
     // osc.start();
 
-    
+
 }
 
 function mousePressed() {

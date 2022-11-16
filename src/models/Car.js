@@ -566,7 +566,7 @@ class Car {
                 noStroke();
                 fill(100, 100, 100, 80);
             } else {
-                stroke(255);
+                stroke(0);
                 fill(this.cor);
             }
             circle(this.pos.x, this.pos.y, 10);
@@ -996,6 +996,7 @@ class Car {
             const alSmoke = map(this.speed, 0, 2, 180, 50);
             const dist = map(this.speed, 0, 2, -2, 6);
             fill(160, 160, 160, alSmoke);
+
             circle(-random(13, 14) - dist, -7, random(4, 6));
             circle(-random(15, 19) - dist, -6, random(4, 6));
             circle(-random(15, 19) - dist, -8, random(4, 6));
@@ -1241,4 +1242,13 @@ function killAllClearingWeights() {
     genetic.melhor = null;
     genetic.melhores = [];
     genetic.empatados = [];
+}
+
+function stopCreateNewCars() {
+    const newTimer = Number((pista.trackSize * 0.5).toFixed(0));
+    if (timer <= newTimer) {
+        foo.speak('u');
+        timer = newTimer;
+    }
+
 }
