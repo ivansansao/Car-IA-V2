@@ -4,9 +4,9 @@ class Scoreboard {
         this.mouseOver = false;
         this.mouseOff = null;
         this.width = 950;
-        this.height = 250;
         this.rowHeight = 25;
-        this.rows = 7;
+        this.rows = 10;
+        this.height = 75 + (this.rowHeight * this.rows);
         this.centerize();
     }
     centerize() {

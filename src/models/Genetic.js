@@ -54,7 +54,7 @@ class Genetic {
                 child.ia.setWeightsFromString(pesos, this.shapes);
             }
         }
-        cars.push(child);
+        pista.addCar(child, 'Primeira carga');
         this.melhores.push(child);
         this.melhor = child;
 
@@ -128,8 +128,8 @@ class Genetic {
             mutated.ia.model.setWeights(son.ia.getCopiedWeights());
             mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
-            cars.push(son);
-            cars.push(mutated);
+            pista.addCar(son, 'Filho sem mutação');
+            pista.addCar(mutated, 'Filho com mutação');
         }
 
         const weightCopies = this.melhor.ia.getCopiedWeights();
@@ -138,7 +138,7 @@ class Genetic {
 
             let child = new Car({ ...genetic.getData(), marca: 'c', parent: this.melhor.marca });
             child.ia.model.setWeights(weightCopies);
-            cars.push(child);
+            pista.addCar(child, 'Elitismo');
         }
 
         vivos = cars.length;
@@ -251,7 +251,7 @@ class Genetic {
             //     let child = new Car('X');
             //     child.ia.model = null;
             //     child.ia.model = melhorSalvo
-            //     cars.push(child);
+            //     pista.addCar(child);
 
             // } catch (err) {
             //     console.error(err);

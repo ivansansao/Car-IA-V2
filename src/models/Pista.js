@@ -40,8 +40,19 @@ class Pista {
 
     }
 
-    addCar(car) {
-        cars.unshift(car);
+    addCar(car, comment = '') {
+        if (!this.existCar(car)) {
+            cars.unshift(car);
+        } else {
+            // console.log('Car já existe, CRC: ', crc32(car.ia.showWeights(true)), ' Comment: ', comment);
+        }
+    }
+
+    existCar(car) {
+
+        const weight = car.ia.showWeights(true);
+        return cars.map((e) => { return e.ia.showWeights(true) }).includes(weight);
+
     }
 
     onHitSensor(car, sensor, where, entry) {

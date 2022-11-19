@@ -208,8 +208,8 @@ function draw() {
             }
 
 
-        } else if (showDeadCars) {
-            car.show();
+            // } else if (showDeadCars) {
+            //     car.show();
         }
 
     }
@@ -285,7 +285,18 @@ function draw() {
 
     }
 
-    if (!world.trainigMode) ShowMousePoint()
+
+    if (!world.trainigMode) {
+
+        ShowMousePoint()
+
+        if (world.showScoreboard) {
+            scoreboard.update();
+            scoreboard.show();
+        }
+
+    }
+
 
 }
 
@@ -331,7 +342,8 @@ function addMoreCar() {
             child.mutate(Number(random(0.01, 0.6).toFixed(15)));
         else
             child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
-        cars.unshift(child);
+
+        pista.addCar(child, 'Adição sob demanda');
         vivos++
     }
 }
