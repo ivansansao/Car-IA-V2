@@ -40,6 +40,10 @@ class Pista {
 
     }
 
+    addCar(car) {
+        cars.unshift(car);
+    }
+
     onHitSensor(car, sensor, where, entry) {
 
         if (entry) {
