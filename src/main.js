@@ -32,6 +32,7 @@ let genetic = null;
 let vivos = 0;
 let runDemo = false;
 let cars = [];
+let carsCrcHistory = [];
 let walls = [];
 let ray;
 let pista;

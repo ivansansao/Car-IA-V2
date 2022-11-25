@@ -41,7 +41,19 @@ class Pista {
     }
 
     addCar(car, comment = '') {
+
         if (!this.existCar(car)) {
+
+            if (car.marca != 'X' && car.marca != 'c') {
+                const crc = crc32(car.ia.showWeights(true))
+                if (carsCrcHistory.includes(crc)) {
+                    console.log(`Carro marca ${car.marca} CRC ${crc} já correu!`);
+                    return
+                } else {
+                    carsCrcHistory.push(crc);
+                }
+            }
+
             cars.unshift(car);
         } else {
             // console.log('Car já existe, CRC: ', crc32(car.ia.showWeights(true)), ' Comment: ', comment);
