@@ -44,7 +44,7 @@ class Pista {
 
         if (!this.existCar(car)) {
 
-            if (car.marca != 'X' && car.marca != 'c') {
+            if (car.marca == 's') {
                 const crc = crc32(car.ia.showWeights(true))
                 if (carsCrcHistory.includes(crc)) {
                     console.log(`Carro marca ${car.marca} CRC ${crc} já correu!`);
