@@ -38,6 +38,8 @@ class Genetic {
             this.pesos.push(this.loadWeights(i));
         }
 
+        console.log(this.pesos)
+
     }
 
     getData() {
@@ -385,13 +387,13 @@ class Genetic {
 
         try {
 
-            const weights = api.loadWeights('track' + track).toString().trim() || '{}';
+            const weights = api.loadWeights('track' + track).toString().trim() || '{ weights: "" }';
             return JSON.parse(weights);
 
         } catch (error) {
             console.log("Pista: " + track);
             console.error(error);
-            return '';
+            return { weights: "" };
         }
     }
 
