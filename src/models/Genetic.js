@@ -38,8 +38,6 @@ class Genetic {
             this.pesos.push(this.loadWeights(i));
         }
 
-        console.log(this.pesos)
-
     }
 
     getData() {
