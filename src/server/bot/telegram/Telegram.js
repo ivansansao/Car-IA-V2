@@ -13,7 +13,7 @@ const staticUseId = process.env.TELEGRAM_USERID;
 function botSay(msg) {
 
     bot.sendMessage(staticUseId, msg).catch((error) => {
-        bot.sendMessage(userID, errorMessage);
+        bot.sendMessage(staticUseId, 'Erro ao enviar mensagem!');
     });
 }
 
@@ -26,7 +26,7 @@ bot.on('message', (msg) => {
     // msg.enableHtml(true);
 
     bot.sendMessage(userID, answer).catch((error) => {
-        bot.sendMessage(userID, errorMessage);
+        bot.sendMessage(userID, 'Erro ao enviar mensagem!');
     });
 
     // let url = 'https://explainshell.com/explain?cmd=' + messageUser;

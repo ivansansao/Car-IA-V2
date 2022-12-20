@@ -773,7 +773,7 @@ class Car {
                 }
             }
 
-            ray.savedDistance = nearestWall;
+            ray.savedDistance = nearestWall.toFixed(0);
 
             if (menorHit && this.showRays) {
 
@@ -784,7 +784,8 @@ class Car {
                     strokeWeight(1);
                     lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
                     circle(menorHit.x, menorHit.y, 10);
-                    text(i, menorHit.x, menorHit.y);
+                    // text(i, menorHit.x, menorHit.y);
+                    text(ray.savedDistance, menorHit.x, menorHit.y);
 
                     if (this.showSensorValue) {
                         noStroke();

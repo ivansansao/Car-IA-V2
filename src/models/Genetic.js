@@ -385,7 +385,7 @@ class Genetic {
 
         try {
 
-            const weights = api.loadWeights('track' + track).toString().trim() || '{ weights: "" }';
+            const weights = api.loadWeights('track' + track).toString().trim() || '{"weights": ""}';
             return JSON.parse(weights);
 
         } catch (error) {
