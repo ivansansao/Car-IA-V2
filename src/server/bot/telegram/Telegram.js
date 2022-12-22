@@ -6,15 +6,20 @@ dotenv.config();
 // import { load } from 'cheerio';
 
 
-const token = process.env.TELEGRAM_TOKEN;
-const bot = new telegramBot(token, { polling: true });
+const token = process.env.TELEGRAM_TOKEN || "Token not configured";
+const bot = new telegramBot(token, { polling: false });
 const staticUseId = process.env.TELEGRAM_USERID;
 
 function botSay(msg) {
 
     bot.sendMessage(staticUseId, msg).catch((error) => {
-        bot.sendMessage(staticUseId, 'Erro ao enviar mensagem!');
+        if (true) {
+            bot.sendMessage(staticUseId, 'Erro ao enviar mensagem!');
+        } else {
+            console.log("User id not configured");
+        }
     });
+
 }
 
 bot.on('message', (msg) => {
