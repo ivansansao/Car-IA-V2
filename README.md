@@ -5,6 +5,11 @@ This project uses Google TensorFlow for the car's neural network.
 
 The genetic algorithm selects the first one, clones it to generate the next generation in addition to keeping its superior and adding a new random one.
 
+If you want to save automatically the weights then before to start file:///home/cars/src/index.html on browser you need to run "node main.js" on terminal:
+
+src/server/node main.js
+Server is running on http://localhost:1905
+
 Sensors
 ![Alt Text](src/assets/p3-sensor.gif)
 
