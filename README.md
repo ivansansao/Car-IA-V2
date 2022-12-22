@@ -50,6 +50,12 @@ Track 3 with information about the cars
 Track 3 runway heatmap
 ![Alt text](src/assets/p3-thermalmap.png?raw=true "track print")
 
+Track 4
+![Alt Text](src/assets/p4-track5.gif)
+
+
+
+
 
 Command keys:
 
