@@ -1,4 +1,3 @@
-![Alt Text](src/assets/caria.png)
 # Cars-AI  
 
 This project uses Google TensorFlow for the car's neural network.
