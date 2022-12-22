@@ -1,17 +1,34 @@
-Clone or download this repository and run the src/index.html file in your browser.
-Press 'c' to change lanes, F12 will show some info!
+# Cars-AI  
 
 This project uses Google TensorFlow for the car's neural network.
 
 The genetic algorithm selects the first one, clones it to generate the next generation in addition to keeping its superior and adding a new random one.
 
-If you want to save automatically the weights then before to start file:///home/cars/src/index.html on browser you need to run "node main.js" on terminal, take a look above:
+## 🚀 To run
 
-Run the server with: 
-cd src/server
-node main.js
+Download the code and run the src/index.html on browser.
 
-Server is running on http://localhost:1905
+⚡️ Do you want to save learning?
+
+It's not necessary to work but if you want to save automatically the weights then before to start file:///home/cars/src/index.html on browser you need to run "node main.js" on terminal, take a look above:
+
+Run the server with:
+~~~bash  
+    cd src/server    
+    node main.js
+    Server is running on http://localhost:1905
+~~~
+
+⚡️ Do you want to receive messages on your telegram about the cars progress?
+
+Rename file .env.example to .env and then configure these variables like examples below:
+
+    TELEGRAM_TOKEN="5769999991:AalskdjfhaldskfjhasdfgddxW9xK-EJHJHI"
+    TELEGRAM_USERID="8989898986"  
+    SERVER_HOST=localhost  
+    SERVER_PORT=1905
+
+After remake your command: node main.js
 
 Sensors
 ![Alt Text](src/assets/p3-sensor.gif)
@@ -39,7 +56,7 @@ Key | Action
 1   | Toggle scoreboard show
 a   | Ends generation when hit finish line
 b   | Trainig mode, stop rendering the things to improve training performance
-c   | Change track layout
+**c**   | **Change track layout**
 e   | Enables/disables elitism
 f   | Shows crashed cars
 g   | Shows the background
@@ -59,4 +76,5 @@ t   | Stop the 'timer'
 w   | Toggle slot display
 x   | Stop create new cars
 y   | Enables/disables engine sound
-z   | Lights
+z   | Lights 
+
