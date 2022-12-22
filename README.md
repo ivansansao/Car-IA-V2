@@ -21,6 +21,8 @@ Run the server with:
 
 ⚡️ Do you want to receive messages on your telegram about the cars progress?
 
+You need to create a bot on Telegram and get its token and user id first.
+
 Rename file .env.example to .env and then configure these variables like examples below:
 
     TELEGRAM_TOKEN="5769999991:AalskdjfhaldskfjhasdfgddxW9xK-EJHJHI"
