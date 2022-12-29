@@ -344,6 +344,17 @@ function addMoreCar() {
         else
             child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
+        // if (pista.selectedPista == 4) {
+        //     if (random() > 0.5) {
+        //         pista.localNascimento = createVector(400, 65);
+        //         pista.anguloNascimento = radians(180);
+        //     } else {
+        //         car.marca = 'o'
+        //         pista.localNascimento = createVector(1000, 847);
+        //         pista.anguloNascimento = radians(0);
+        //     }
+        // }
+
         pista.addCar(child, 'Adição sob demanda');
         vivos++
     }
@@ -366,7 +377,7 @@ function showCredits() {
         textSize(20);
         text(`@TensorFlow`, 250, 510);
 
-        text(`@Inteligência`, 400, 830);
+        text(`@Intelligence`, 400, 830);
         text(`@Artificial`, 750, 760);
 
     }
