@@ -63,7 +63,9 @@ class Pista {
     existCar(car) {
 
         const weight = car.ia.showWeights(true);
-        return cars.map((e) => { return e.ia.showWeights(true) }).includes(weight);
+        const filtered = cars.filter(e => e.ia.showWeights(true) == weight)
+        return filtered.length > 0
+        // return cars.map((e) => { return e.ia.showWeights(true) }).includes(weight);
 
     }
 

@@ -68,6 +68,7 @@ class Genetic {
 
             zerarFrota();
             this.getFirstWeights();
+            this.addCarFromTracks(cars[0].ia.showWeights(true))
             return
 
         }
@@ -97,6 +98,8 @@ class Genetic {
         }
 
         this.melhores.push(this.makeSon(ancestral, this.melhores));
+
+        // End create sons
 
         console.log(`G${addZero(nGeracao + 1)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated} NM: ${this.melhor.ia.mutatedNeurons}`);
 
@@ -141,8 +144,56 @@ class Genetic {
             pista.addCar(child, 'Elitismo');
         }
 
+        // Add cars reproducing ancestral with better from each track.
+        this.addCarFromTracks(ancestral)
+
         vivos = cars.length;
 
+    }
+
+    addCarFromTracks(ancestral) {
+        this.addCarFromTrackMixed(ancestral)
+        this.addCarFromTrackExact()
+        this.addCarFromTrackMutted()
+    }
+
+    addCarFromTrackMixed(ancestral) {
+        let ti = 1
+        for (const weightTrack of this.pesos) {
+            if (weightTrack.weights) {
+                let childTrack = new Car({ ...genetic.getData() });
+                const sonWeight = this.reproduceMixing(ancestral, weightTrack.weights)
+                childTrack.ia.setWeightsFromString(sonWeight, this.shapes);
+                childTrack.marca = 'Ta' + ti
+                pista.addCar(childTrack, 'Mixed another track with this better ' + childTrack.marca);
+            }
+            ti++
+        }
+    }
+    addCarFromTrackExact() {
+        let ti = 1
+        for (const weightTrack of this.pesos) {
+            if (weightTrack.weights) {
+                let childTrack = new Car({ ...genetic.getData() });
+                childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
+                childTrack.marca = 'Tb' + ti
+                pista.addCar(childTrack, 'Car from another track ' + childTrack.marca);
+            }
+            ti++
+        }
+    }
+    addCarFromTrackMutted() {
+        let ti = 1
+        for (const weightTrack of this.pesos) {
+            if (weightTrack.weights) {
+                let childTrack = new Car({ ...genetic.getData() });
+                childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
+                childTrack.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
+                childTrack.marca = 'Tc' + ti
+                pista.addCar(childTrack, 'Mutted car from another track ' + childTrack.marca);
+            }
+            ti++
+        }
     }
 
     brokeRecord({ melhor }) {
@@ -268,6 +319,10 @@ class Genetic {
 
     makeSon(ancestral = '', carList = [], crosses = 0) {
 
+        if (carList.length < 1) {
+            return new Car({ ...genetic.getData(), marca: '?', parent: '' })
+        }
+
         const quantity = min(crosses, carList.length - 1);
         const indexParents = numsNoRepeat(0, quantity, quantity)
         const reproductives = [];
@@ -293,6 +348,22 @@ class Genetic {
     }
 
     reproduce(anc = '', rep = []) {
+
+        if (rep.length < 2) {
+            console.error(`
+            Rep < 2 foi passado e não vai ocorrer cruzamento!
+            Correto é exemplo:
+            ----------------------
+            anc    = a,b,c (Base para comparação)
+            ----------------------
+            rep[0] = a,b,3 (Pai)
+            rep[1] = 1,b,c (Mãe)
+            ----------------------
+            son    = 1,b,3 (Filho)
+            `)
+        }
+
+        // console.log('Reproduzindo... ', crc32(anc), ' with: ', crc32(rep[0]), ' rep.len: ', rep.length)
 
         let son = '@';
         const arrRep = [];
@@ -321,8 +392,46 @@ class Genetic {
         son = son.replace(/@,/g, '');
         son = son.replace(/;,/g, ';');
 
+        // if (crc32(son) == crc32(rep[0])) {
+        //     console.log('anc', anc)
+        //     console.log('rep[0]', rep[0])
+        //     console.log('son', son)
+        // }
+
+        // console.log('Filho ', crc32(son))
         return son;
 
+    }
+
+    reproduceMixing(anc = '', rep = '') {
+
+        const arrAnc = anc.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() });
+        const arrRep = rep.replace(/;/g, ';,').split(',').map((e) => { return e.toString().trim() });
+
+        let son = anc;
+        let part1 = 0
+        let part2 = 0
+
+        while ((part1 == 0 || part2 == 0) && arrAnc.length > 1 && arrRep.length > 1) {
+
+            son = '@';
+
+            for (let i = 0; i < arrAnc.length; i++) {
+
+                if (Math.random() > 0.49 && arrRep[i] != undefined) {
+                    son += ',' + arrRep[i];
+                    part1++
+                } else {
+                    son += ',' + arrAnc[i];
+                    part2++
+                }
+            }
+
+            son = son.replace(/@,/g, '');
+            son = son.replace(/;,/g, ';');
+
+        }
+        return son;
     }
 
     /*
