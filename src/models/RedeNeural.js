@@ -1,6 +1,6 @@
 /*
-    await cars[0].ia.model.save('localstorage://carro-ivan')
-    await cars[0].ia.model.save('indexeddb://caria-melhor')
+    await cars[i].ia.model.save('localstorage://carro-ivan')
+    await cars[i].ia.model.save('indexeddb://caria-melhor')
 
     cars[10].ia.model = await tf.loadLayersModel('indexeddb://caria-melhor')
 

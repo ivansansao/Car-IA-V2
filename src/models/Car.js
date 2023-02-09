@@ -535,6 +535,7 @@ class Car {
         const lap = String(this.lap).padStart(4, '0');
         const km = String(pista.trackSize - this.km).padStart(5, '0');
         const mut = String(999 - this.ia.mutated).padStart(3, '0');
+        // const mut = String(this.ia.mutated).padStart(3, '0');
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
         return lap + '-' + km + '-' + '-' + mut;
@@ -544,7 +545,6 @@ class Car {
 
         if (!this.batido) {
 
-            vivos--;
             this.batido = true;
             // genetic.setFlag();
             genetic.deads++;
@@ -552,6 +552,8 @@ class Car {
             this.engineSound.stop();
             this.normalDead = normalDead;
             this.deadWay = deadWay;
+
+            vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0);
 
         }
     }
@@ -1229,6 +1231,21 @@ class Car {
 
         if (this.pos.y < 0)
             this.pos.y = height;
+    }
+
+    isBetterThan(car) {
+
+        let isBetter = false;
+
+        if (this.lap > car.lap) {
+            isBetter = true;
+        } else if (this.lap == car.lap) {
+            if (this.km < car.km) {
+                isBetter = true;
+            }
+        }
+
+        return isBetter;
     }
 
 }

@@ -141,7 +141,7 @@ class Car {
             }
         }
 
-        
+
         // // Increase account lap.
         // if (hit) {
         //     if (ranhuras.length % this.ranhurasColetadas.length == 0) {
@@ -311,7 +311,7 @@ class Car {
 
         if (!this.batido) {
 
-            vivos--;
+            vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0)
             this.batido = true;
             genetic.setFlag();
             if (pista.recordRanhuras > 0 && this.ranhurasColetadas.length == pista.recordRanhuras) {
@@ -328,7 +328,7 @@ class Car {
             strokeWeight(2);
             fill(this.cor);
             stroke(255);
-            circle(this.pos.x, this.pos.y,10);
+            circle(this.pos.x, this.pos.y, 10);
 
             return false;
         }
@@ -341,7 +341,7 @@ class Car {
             strokeWeight(1);
             fill(0, 0, 255);
             stroke(255);
-            circle(this.pos.x, this.pos.y,5);
+            circle(this.pos.x, this.pos.y, 5);
         } else {
 
             push();

@@ -46,7 +46,7 @@ class Genetic {
 
     getFirstWeights() {
 
-        let child = new Car({ ...genetic.getData(), marca: 'X' });
+        let child = new Car({ ...this.getData(), marca: 'X' });
         let pesos = this.pesos[pista.selectedPista].weights;
 
         if (pesos.length > 0) {
@@ -58,8 +58,6 @@ class Genetic {
         this.melhores.push(child);
         this.melhor = child;
 
-        vivos = cars.length;
-
     }
 
     nextGeneration() {
@@ -68,15 +66,15 @@ class Genetic {
 
             zerarFrota();
             this.getFirstWeights();
-            this.addCarFromTracks(cars[0].ia.showWeights(true))
+            this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
             return
 
         }
         const ancestral = this.melhor.ia.showWeights(true);
 
         this.melhores = [];
-        this.calcColocacao();
-        this.melhor = cars[0];
+        this.classifyCars();
+        this.melhor = this.getBetterCar();
         this.gotCloserBest = this.getGotCloserBest();
 
         for (const firsts of this.getFirsts(this.melhor)) {
@@ -110,9 +108,11 @@ class Genetic {
             pista.recordRanhuras = this.melhor.ranhurasColetadas.length;
 
             if (nGeracao > 0) {
-                this.saveWeights(this.melhor);
-                foo.speak(`${pista.recordKm.toFixed(0)}`);
-                this.melhor.ia.showWeights();
+                if (this.isBetterThanSaved(this.melhor)) {
+                    this.saveWeights(this.melhor);
+                    foo.speak(`${pista.recordKm.toFixed(0)}`);
+                    this.melhor.ia.showWeights();
+                }
             }
 
         }
@@ -127,7 +127,7 @@ class Genetic {
 
         for (const son of sons) {
 
-            let mutated = new Car({ ...genetic.getData(), marca: 'sm', parent: son.marca });
+            let mutated = new Car({ ...this.getData(), marca: 'sm', parent: son.marca });
             mutated.ia.model.setWeights(son.ia.getCopiedWeights());
             mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
@@ -139,15 +139,13 @@ class Genetic {
 
         if (elitism) {
 
-            let child = new Car({ ...genetic.getData(), marca: 'c', parent: this.melhor.marca });
+            let child = new Car({ ...this.getData(), marca: 'c', parent: this.melhor.marca });
             child.ia.model.setWeights(weightCopies);
             pista.addCar(child, 'Elitismo');
         }
 
         // Add cars reproducing ancestral with better from each track.
         this.addCarFromTracks(ancestral)
-
-        vivos = cars.length;
 
     }
 
@@ -161,10 +159,10 @@ class Genetic {
         let ti = 1
         for (const weightTrack of this.pesos) {
             if (weightTrack.weights) {
-                let childTrack = new Car({ ...genetic.getData() });
+                let childTrack = new Car({ ...this.getData() });
                 const sonWeight = this.reproduceMixing(ancestral, weightTrack.weights)
                 childTrack.ia.setWeightsFromString(sonWeight, this.shapes);
-                childTrack.marca = 'Ta' + ti
+                childTrack.marca = 'Tx'
                 pista.addCar(childTrack, 'Mixed another track with this better ' + childTrack.marca);
             }
             ti++
@@ -174,9 +172,9 @@ class Genetic {
         let ti = 1
         for (const weightTrack of this.pesos) {
             if (weightTrack.weights) {
-                let childTrack = new Car({ ...genetic.getData() });
+                let childTrack = new Car({ ...this.getData() });
                 childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
-                childTrack.marca = 'Tb' + ti
+                childTrack.marca = 'To'
                 pista.addCar(childTrack, 'Car from another track ' + childTrack.marca);
             }
             ti++
@@ -186,10 +184,10 @@ class Genetic {
         let ti = 1
         for (const weightTrack of this.pesos) {
             if (weightTrack.weights) {
-                let childTrack = new Car({ ...genetic.getData() });
+                let childTrack = new Car({ ...this.getData() });
                 childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
                 childTrack.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
-                childTrack.marca = 'Tc' + ti
+                childTrack.marca = 'Tm'
                 pista.addCar(childTrack, 'Mutted car from another track ' + childTrack.marca);
             }
             ti++
@@ -216,10 +214,7 @@ class Genetic {
 
         if (showFlag) {
             if (pista) {
-
-                this.calcColocacao();
-
-                const tmpMelhor = cars[0];
+                const tmpMelhor = this.getBetterCar();
                 if (tmpMelhor) {
                     pista.setFlag(tmpMelhor.pos.x, tmpMelhor.pos.y, tmpMelhor.km, tmpMelhor.cor);
                     this.melhorCorrente = tmpMelhor;
@@ -313,14 +308,17 @@ class Genetic {
 
     }
 
-    calcColocacao() {
-        cars.sort((a, b) => (a.ranking() < b.ranking() ? 1 : -1));
+    classifyCars(worstFirst) {
+        if (worstFirst)
+            cars.sort((a, b) => (a.ranking() < b.ranking() ? -1 : 1));
+        else
+            cars.sort((a, b) => (a.ranking() > b.ranking() ? -1 : 1));
     }
 
     makeSon(ancestral = '', carList = [], crosses = 0) {
 
         if (carList.length < 1) {
-            return new Car({ ...genetic.getData(), marca: '?', parent: '' })
+            return new Car({ ...this.getData(), marca: '?', parent: '' })
         }
 
         const quantity = min(crosses, carList.length - 1);
@@ -338,7 +336,7 @@ class Genetic {
 
         const weightSon = this.reproduce(ancestral, reproductives);
 
-        let child = new Car({ ...genetic.getData(), marca: 's', parent: '' });
+        let child = new Car({ ...this.getData(), marca: 's', parent: '' });
         child.ia.setWeightsFromString(weightSon, this.shapes);
         child.ia.mutated = 1;
         child.setColor();
@@ -350,7 +348,7 @@ class Genetic {
     reproduce(anc = '', rep = []) {
 
         if (rep.length < 2) {
-            console.error(`
+            console.log(`
             Rep < 2 foi passado e não vai ocorrer cruzamento!
             Correto é exemplo:
             ----------------------
@@ -443,6 +441,8 @@ class Genetic {
         let lastKm = 0;
         let q = 0;
 
+        this.classifyCars()
+
         for (let i = 0; i < cars.length; i++) {
 
             const dif = abs(lastKm - cars[i].km);
@@ -502,6 +502,18 @@ class Genetic {
             console.error(error);
             return { weights: "" };
         }
+    }
+
+    getBetterCar() {
+        this.classifyCars()
+        const better = cars[0]
+        this.classifyCars(true)
+        return better
+
+    }
+
+    isBetterThanSaved(car) {
+        return car.isBetterThan(this.getData())
     }
 
 
