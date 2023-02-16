@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { botSay } from './bot/telegram/Telegram.js';
+import { exec } from 'child_process';
 
 class Model {
     constructor() {
@@ -45,6 +46,24 @@ class Model {
         }
 
         return weights;
+    }
+
+    getGpuTemperature(content, cb) {
+        const gpuTempeturyCommand = 'nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader'
+        exec(gpuTempeturyCommand, (error, stdout, stderr) => {
+            if (error) {
+                // console.log(`error: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                // console.log(`stderr: ${stderr}`);
+                return;
+            }
+            // console.log(`stdout: ${stdout}`);
+            cb(stdout)
+            return
+        })
+
     }
 }
 

@@ -63,6 +63,7 @@ let audio;
 let engine;
 let pg;
 let globalMutations = [];
+let gpuTemp = 0;
 
 function preload() {
     // soundFormats('mp3', 'ogg');
@@ -110,8 +111,9 @@ function draw() {
         timer++;
     }
 
-    if (!world.trainigMode) {
-
+    if (world.trainigMode) {
+        // background(0);
+    } else {
         background(pista.backcolor);
         handleKeyIsDown();
 
@@ -217,15 +219,20 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (getFrameRate() > 59 || vivos < 1) {
+        if (frameCount % 40 == 0) {
+            gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
+        }
+
+        // if (getFrameRate() > 59 || vivos < 1) {
+        if ((getFrameRate() > 55 && gpuTemp < 70) || vivos < 1) {
 
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 
             if (perToEnd > 50) {
                 addMoreCar();
             }
-
         }
+
     }
 
     if (timer > pista.pistaTimeOut) {
@@ -246,7 +253,7 @@ function draw() {
                 if (showFlag) genetic.setFlag();
             }
 
-            if (world.trainigMode) background(pista.backcolor);
+            if (world.trainigMode) background(100);
             strokeWeight(1);
             stroke(50);
             fill(pista.textBackColor);
@@ -342,7 +349,7 @@ function addMoreCar() {
         if (frameCount % 5 == 0)
             child.mutate(Number(random(0.01, 0.6).toFixed(15)));
         else
-            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
+            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 2);
 
         // if (pista.selectedPista == 4) {
         //     if (random() > 0.5) {

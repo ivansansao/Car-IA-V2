@@ -36,6 +36,14 @@ const requestListener = function (req, res) {
                 res.end(ret);
             });
             break
+        case "/getgputemperature":
+            req.on('end', function () {
+                model.getGpuTemperature(content, (temp) => {
+                    res.writeHead(200);
+                    res.end(temp);
+                });
+            });
+            break
     };
 }
 
