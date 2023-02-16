@@ -64,6 +64,7 @@ let engine;
 let pg;
 let globalMutations = [];
 let gpuTemp = 0;
+let rankingMode = 0;
 
 function preload() {
     // soundFormats('mp3', 'ogg');

@@ -534,8 +534,13 @@ class Car {
 
         const lap = String(this.lap).padStart(4, '0');
         const km = String(pista.trackSize - this.km).padStart(5, '0');
-        const mut = String(999 - this.ia.mutated).padStart(3, '0');
-        // const mut = String(this.ia.mutated).padStart(3, '0');
+        let mut;
+
+        if (rankingMode == 0)
+            mut = String(999 - this.ia.mutated).padStart(3, '0');
+        else
+            mut = String(this.ia.mutated).padStart(3, '0');
+
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
         return lap + '-' + km + '-' + '-' + mut;
