@@ -4,8 +4,6 @@ getGpuTemperature(cb)
 
 function getGpuTemperature(cb) {
     const gpuTempeturyCommand = 'nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader'
-
-
     exec(gpuTempeturyCommand, (error, stdout, stderr) => {
         if (error) {
             console.log(`error: ${error.message}`);
