@@ -65,6 +65,7 @@ let pg;
 let globalMutations = [];
 let gpuTemp = 0;
 let rankingMode = 0;
+let frameRateLimit = 59;
 
 function preload() {
     // soundFormats('mp3', 'ogg');
@@ -224,8 +225,7 @@ function draw() {
             gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
         }
 
-        // if (getFrameRate() > 59 || vivos < 1) {
-        if ((getFrameRate() > 55 && gpuTemp < 70) || vivos < 1) {
+        if ((getFrameRate() > frameRateLimit && gpuTemp < 70) || vivos < 1) {
 
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 
@@ -264,7 +264,7 @@ function draw() {
             const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
 
-            text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2}`, 10, 20);
+            text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2} FR: ${getFrameRate()}`, 10, 20);
 
         }
 
@@ -350,7 +350,7 @@ function addMoreCar() {
         if (frameCount % 5 == 0)
             child.mutate(Number(random(0.01, 0.6).toFixed(15)));
         else
-            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 2);
+            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
         // if (pista.selectedPista == 4) {
         //     if (random() > 0.5) {
