@@ -64,6 +64,7 @@ let engine;
 let pg;
 let globalMutations = [];
 let gpuTemp = 0;
+let gpuTempLimit = 70;
 let rankingMode = 0;
 let frameRateLimit = 59;
 
@@ -225,7 +226,7 @@ function draw() {
             gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
         }
 
-        if ((getFrameRate() > frameRateLimit && gpuTemp < 70) || vivos < 1) {
+        if ((getFrameRate() > frameRateLimit && gpuTemp < gpuTempLimit) || vivos < 1) {
 
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 
@@ -347,10 +348,12 @@ function addMoreCar() {
 
         let child = new Car({ ...genetic.getData(), marca: 'm', parent: melhor.marca });
         child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-        if (frameCount % 5 == 0)
-            child.mutate(Number(random(0.01, 0.6).toFixed(15)));
-        else
-            child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
+        child.mutate(Number(random(0.0, 1.0).toFixed(15)));
+
+        // if (frameCount % 5 == 0)
+        //     child.mutate(Number(random(0.01, 0.6).toFixed(15)));
+        // else
+        //     child.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
 
         // if (pista.selectedPista == 4) {
         //     if (random() > 0.5) {
