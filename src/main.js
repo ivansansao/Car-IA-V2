@@ -64,7 +64,7 @@ let engine;
 let pg;
 let globalMutations = [];
 let gpuTemp = 0;
-let gpuTempLimit = 70;
+let gpuTempLimit = 64;
 let rankingMode = 0;
 let frameRateLimit = 59;
 
@@ -226,7 +226,7 @@ function draw() {
             gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
         }
 
-        if ((getFrameRate() > frameRateLimit && gpuTemp < gpuTempLimit) || vivos < 1) {
+        if ((getFrameRate() > frameRateLimit && gpuTemp < gpuTempLimit) || vivos < 10) {
 
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 
