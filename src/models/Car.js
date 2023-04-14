@@ -160,7 +160,8 @@ class Car {
             if (maiorI == 0) {
                 this.speedUp();
             } else if (maiorI == 1) {
-                this.freeSpeedUp();
+                // this.freeSpeedUp();
+                this.brake();
             } else if (maiorI == 2) {
                 this.brake();
             } else if (maiorI == 3) {
