@@ -19,6 +19,7 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+let percentComplete = 0;
 let api = null;
 let showDeadCars = false;
 let showFunctionalities = false;
@@ -262,7 +263,7 @@ function draw() {
             textSize(16);
             const { f1, f2 } = cars[0].ia; // Zero cause doesnt matter whats car is!
             const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
-            const percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
+            percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
 
             text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2} FR: ${getFrameRate()}`, 10, 20);

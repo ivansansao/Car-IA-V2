@@ -67,7 +67,9 @@ class Genetic {
 
             zerarFrota();
             this.getFirstWeights();
-            this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
+            if (percentComplete > 30) {
+                this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
+            }
             return
 
         }
