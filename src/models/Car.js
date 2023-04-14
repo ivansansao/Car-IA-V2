@@ -123,34 +123,25 @@ class Car {
             /*
             0 - Acelera
             1 - Mantém aceleração
-            2 - Desacelera
-            3 - Freia
+            2 - Freia
 
-            4 - Engata a marcha Dinamic
-            5 - Engata a marcha Ré
-            6 - Vai pra direita
-            7 - Vai reto
-            8 - Vai pra esquerda
+            3 - Engata a marcha Dinamic
+            4 - Engata a marcha Ré
+            5 - Vai pra direita
+            6 - Vai reto
+            7 - Vai pra esquerda
             */
 
             let resposta = this.ia.pensar(inputs);
             let maiorI;
             let maiorR;
 
-            // Defines the gear.
-
-            if (resposta[4] < resposta[5]) {
-                this.engageDinamic(); // Marcha D
-            } else if (resposta[4] > resposta[5]) {
-                this.engageReverse(); // Marcha R
-            }
-
             // Defines the speed.
 
             maiorI = 0;
             maiorR = -Infinity;
 
-            for (let i = 0; i <= 3; i++) {
+            for (let i = 0; i <= 2; i++) {
                 if (resposta[i] > maiorR) {
                     maiorR = resposta[i]
                     maiorI = i
@@ -160,32 +151,37 @@ class Car {
             if (maiorI == 0) {
                 this.speedUp();
             } else if (maiorI == 1) {
-                // this.freeSpeedUp();
-                this.brake();
+                this.speedNoAction();
             } else if (maiorI == 2) {
                 this.brake();
-            } else if (maiorI == 3) {
-                this.speedNoAction();
+            }
+
+            // Defines the gear.
+
+            if (resposta[3] < resposta[4]) {
+                this.engageDinamic(); // Marcha D
+            } else {
+                this.engageReverse(); // Marcha R
             }
 
             // Defines the direction.
 
             maiorI = 0;
             maiorR = -Infinity;
-            for (let i = 6; i <= 8; i++) {
+            for (let i = 5; i <= 7; i++) {
                 if (resposta[i] > maiorR) {
                     maiorR = resposta[i];
                     maiorI = i;
                 }
             }
-
-            if (maiorI == 6) {
+            if (maiorI == 5) {
                 this.vaiPraDireita();
-            } else if (maiorI == 7) {
+            } else if (maiorI == 6) {
                 this.vaiReto();
-            } else if (maiorI == 8) {
+            } else if (maiorI == 7) {
                 this.vaiPraEsquerda();
             }
+
 
             // End
 
@@ -199,25 +195,29 @@ class Car {
     }
 
     speedUp() {
-        this.speed += 0.005;
+        if (this.gear != 0) {
 
-        if (this.gear == 1) {
-            // Limita a velocidade pra frente em 2
-            if (this.speed > 2) {
-                this.speed = 2;
-            }
-        } else {
+            this.speed += 0.005;
 
-            // Limita a velocidade da ré em 0.5
-            if (this.speed > 0.5) {
-                this.speed = 0.5;
+            if (this.gear == 1) {
+                // Limita a velocidade pra frente em 2
+                if (this.speed > 2) {
+                    this.speed = 2;
+                }
+            } else {
+
+                // Limita a velocidade da ré em 0.5
+                if (this.speed > 0.5) {
+                    this.speed = 0.5;
+                }
             }
+
+            this.acceleration = 'up';
+            this.braking = false;
         }
 
-        this.acceleration = 'up';
-        this.braking = false;
-
         this.setEngineSound();
+
 
     }
 
@@ -271,20 +271,23 @@ class Car {
         if (this.speed > 0) {
 
             if (this.speed < 0.1) {
-                if (this.gear == 1) // Dynamic
+                if (this.gear == 1) { // Dynamic
                     this.rotation = this.speed * 0.4; // this.speed * 0.4
-                else if (this.gear == -1) // Reverse
+                } else if (this.gear == -1) {// Reverse
                     this.rotation = -this.speed * 0.4;
+                }
             } else {
-                if (this.gear == 1)
+                if (this.gear == 1) {
                     this.rotation = 0.1;
-                else if (this.gear == -1)
+                } else if (this.gear == -1) {
                     this.rotation = -0.1;
+                }
+
             }
 
         }
-        this.volanteAngle = this.volanteAngle == 'l' ? '' : 'r';
 
+        this.volanteAngle = this.volanteAngle == 'l' ? '' : 'r';
     }
 
     vaiReto() {
@@ -312,14 +315,14 @@ class Car {
 
     engageDinamic() {
         if (this.speed == 0) {
-            this.gear = 1;
+            this.gear = 1
             this.addAccHistory('D');
         }
     }
 
     engageReverse() {
         if (this.speed == 0) {
-            this.gear = -1;
+            this.gear = -1
             this.addAccHistory('R');
         }
     }
@@ -787,27 +790,27 @@ class Car {
 
             if (menorHit && this.showRays) {
 
-                if ([0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19].includes(i)) {
+                // if ([0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19].includes(i)) {
 
-                    fill(255, 0, 0);
-                    stroke(255, 0, 0);
-                    strokeWeight(1);
-                    lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
-                    stroke(this.cor);
-                    circle(menorHit.x, menorHit.y, 10);
-                    // fill(0, 0, 255);
-                    // strokeWeight(1);
-                    // stroke(255);
-                    // textSize(12)
-                    // // text(i, menorHit.x, menorHit.y);
-                    // text(ray.savedDistance, menorHit.x, menorHit.y);
+                fill(255, 0, 0);
+                stroke(255, 0, 0);
+                strokeWeight(1);
+                lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
+                stroke(this.cor);
+                circle(menorHit.x, menorHit.y, 10);
+                // fill(0, 0, 255);
+                // strokeWeight(1);
+                // stroke(255);
+                // textSize(12)
+                // // text(i, menorHit.x, menorHit.y);
+                // text(ray.savedDistance, menorHit.x, menorHit.y);
 
-                    if (this.showSensorValue) {
-                        noStroke();
-                        fill(0, 0, 255);
-                        text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
-                    }
+                if (this.showSensorValue) {
+                    noStroke();
+                    fill(0, 0, 255);
+                    text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
                 }
+                // }
 
             }
 

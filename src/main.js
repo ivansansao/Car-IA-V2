@@ -188,15 +188,15 @@ function draw() {
             carInputs.push(car.getExternDistanceWall(4));
             carInputs.push(car.getExternDistanceWall(5));
 
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
-            // carInputs.push(0.0);
+            carInputs.push(car.getExternDistanceWall(6));
+            carInputs.push(car.getExternDistanceWall(7));
+            carInputs.push(car.getExternDistanceWall(8));
+            carInputs.push(car.getExternDistanceWall(8));
+            carInputs.push(car.getExternDistanceWall(10));
+            carInputs.push(car.getExternDistanceWall(11));
+            carInputs.push(car.getExternDistanceWall(12));
+            carInputs.push(car.getExternDistanceWall(13));
+            carInputs.push(car.getExternDistanceWall(14));
 
             carInputs.push(car.getExternDistanceWall(15));
             carInputs.push(car.getExternDistanceWall(16));
@@ -348,7 +348,7 @@ function addMoreCar() {
 
         let child = new Car({ ...genetic.getData(), marca: 'm', parent: melhor.marca });
         child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-        child.mutate(Number(random(0.0, 1.0).toFixed(15)), random(1, 3));
+        child.mutate(Number(random(0.0, 1.0).toFixed(15)), random(1, 6));
 
         // if (frameCount % 5 == 0)
         //     child.mutate(Number(random(0.01, 0.6).toFixed(15)));

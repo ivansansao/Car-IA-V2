@@ -10,9 +10,9 @@ class RedeNeural {
 
     constructor({ f1, f2 } = {}) {
 
-        this.input_nodes = 13; // 22
-        this.hidden_nodes = 5;
-        this.output_nodes = 9;
+        this.input_nodes = 13 + 9; // 22
+        this.hidden_nodes = 8;
+        this.output_nodes = 8;
         this.f1 = f1 || "linear"; // this.getAnyActivation();
         this.f2 = f2 || "selu"; // this.getAnyActivation();
         this.mutated = 0; // Number of genes mutateds, zero is not mutated
@@ -328,28 +328,30 @@ class RedeNeural {
 
         tf.tidy(() => {
 
-            const aValues = sValues.split(';');
-            const aShapes = sShapes.split(';');
-            const loadedWeights = [];
+            try {
 
-            for (let i = 0; i < aValues.length; i++) {
+                const aValues = sValues.split(';');
+                const aShapes = sShapes.split(';');
+                const loadedWeights = [];
 
-                const anValues = aValues[i].split(',').map((e) => { return Number(e) });
-                const newValues = new Float32Array(anValues);
-                const newShapes = aShapes[i].split(',').map((e) => { return Number(e) });
+                for (let i = 0; i < aValues.length; i++) {
 
-                try {
-                    loadedWeights[i] = tf.tensor(newValues, newShapes);
-                } catch (error) {
-                    console.log(error)
+                    const anValues = aValues[i].split(',').map((e) => { return Number(e) });
+                    const newValues = new Float32Array(anValues);
+                    const newShapes = aShapes[i].split(',').map((e) => { return Number(e) });
+
+                    try {
+                        loadedWeights[i] = tf.tensor(newValues, newShapes);
+                    } catch (error) {
+                        console.log(error)
+                    }
+
                 }
 
-            }
 
-            try {
                 this.model.setWeights(loadedWeights);
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
 
         });
