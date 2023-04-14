@@ -113,6 +113,11 @@ function handleKeyIsDown() {
 
 function mouseClicked() {
 
+    if (keyIsDown(SHIFT)) {
+        console.log("Click com Shift, marcou um novo local de nascimento")
+        pista.localNascimento = createVector(mouseX, mouseY);
+    }
+
     // let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     // let freq = {step: 0, min: 69, max: 121};
 

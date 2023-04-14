@@ -64,7 +64,7 @@ let engine;
 let pg;
 let globalMutations = [];
 let gpuTemp = 0;
-let gpuTempLimit = 64;
+let gpuTempLimit = 78;
 let rankingMode = 0;
 let frameRateLimit = 59;
 
@@ -348,7 +348,7 @@ function addMoreCar() {
 
         let child = new Car({ ...genetic.getData(), marca: 'm', parent: melhor.marca });
         child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-        child.mutate(Number(random(0.0, 1.0).toFixed(15)));
+        child.mutate(Number(random(0.0, 1.0).toFixed(15)), random(1, 3));
 
         // if (frameCount % 5 == 0)
         //     child.mutate(Number(random(0.01, 0.6).toFixed(15)));

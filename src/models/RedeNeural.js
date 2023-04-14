@@ -221,9 +221,8 @@ class RedeNeural {
 
     mutateNoRepeat(rate, maxMutations = Infinity) {
 
-        while (true) {
-            this.mutate(rate, maxMutations = Infinity);
-
+        for (let i = 0; i < 999; i++) {
+            this.mutate(rate, maxMutations);
             if (this.mutated > 0) {
                 const mn = this.mutatedNeurons;
                 if (!globalMutations.includes(mn)) {
@@ -239,6 +238,8 @@ class RedeNeural {
     mutate(rate, maxMutations = Infinity) {
 
         tf.tidy(() => {
+
+            // maxMutations = max(maxMutations, 1)
 
             // maxMutations = Number(random(1,4).toFixed(0));
 
@@ -256,12 +257,13 @@ class RedeNeural {
                         if (this.mutated < maxMutations) {
 
                             const n = Number(random(0, values.length - 1).toFixed(0));
+                            const w = values[n] + randomGaussian();
+                            const uniqueChange = `(${i}.${n}.${w.toFixed(2)})`
 
-                            if (!this.mutatedNeurons.includes(`(${i}.${n})`)) {
-                                const w = values[n];
-                                values[n] = w + randomGaussian();
+                            if (!this.mutatedNeurons.includes(uniqueChange)) {
+                                values[n] = w;
                                 this.mutated++;
-                                this.mutatedNeurons += `(${i}.${n})`
+                                this.mutatedNeurons += uniqueChange
                             }
 
                         }
@@ -273,7 +275,6 @@ class RedeNeural {
                 mutatedWeights[i] = newTensor;
 
             }
-
 
             this.model.setWeights(mutatedWeights);
 

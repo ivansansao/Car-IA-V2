@@ -730,6 +730,8 @@ class Car {
             this.ia.mutateNoRepeat(rate, maxMutations);
         }
         this.setColor();
+
+        return this.ia.mutated
     }
 
     getExternDistanceWall(i) {
