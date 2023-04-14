@@ -348,7 +348,7 @@ function addMoreCar() {
 
         let child = new Car({ ...genetic.getData(), marca: 'm', parent: melhor.marca });
         child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-        child.mutate(Number(random(0.0, 1.0).toFixed(15)), random(1, 6));
+        child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 2).toFixed(0)));
 
         // if (frameCount % 5 == 0)
         //     child.mutate(Number(random(0.01, 0.6).toFixed(15)));

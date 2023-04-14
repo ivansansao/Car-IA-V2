@@ -221,7 +221,7 @@ class RedeNeural {
 
     mutateNoRepeat(rate, maxMutations = Infinity) {
 
-        for (let i = 0; i < 999; i++) {
+        for (let i = 0; i < 1; i++) {
             this.mutate(rate, maxMutations);
             if (this.mutated > 0) {
                 const mn = this.mutatedNeurons;
@@ -313,6 +313,28 @@ class RedeNeural {
         });
 
     }
+    shape(toReturn) {
+
+        return tf.tidy(() => {
+
+            const weights = this.model.getWeights();
+            let shapes = '';
+
+            for (let i = 0; i < weights.length; i++) {
+
+                let shape = weights[i].shape;
+
+                if (shapes) shapes += ';';
+
+                shapes += shape;
+
+            }
+
+            return shapes
+
+        });
+
+    }
 
     getCopiedWeights() {
 
@@ -343,7 +365,7 @@ class RedeNeural {
                     try {
                         loadedWeights[i] = tf.tensor(newValues, newShapes);
                     } catch (error) {
-                        console.log(error)
+                        console.log('Erro ao carregar pesos!')
                     }
 
                 }

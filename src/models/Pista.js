@@ -192,9 +192,9 @@ class Pista {
             this.ranhuras = getRanhuras4();
             this.timeOutStopped = 90;
 
-
-            this.localNascimento = createVector(787, 653);
-            this.localNascimento = createVector(400, 65);
+            if (this.localNascimento.x == 0) {
+                this.localNascimento = createVector(400, 65);
+            }
             this.anguloNascimento = radians(180);
 
             this.startRoad = { i: 453, j: 66, value: 0 };

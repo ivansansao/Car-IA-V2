@@ -1,6 +1,6 @@
 class Car {
 
-    constructor({ marca, parent, inteligente, randomHeading, f1, f2 }) {
+    constructor({ marca, parent, inteligente, randomHeading, f1, f2, pos }) {
 
         this.pos = pista.localNascimento.copy();
         this.lastPos = createVector();
@@ -547,7 +547,7 @@ class Car {
 
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
-        return lap + '-' + km + '-' + '-' + mut;
+        return lap + '-' + km + '-' + vm + '-' + mut;
     }
 
     kill(normalDead, deadWay) {
@@ -642,7 +642,7 @@ class Car {
             switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
             text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.getAverageSpeed().toFixed(3)}`, x + 2, y += 12);
-            text(`Marcha: ${this.gear == 1 ? 'Auto' : 'Ré'} Ran: ${this.ranhurasColetadas.length} ${this.lastKm} ${this.step}`, x + 2, y += 12);
+            text(`Marcha: ${this.gear == 1 ? 'D' : this.gear == -1 ? 'R' : 'N'} Ran: ${this.ranhurasColetadas.length} ${this.lastKm} ${this.step}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
             text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated} ID: ${this.id}`, x + 2, y += 12);

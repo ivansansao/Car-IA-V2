@@ -10,7 +10,8 @@ class Genetic {
         this.melhores = [];
         this.pesos = [];
         this.currentSons = [];
-        this.shapes = '13,5;5;5,9;9';
+        this.shapes = new RedeNeural({}).shape();
+        // this.shapes = '13,5;5;5,9;9';
         // this.shapes = '22,8;8;8,9;9';
 
         // Sem pista.
