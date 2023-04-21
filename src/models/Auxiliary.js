@@ -142,3 +142,7 @@ function numsNoRepeat(from, to, quantity) {
     return nums;
 
 }
+
+function intRandom(rMax) {
+    return Number((random() * rMax).toFixed(0))
+}

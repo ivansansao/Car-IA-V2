@@ -1,7 +1,8 @@
 class Car {
 
-    constructor({ marca, parent, inteligente, randomHeading, f1, f2, pos }) {
+    constructor({ elitism, marca, parent, inteligente, randomHeading, f1, f2, pos }) {
 
+        this.elitism = elitism | false;
         this.pos = pista.localNascimento.copy();
         this.lastPos = createVector();
         this.ray = 10;
@@ -22,7 +23,7 @@ class Car {
         this.lastKmVerified = 0;
         this.lastKm = 0;
         this.step = 0; // Length of step or moviment of car
-        this.marca = marca || '?';
+        this._marca = marca || '?';
         this.parent = parent || '';
         this.aliveTime = 0;
         this.updates = 0;
@@ -73,6 +74,15 @@ class Car {
 
     }
 
+    get marca() {
+        return this._marca
+    }
+
+    set marca(value) {
+        this._marca = value
+        this.setColor();
+    }
+
     addAccHistory(action) {
 
         const last = this.accHistory[this.accHistory.length - 1];
@@ -92,19 +102,20 @@ class Car {
     }
 
     isParent() {
-        return (this.marca.toLowerCase().includes('c') || this.marca.toLowerCase().includes('x'));
+        const mark = this.marca.toLowerCase()
+        return (mark[0] == 'c' || mark[0] == 'x');
     }
 
     setColor() {
-        if (this.ia.mutated == 0) {
+
+        if (this.elitism) {
             this.cor = 'rgb(255,255,255)';
         } else {
 
             let indexColor = 0;
-            if (this.ia.mutated <= this.palette.length) {
+            if (this.ia.mutated <= this.palette.length && this.ia.mutated > 0) {
                 indexColor = this.palette[this.ia.mutated - 1].cor;
             } else {
-
 
                 let indexMut = this.ia.mutated;
                 if (indexMut > 20) indexMut = 20;
@@ -112,7 +123,6 @@ class Car {
             }
 
             this.cor = 'hsla(' + indexColor + ',100%,50%,1)';
-
         }
     }
 
@@ -1272,10 +1282,11 @@ function killAllClearingWeights() {
     eliminarTodosCars();
 
     const data = genetic.loadWeights(pista.selectedPista)
-    genetic.pesos[pista.selectedPista] = { f1: data.f1, f2: data.f2, weights: '' };
+    genetic.pesos[pista.selectedPista] = { f1: data.f1, f2: data.f2, lap: 0, km: 99999, weights: '' };
     genetic.melhor = null;
     genetic.melhores = [];
     genetic.empatados = [];
+    nGeracao = 0;
 }
 
 function stopCreateNewCars() {

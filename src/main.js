@@ -19,6 +19,7 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+let addCarFromTracks = false;
 let percentComplete = 0;
 let api = null;
 let showDeadCars = false;
@@ -266,7 +267,7 @@ function draw() {
             percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
 
-            text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao + 1} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2} FR: ${getFrameRate()}`, 10, 20);
+            text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2} FR: ${getFrameRate()}`, 10, 20);
 
         }
 
@@ -348,8 +349,12 @@ function addMoreCar() {
         const melhor = genetic.getNextOfBetters();
 
         let child = new Car({ ...genetic.getData(), marca: 'm', parent: melhor.marca });
-        child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-        child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 2).toFixed(0)));
+
+        // Just mutate after first generation.
+        if (nGeracao > 0) {
+            child.ia.model.setWeights(melhor.ia.getCopiedWeights());
+            child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 2).toFixed(0)));
+        }
 
         // if (frameCount % 5 == 0)
         //     child.mutate(Number(random(0.01, 0.6).toFixed(15)));
