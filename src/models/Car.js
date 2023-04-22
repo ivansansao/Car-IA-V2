@@ -40,6 +40,7 @@ class Car {
         this.acceleration = '';
         this.demo = new Demo();
         this.rays = [];
+        this.rayMaxLength = 0;
         this.showRays = false;
         this.lap = 0;
         this.engineSound = new EngineSound();
@@ -796,7 +797,8 @@ class Car {
                 }
             }
 
-            ray.savedDistance = nearestWall.toFixed(0);
+            ray.savedDistance = Number(nearestWall.toFixed(0));
+            this.rayMaxLength = max(this.rayMaxLength, ray.savedDistance)
 
             if (menorHit && this.showRays) {
 
