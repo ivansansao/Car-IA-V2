@@ -757,6 +757,13 @@ class Car {
         return fullDistance - offSet;
 
     }
+    getNormalizedDist(i, maxDist) {
+        const extDist = this.getExternDistanceWall(i)
+        const normalized = map(min(extDist, maxDist), 0, maxDist, 0, 1)
+
+        if (distNormalized) return normalized
+        return extDist
+    }
 
     look(walls) {
 
@@ -810,12 +817,12 @@ class Car {
                 lineX(ray.pos.x, ray.pos.y, menorHit.x, menorHit.y, 'hsl(0, 100%, 70%)');
                 stroke(this.cor);
                 circle(menorHit.x, menorHit.y, 10);
-                // fill(0, 0, 255);
-                // strokeWeight(1);
-                // stroke(255);
-                // textSize(12)
-                // // text(i, menorHit.x, menorHit.y);
-                // text(ray.savedDistance, menorHit.x, menorHit.y);
+                fill(0, 0, 255);
+                strokeWeight(1);
+                stroke(255);
+                textSize(12)
+                // text(i, menorHit.x, menorHit.y);
+                text(ray.savedDistance, menorHit.x, menorHit.y);
 
                 if (this.showSensorValue) {
                     noStroke();

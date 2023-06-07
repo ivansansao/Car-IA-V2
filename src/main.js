@@ -19,6 +19,7 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+let distNormalized = false
 let addCarFromTracks = false;
 let percentComplete = 0;
 let api = null;
@@ -183,28 +184,28 @@ function draw() {
             //     }
             // }
 
-            carInputs.push(car.getExternDistanceWall(0));
-            carInputs.push(car.getExternDistanceWall(1));
-            carInputs.push(car.getExternDistanceWall(2));
-            carInputs.push(car.getExternDistanceWall(3));
-            carInputs.push(car.getExternDistanceWall(4));
-            carInputs.push(car.getExternDistanceWall(5));
+            carInputs.push(car.getNormalizedDist(0, 200));
+            carInputs.push(car.getNormalizedDist(1, 200));
+            carInputs.push(car.getNormalizedDist(2, 200));
+            carInputs.push(car.getNormalizedDist(3, 200));
+            carInputs.push(car.getNormalizedDist(4, 200));
+            carInputs.push(car.getNormalizedDist(5, 200));
 
-            carInputs.push(car.getExternDistanceWall(6));
-            carInputs.push(car.getExternDistanceWall(7));
-            carInputs.push(car.getExternDistanceWall(8));
-            carInputs.push(car.getExternDistanceWall(8));
-            carInputs.push(car.getExternDistanceWall(10));
-            carInputs.push(car.getExternDistanceWall(11));
-            carInputs.push(car.getExternDistanceWall(12));
-            carInputs.push(car.getExternDistanceWall(13));
-            carInputs.push(car.getExternDistanceWall(14));
+            carInputs.push(car.getNormalizedDist(6, 200));
+            carInputs.push(car.getNormalizedDist(7, 200));
+            carInputs.push(car.getNormalizedDist(8, 200));
+            carInputs.push(car.getNormalizedDist(8, 200));
+            carInputs.push(car.getNormalizedDist(10, 200));
+            carInputs.push(car.getNormalizedDist(11, 200));
+            carInputs.push(car.getNormalizedDist(12, 200));
+            carInputs.push(car.getNormalizedDist(13, 200));
+            carInputs.push(car.getNormalizedDist(14, 200));
 
-            carInputs.push(car.getExternDistanceWall(15));
-            carInputs.push(car.getExternDistanceWall(16));
-            carInputs.push(car.getExternDistanceWall(17));
-            carInputs.push(car.getExternDistanceWall(18));
-            carInputs.push(car.getExternDistanceWall(19));
+            carInputs.push(car.getNormalizedDist(15, 200));
+            carInputs.push(car.getNormalizedDist(16, 200));
+            carInputs.push(car.getNormalizedDist(17, 200));
+            carInputs.push(car.getNormalizedDist(18, 200));
+            carInputs.push(car.getNormalizedDist(19, 200));
 
             car.think(carInputs);
             car.verificaColisaoRanhura(pista.ranhuras);
