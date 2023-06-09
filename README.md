@@ -85,7 +85,7 @@ w      | Toggle slot display
 x      | Stop create new cars
 y      | Enables/disables engine sound
 z      | Lights 
-SHIFT *| Manual learning
+*      | Manual learning
 UP     | Accelerate
 DOWN   | Brake
 D      | Dynamic gear
