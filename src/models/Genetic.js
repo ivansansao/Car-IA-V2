@@ -11,6 +11,7 @@ class Genetic {
         this.pesos = [];
         this.currentSons = [];
         this.shapes = new RedeNeural({}).shape();
+        this.comment = ''
 
         for (let i = 0; i <= 6; i++) {
             this.pesos.push(this.loadWeights(i));
