@@ -2,6 +2,9 @@
 
 function keyPressed() {
 
+    if (key == '*') {
+        genetic.addManualCar()
+    }
     if (key == '0') {
         engine.start();
     }
@@ -94,15 +97,25 @@ function handleKeyIsDown() {
 
     for (let i = 0; i < cars.length; i++) {
 
-        if (keyIsDown(UP_ARROW)) {
-            cars[i].speedUp();
-        } else if (keyIsDown(DOWN_ARROW)) {
-            cars[i].freeSpeedUp();
-        }
-        if (keyIsDown(RIGHT_ARROW)) {
-            cars[i].vaiPraDireita();
-        } else if (keyIsDown(LEFT_ARROW)) {
-            cars[i].vaiPraEsquerda();
+        if (!cars[i].inteligente) {
+
+            if (keyIsDown(UP_ARROW)) {
+                cars[i].speedUp();
+            } else if (keyIsDown(DOWN_ARROW)) {
+                cars[i].brake();
+            }
+            if (keyIsDown(RIGHT_ARROW)) {
+                cars[i].vaiPraDireita();
+            } else if (keyIsDown(LEFT_ARROW)) {
+                cars[i].vaiPraEsquerda();
+            } else {
+                cars[i].vaiReto();
+            }
+            if (key == 'D') {
+                cars[i].engageDinamic()
+            } else if (key == 'R') {
+                cars[i].engageReverse()
+            }
         }
 
     }

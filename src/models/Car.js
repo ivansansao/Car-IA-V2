@@ -11,7 +11,7 @@ class Car {
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
         this.ia = new RedeNeural({ f1, f2 });
-        this.inteligente = inteligente || true;
+        this.inteligente = (inteligente === undefined) ? true : inteligente;;
         this.batido = false;
         this.timer = 0;
         this.km = Infinity;
@@ -377,7 +377,9 @@ class Car {
         pista.setMajorDistance(this.km);
 
         if (this.aliveTime % pista.timeOutStopped == 0) {
-            this.onEachTime();
+            if (this.inteligente) {
+                this.onEachTime();
+            }
         }
 
         if (roads[this.pos.x]) {

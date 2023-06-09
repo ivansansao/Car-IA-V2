@@ -11,12 +11,22 @@ class Genetic {
         this.pesos = [];
         this.currentSons = [];
         this.shapes = new RedeNeural({}).shape();
-        this.comment = ''
+        this.id = this.makeId()
 
         for (let i = 0; i <= 6; i++) {
             this.pesos.push(this.loadWeights(i));
         }
 
+    }
+
+    makeId() {
+        const id = `${createName()}-${rankingMode}`
+        this.id = id
+        return id
+    }
+    setRankingMode(newValue) {
+        rankingMode = newValue
+        this.makeId()
     }
 
     getData() {
@@ -426,6 +436,7 @@ class Genetic {
         const data = {
             time: getDateTime(),
             track: pista.selectedPista,
+            comment: this.id,
             lap: car.lap,
             km: car.km,
             marca: car.marca,
@@ -466,6 +477,14 @@ class Genetic {
     isBetterThanSaved(car) {
         return car.isBetterThan(this.getData())
     }
-
+    addManualCar() {
+        manualLearning = true
+        eliminarTodosCars();
+        console.clear()
+        let manualCar = new Car({ ...this.getData(), elitism: true, marca: '*', inteligente: false });
+        pista.addCar(manualCar, 'Carro manual');
+        this.melhores.push(manualCar);
+        this.melhor = manualCar;
+    }
 
 }

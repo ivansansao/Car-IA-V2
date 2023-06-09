@@ -59,30 +59,35 @@ Track 4
 
 Command keys:
 
-Key | Action
-----|-----------------
-1   | Toggle scoreboard show
-a   | Ends generation when hit finish line
-b   | Trainig mode, stop rendering the things to improve training performance
-**c**   | **Change track layout**
-e   | Enables/disables elitism
-f   | Shows crashed cars
-g   | Shows the background
-h   | Shows car details
-i   | Shows information about the car
-j   | Shows the heat map of the track
-k   | Stop create new cars if the current race has a record
-l   | Shows the limits of the track
-m   | Deletes all vehicles
-n   | Show flag
-o   | Activates collision between cars
-p   | Pause
-q   | Start using saved weights or not
-r   | Deletes all vehices clearing weights to start from the zero
-s   | Shows sensors
-t   | Stop the 'timer'
-w   | Toggle slot display
-x   | Stop create new cars
-y   | Enables/disables engine sound
-z   | Lights 
+Key    | Action
+-------|-----------------
+1      | Toggle scoreboard show
+a      | Ends generation when hit finish line
+b      | Trainig mode, stop rendering the things to improve training performance
+**c**      | **Change track layout**
+e      | Enables/disables elitism
+f      | Shows crashed cars
+g      | Shows the background
+h      | Shows car details
+i      | Shows information about the car
+j      | Shows the heat map of the track
+k      | Stop create new cars if the current race has a record
+l      | Shows the limits of the track
+m      | Deletes all vehicles
+n      | Show flag
+o      | Activates collision between cars
+p      | Pause
+q      | Start using saved weights or not
+r      | Deletes all vehices clearing weights to start from the zero
+s      | Shows sensors
+t      | Stop the 'timer'
+w      | Toggle slot display
+x      | Stop create new cars
+y      | Enables/disables engine sound
+z      | Lights 
+SHIFT *| Manual learning
+UP     | Accelerate
+DOWN   | Brake
+D      | Dynamic gear
+R      | Reverse gear
 

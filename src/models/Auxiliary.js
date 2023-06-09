@@ -146,3 +146,18 @@ function numsNoRepeat(from, to, quantity) {
 function intRandom(rMax) {
     return Number((random() * rMax).toFixed(0))
 }
+
+function createName() {
+    const consoantes = 'BCDFGJKLMNPRSTVXZ';
+    const vogais = 'AEIOU';
+    let nome = '';
+    let rand;
+
+    for (let i = 0; i < 2; i++) {
+        rand = (Math.random() * (consoantes.length - 1)).toFixed(0);
+        nome = nome + consoantes[rand];
+        rand = (Math.random() * (vogais.length - 1)).toFixed(0);
+        nome = nome + vogais[rand];
+    }
+    return nome;
+}

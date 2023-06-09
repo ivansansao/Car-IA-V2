@@ -19,6 +19,7 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+let manualLearning = false;
 let distNormalized = false
 let addCarFromTracks = false;
 let percentComplete = 0;
@@ -108,6 +109,11 @@ function setup() {
 }
 
 function draw() {
+
+    if (manualLearning) {
+        drawManualLoop()
+        return
+    }
 
     if (pista.spriteLoaded == false) {
         return;
@@ -267,8 +273,9 @@ function draw() {
             const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
             percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
+            const genId = genetic.id
 
-            text(`Carros: ${vivos}. FC: ${frameCount} T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] f1: ${f1} f2: ${f2} FR: ${getFrameRate()}`, 10, 20);
+            text(`Carros: ${vivos}. T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] f: ${f1}/${f2} ID: ${genId} FC: ${frameCount} FR: ${getFrameRate()}`, 10, 20);
 
         }
 
@@ -310,6 +317,78 @@ function draw() {
 
     }
 
+
+}
+
+function drawManualLoop() {
+
+    if (pista.spriteLoaded == false) {
+        return;
+    }
+
+    background(pista.backcolor);
+    handleKeyIsDown();
+
+    imageMode(CORNER);
+    if (pista.spritesheet) {
+        image(pista.spritesheet, 0, 0);
+    }
+
+    pista.show();
+    image(pg, 0, 0);
+
+    if (world.showScoreboard) {
+        scoreboard.update();
+        scoreboard.show();
+    }
+
+
+    const wallsAndCars = [...pista.walls];
+
+    for (const car of cars) {
+
+        if (!car.batido) {
+
+            car.update();
+            car.look(wallsAndCars);
+            car.verificaColisaoRanhura(pista.ranhuras);
+            car.show();
+
+        }
+
+    }
+
+    if (genetic.melhor) {
+
+        if (!world.trainigMode || (world.trainigMode && frameCount % 40 == 0)) {
+
+            if (timer % 100 == 0) {
+                if (showFlag) genetic.setFlag();
+            }
+
+            if (world.trainigMode) background(100);
+            strokeWeight(1);
+            stroke(50);
+            fill(pista.textBackColor);
+            textSize(16);
+            const { f1, f2 } = cars[0].ia; // Zero cause doesnt matter whats car is!
+            const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
+            percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
+            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
+            const genId = genetic.id
+
+            text(`Carros: ${vivos}. T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] f: ${f1}/${f2} ID: ${genId} FC: ${frameCount} FR: ${getFrameRate()}`, 10, 20);
+
+        }
+
+    }
+
+    ShowMousePoint()
+
+    if (world.showScoreboard) {
+        scoreboard.update();
+        scoreboard.show();
+    }
 
 }
 
