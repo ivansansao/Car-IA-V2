@@ -19,6 +19,9 @@
 
     Rode um servidor facilmente com: python3 -m http.server
 */
+
+
+let showTrace = false;
 let manualLearning = false;
 let distNormalized = false
 let addCarFromTracks = false;
@@ -111,7 +114,7 @@ function setup() {
 function draw() {
 
     if (manualLearning) {
-        drawManualLoop()
+        drawManualLearning()
         return
     }
 
@@ -256,30 +259,7 @@ function draw() {
         genetic.nextGeneration();
     }
 
-    if (genetic.melhor) {
-
-        if (!world.trainigMode || (world.trainigMode && frameCount % 40 == 0)) {
-
-            if (timer % 100 == 0) {
-                if (showFlag) genetic.setFlag();
-            }
-
-            if (world.trainigMode) background(100);
-            strokeWeight(1);
-            stroke(50);
-            fill(pista.textBackColor);
-            textSize(16);
-            const { f1, f2 } = cars[0].ia; // Zero cause doesnt matter whats car is!
-            const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
-            percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
-            const genId = genetic.id
-
-            text(`Carros: ${vivos}. T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] f: ${f1}/${f2} ID: ${genId} FC: ${frameCount} FR: ${getFrameRate()}`, 10, 20);
-
-        }
-
-    }
+    drawHeader()
 
     if (genetic.melhorCorrente && nGeracao > 0) {
 
@@ -320,14 +300,16 @@ function draw() {
 
 }
 
-function drawManualLoop() {
+function drawManualLearning() {
 
     if (pista.spriteLoaded == false) {
         return;
     }
 
+
+
     background(pista.backcolor);
-    handleKeyIsDown();
+
 
     imageMode(CORNER);
     if (pista.spritesheet) {
@@ -342,12 +324,33 @@ function drawManualLoop() {
         scoreboard.show();
     }
 
+    handleKeyIsDown();
 
     const wallsAndCars = [...pista.walls];
 
     for (const car of cars) {
 
         if (!car.batido) {
+
+            ManualLearning.saveManualCarStatus(car)
+
+            if (ManualLearning.key_Up == 1) {
+                car.speedUp();
+            } else if (ManualLearning.key_Brake == 1) {
+                car.brake();
+            }
+            if (ManualLearning.key_Right == 1) {
+                car.vaiPraDireita();
+            } else if (ManualLearning.key_Left == 1) {
+                car.vaiPraEsquerda();
+            } else {
+                car.vaiReto();
+            }
+            if (ManualLearning.key_Dynamic == 1) {
+                car.engageDinamic()
+            } else if (ManualLearning.key_Reverse == 1) {
+                car.engageReverse()
+            }
 
             car.update();
             car.look(wallsAndCars);
@@ -357,7 +360,20 @@ function drawManualLoop() {
         }
 
     }
+    ManualLearning.cleanKeys()
 
+
+    drawHeader()
+    ShowMousePoint()
+
+    if (world.showScoreboard) {
+        scoreboard.update();
+        scoreboard.show();
+    }
+
+}
+
+function drawHeader() {
     if (genetic.melhor) {
 
         if (!world.trainigMode || (world.trainigMode && frameCount % 40 == 0)) {
@@ -377,17 +393,10 @@ function drawManualLoop() {
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
             const genId = genetic.id
 
-            text(`Carros: ${vivos}. T: ${timer} / ${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] f: ${f1}/${f2} ID: ${genId} FC: ${frameCount} FR: ${getFrameRate()}`, 10, 20);
+            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] NAME: ${genId} f: ${f1}/${f2} FC: ${frameCount} FR: ${getFrameRate()}`, 10, 20);
 
         }
 
-    }
-
-    ShowMousePoint()
-
-    if (world.showScoreboard) {
-        scoreboard.update();
-        scoreboard.show();
     }
 
 }

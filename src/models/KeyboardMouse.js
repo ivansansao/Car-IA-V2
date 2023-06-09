@@ -17,6 +17,9 @@ function keyPressed() {
     if (key == '2') {
         engine.setFrequency(60);
     }
+    if (key == '3') {
+        showTrace = !showTrace
+    }
     if (key == '1') {
         world.showScoreboard = !world.showScoreboard;
     }
@@ -100,21 +103,27 @@ function handleKeyIsDown() {
         if (!cars[i].inteligente) {
 
             if (keyIsDown(UP_ARROW)) {
-                cars[i].speedUp();
+                ManualLearning.key_Up = 1
             } else if (keyIsDown(DOWN_ARROW)) {
-                cars[i].brake();
-            }
-            if (keyIsDown(RIGHT_ARROW)) {
-                cars[i].vaiPraDireita();
-            } else if (keyIsDown(LEFT_ARROW)) {
-                cars[i].vaiPraEsquerda();
+                ManualLearning.key_Brake = 1
             } else {
-                cars[i].vaiReto();
+                ManualLearning.key_Keep = 1
             }
+
+            if (keyIsDown(RIGHT_ARROW)) {
+                ManualLearning.key_Right = 1
+            } else if (keyIsDown(LEFT_ARROW)) {
+                ManualLearning.key_Left = 1
+            } else {
+                ManualLearning.key_Streight = 1
+            }
+
             if (key == 'D') {
-                cars[i].engageDinamic()
+                ManualLearning.key_Dynamic = 1
+                ManualLearning.key_Reverse = 0
             } else if (key == 'R') {
-                cars[i].engageReverse()
+                ManualLearning.key_Dynamic = 0
+                ManualLearning.key_Reverse = 1
             }
         }
 

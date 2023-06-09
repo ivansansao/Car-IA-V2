@@ -90,4 +90,5 @@ UP     | Accelerate
 DOWN   | Brake
 D      | Dynamic gear
 R      | Reverse gear
+3      | Show trace
 

@@ -132,15 +132,14 @@ class Car {
         if (!this.batido && this.inteligente) {
 
             /*
-            0 - Acelera
-            1 - Mantém aceleração
-            2 - Freia
-
-            3 - Engata a marcha Dinamic
-            4 - Engata a marcha Ré
-            5 - Vai pra direita
-            6 - Vai reto
-            7 - Vai pra esquerda
+                0 - Up
+                1 - Keep
+                2 - Brake
+                3 - Reverse
+                4 - Dynamic
+                5 - Right
+                6 - Streight
+                7 - Left
             */
 
             let resposta = this.ia.pensar(inputs);
@@ -228,7 +227,7 @@ class Car {
         }
 
         this.setEngineSound();
-
+        this.speed = round3(this.speed)
 
     }
 
@@ -245,6 +244,7 @@ class Car {
         this.braking = false;
 
         this.setEngineSound();
+        this.speed = round3(this.speed)
 
     }
 
@@ -269,6 +269,7 @@ class Car {
         this.braking = true;
         this.acceleration = 'down';
         this.setEngineSound();
+        this.speed = round3(this.speed)
 
     }
 
@@ -1028,6 +1029,14 @@ class Car {
     }
 
     drawCar() {
+
+        if (showTrace) {
+            if (frameCount % 10 == 0) {
+                pg.strokeWeight(0.4); // Contorno fino
+                pg.fill(this.cor);
+                pg.circle(this.pos.x, this.pos.y, 4)
+            }
+        }
 
         // Fumaça de 'acelerada forte'.
         if (this.acceleration == 'up') {

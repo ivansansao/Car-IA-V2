@@ -161,3 +161,7 @@ function createName() {
     }
     return nome;
 }
+
+function round3(numb) {
+    return Math.round(numb * 1000) / 1000
+}

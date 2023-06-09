@@ -67,6 +67,7 @@ class Car {
 
         this.speedingUp = true;
         this.braking = false;
+        this.speed = Math.round(this.speed * 1000) / 1000
     }
 
     freeSpeedUp() {
@@ -77,6 +78,7 @@ class Car {
             }
         }
         this.speedingUp = false;
+        this.speed = Math.round(this.speed * 1000) / 1000
 
     }
 
@@ -91,6 +93,8 @@ class Car {
             this.trail.push({ pos: this.pos.copy(), heading: this.heading });
             this.drawTrailPg();
         }
+
+        this.speed = Math.round(this.speed * 1000) / 1000
 
     }
 
