@@ -70,10 +70,13 @@ class Genetic {
         this.gotCloserBest = this.getGotCloserBest();
         const weightCopies = this.melhor.ia.getCopiedWeights();
 
-        for (const firsts of this.getFirsts(this.melhor)) {
-            this.melhores.push(firsts);
-        }
+        /**
+         * Add sons to betters list
+         */
 
+        for (const car of this.getFirsts(this.melhor)) {
+            this.addCarToBetters(car);
+        }
 
         /**
          * Create sons doing reprodutive process.
@@ -81,17 +84,19 @@ class Genetic {
 
         const sons = [];
         for (let i = 0; i < this.melhores.length - 1; i++) {
-            sons.push(this.makeSon(ancestral, this.melhores, i + 2));
+            const son = this.makeSon(ancestral, this.melhores, i + 2)
+            if (son) sons.push(son);
         }
         for (let i = 0; i < 7; i++) {
-            sons.push(this.makeSon(ancestral, cars, i + 2));
+            const son = this.makeSon(ancestral, cars, i + 2)
+            if (son) sons.push(son);
         }
 
         if (this.gotCloserBest > this.recordCloser) {
             this.recordCloser = this.gotCloserBest;
         }
 
-        this.melhores.push(this.makeSon(ancestral, this.melhores));
+        this.addCarToBetters(this.makeSon(ancestral, this.melhores));
 
         // Add created sons
 
@@ -290,7 +295,7 @@ class Genetic {
     makeSon(ancestral = '', carList = [], crosses = 0) {
 
         if (carList.length < 1) {
-            return new Car({ ...this.getData(), marca: '?', parent: '' })
+            return false
         }
 
         const quantity = min(crosses, carList.length - 1);
@@ -400,7 +405,6 @@ class Genetic {
 
         let primeiros = [];
         let lastKm = 0;
-        let q = 0;
 
         this.classifyCars()
 
@@ -408,13 +412,12 @@ class Genetic {
 
             const dif = abs(lastKm - cars[i].km);
 
-            if (dif > 0 && dif != Infinity) {
+            if (i == 0 || (dif > 0 && dif < 100 && dif != Infinity)) {
 
                 primeiros.push(cars[i]);
                 lastKm = cars[i].km;
-                q++;
 
-                if (q > 3) {
+                if (primeiros.length > 3) {
                     break;
                 }
 
@@ -422,6 +425,28 @@ class Genetic {
         }
 
         return primeiros;
+    }
+
+    addCarToBetters(car, force) {
+
+        if (car) {
+
+            if (force) {
+                this.melhores.push(car)
+            } else {
+
+                // Se ainda não tem esse rankink em Melhores.
+                if (!this.melhores.find(e => e.ranking() == car.ranking())) {
+
+                    // Se ainda não tem essa rede neural em Melhores.
+                    if (!this.melhores.find(e => e.ia.showWeights(true) == car.ia.showWeights(true))) {
+                        this.melhores.push(car)
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 
     getNextOfBetters() {

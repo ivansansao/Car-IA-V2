@@ -1423,7 +1423,7 @@ function getRanhuras6() {
 
     const points = [];
 
-    points.push({ a: 100, b: 084, c: 1660, d: 94, m: 0, t: 0, w: 1 });
+    points.push({ a: 100, b: 84, c: 1660, d: 94, m: 0, t: 0, w: 1 });
     points.push({ a: 100, b: 157, c: 1660, d: 172, m: 0, t: 0, w: 1 });
     points.push({ a: 100, b: 240, c: 1660, d: 251, m: 0, t: 0, w: 1 });
     points.push({ a: 100, b: 319, c: 1660, d: 332, m: 0, t: 0, w: 1 });

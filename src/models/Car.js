@@ -72,6 +72,7 @@ class Car {
         // }
 
         this.setColor();
+        this.drawedDead = false;
 
     }
 
@@ -605,12 +606,13 @@ class Car {
 
         if (this.batido) {
 
-            if (showDeadCars) {
+            if (showDeadCars && !this.drawedDead) {
                 pg.push();
                 pg.translate(this.pos.x, this.pos.y);
                 pg.rotate(this.heading);
                 this.drawDeadCar();
                 pg.pop();
+                this.drawedDead = true;
             }
 
         } else {

@@ -21,6 +21,7 @@
 */
 
 
+let selectManyBetters = true;
 let showTrace = false;
 let manualLearning = false;
 let distNormalized = false
