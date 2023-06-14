@@ -511,5 +511,8 @@ class Genetic {
         this.melhores.push(manualCar);
         this.melhor = manualCar;
     }
+    saveBetter() {
+        this.saveWeights(this.melhor)
+    }
 
 }
