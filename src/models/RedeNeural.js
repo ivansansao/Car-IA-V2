@@ -374,7 +374,7 @@ class RedeNeural {
                 this.model.setWeights(loadedWeights);
 
             } catch (error) {
-                // console.log(error)
+                console.log(error)
             }
 
         });
