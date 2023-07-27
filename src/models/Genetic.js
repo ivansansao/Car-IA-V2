@@ -35,6 +35,8 @@ class Genetic {
 
     getFirstWeights() {
 
+        distNormalized = this.getData().distNormalized ?? false
+
         let child = new Car({ ...this.getData(), elitism: true, marca: 'X' });
         let pesos = this.pesos[pista.selectedPista].weights;
 
@@ -472,6 +474,7 @@ class Genetic {
             carsLength: cars.length,
             f1: car.ia.f1,
             f2: car.ia.f2,
+            distNormalized: distNormalized,
             weights: car.ia.showWeights(true),
         }
         api.saveWeights('track' + pista.selectedPista, JSON.stringify(data));
