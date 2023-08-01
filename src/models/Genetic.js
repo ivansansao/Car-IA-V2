@@ -84,6 +84,16 @@ class Genetic {
         const weightCopies = this.melhor.ia.getCopiedWeights();
 
         /**
+         * Add wifes to betters list
+         */
+
+        const wifes = this.getWifesFromFile(pista.selectedPista)
+        wifes.map((wife) => {
+            const car = this.newCarFromStringWeight(wife.weights, { ...this.getData(), marca: 'w' })
+            this.addCarToBetters(car)
+        })
+
+        /**
          * Add sons to betters list
          */
 
@@ -520,6 +530,22 @@ class Genetic {
             return [{ weights: "" }];
         }
     }
+    getWifesFromFile(track) {
+        try {
+
+            const trackName = 'track' + track
+            const stringWeights = api.loadAllWeigths(trackName).toString().trim() || '[{"weights": ""}]';
+            const weights = JSON.parse(stringWeights)
+            const parsedWeigths = weights.map((e) => JSON.parse(e))
+            const wifes = parsedWeigths.filter((e) => e.comment?.includes("@wife"))
+            return wifes
+
+        } catch (error) {
+            console.error("Erro Pista: " + track, error);
+            return [{ weights: "" }];
+        }
+
+    }
     loadLastWeights(track, last = 0) {
 
         try {
@@ -538,10 +564,15 @@ class Genetic {
         }
     }
 
+    newCarFromStringWeight(stringWeight, carConfig) {
+        const car = new Car(carConfig)
+        car.ia.setWeightsFromString(stringWeight, this.shapes)
+        return car
+    }
+
     addLastCar(whatLast = 0) {
         const w = this.loadLastWeights(pista.selectedPista, whatLast).weights
-        const lastCar = new Car({ ...this.getData(), marca: 'L' })
-        lastCar.ia.setWeightsFromString(w, this.shapes)
+        const lastCar = this.newCarFromStringWeight(w, { ...this.getData(), marca: 'l' })
         lastCar.setColor(whatLast * 2)
         pista.addCar(lastCar, `Último ${whatLast} carro salvo!`)
     }

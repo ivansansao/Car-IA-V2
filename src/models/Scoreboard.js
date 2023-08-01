@@ -40,7 +40,8 @@ class Scoreboard {
                     alive: car.batido ? 'X' : '',
                     mn: car.ia.mutatedNeurons.substring(0, 18),
                     ranking: car.ranking(),
-                    crc: crc32(car.ia.showWeights(true))
+                    crc: crc32(car.ia.showWeights(true)),
+                    parent: car.parent,
                 })
             }
         }
@@ -111,9 +112,11 @@ class Scoreboard {
             const car = this.cars[i];
             fill(car.cor);
             row += this.rowHeight;
+            const sup = car.parent
+
             text(car.alive, this.cols[icol++], row);
             text(i + 1 + "º", this.cols[icol++], row);
-            text(car.marca + car.id, this.cols[icol++], row);
+            text(car.marca + car.id + '|' + sup, this.cols[icol++], row);
             text((car.lap > 0 ? '(' + car.lap + ') ' : '') + car.km, this.cols[icol++], row);
             text(car.vm, this.cols[icol++], row);
             text(car.mut, this.cols[icol++], row);
