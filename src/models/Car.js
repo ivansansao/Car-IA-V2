@@ -1318,10 +1318,10 @@ function killAllClearingWeights() {
     nGeracao = 0;
 }
 
-function stopCreateNewCars() {
+function stopCreateNewCars(quiet) {
     const newTimer = Number((pista.trackSize * 0.5).toFixed(0));
     if (timer <= newTimer) {
-        foo.speak('u');
+        if (!quiet) foo.speak('u');
         timer = newTimer;
     }
 

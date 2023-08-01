@@ -233,6 +233,10 @@ function draw() {
 
     }
 
+    if (cars.length > 99) {
+        stopCreateNewCars(true)
+    }
+
     if (vivos < maxCar) {
 
         if (frameCount % 40 == 0) {
@@ -384,17 +388,17 @@ function drawHeader() {
             }
 
             if (world.trainigMode) background(100);
-            strokeWeight(1);
+            strokeWeight(2);
             stroke(50);
             fill(pista.textBackColor);
-            textSize(16);
+            textSize(18);
             const { f1, f2 } = cars[0].ia; // Zero cause doesnt matter whats car is!
             const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
             percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
             const genId = genetic.id
 
-            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] NAME: ${genId} f: ${f1}/${f2} FC: ${frameCount} FR: ${getFrameRate()}`, 10, 20);
+            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] NAME: ${genId} f: ${f1}/${f2} Cars: ${cars.length} FR: ${getFrameRate().toFixed(0)}`, 10, 20);
 
         }
 

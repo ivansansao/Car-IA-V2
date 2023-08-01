@@ -35,9 +35,19 @@ class Genetic {
 
     getFirstWeights() {
 
-        distNormalized = this.getData().distNormalized ?? false
+        const data = this.getData()
 
-        let child = new Car({ ...this.getData(), elitism: true, marca: 'X' });
+        if ('localNascimentoX' in data) {
+            pista.localNascimento = createVector(data.localNascimentoX, data.localNascimentoY)
+        }
+
+        if ('anguloNascimento' in data) {
+            pista.anguloNascimento = radians(data.anguloNascimento)
+        }
+
+        distNormalized = data.distNormalized ?? false
+
+        let child = new Car({ ...data, elitism: true, marca: 'X' });
         let pesos = this.pesos[pista.selectedPista].weights;
 
         if (pesos.length > 0) {
@@ -48,6 +58,7 @@ class Genetic {
         pista.addCar(child, 'Primeira carga');
         this.melhores.push(child);
         this.melhor = child;
+
 
     }
 
@@ -466,6 +477,9 @@ class Genetic {
             comment: this.id,
             lap: car.lap,
             km: car.km,
+            localNascimentoX: pista.localNascimento.x,
+            localNascimentoY: pista.localNascimento.y,
+            anguloNascimento: degrees(pista.anguloNascimento),
             marca: car.marca,
             parent: car.parent,
             generation: nGeracao,
