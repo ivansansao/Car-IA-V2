@@ -20,6 +20,18 @@ function keyPressed() {
     if (key == '3') {
         showTrace = !showTrace
     }
+    if (key == '4') {
+        genetic.addLastCar(1)
+        console.log('Last 1 car added to track')
+    }
+    if (key == '5') {
+        genetic.addLastCar(2)
+        console.log('Last 2 car added to track')
+    }
+    if (key == '6') {
+        genetic.addLastCar(3)
+        console.log('Last 3 car added to track')
+    }
     if (key == '1') {
         world.showScoreboard = !world.showScoreboard;
     }

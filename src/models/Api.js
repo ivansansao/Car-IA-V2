@@ -27,8 +27,9 @@ class Api {
         };
 
         try {
-            xhr.send(JSON.stringify(content));            
+            xhr.send(JSON.stringify(content));
         } catch (error) {
+            console.log(error)
             return '';
         }
         return xhr.responseText;
@@ -51,9 +52,17 @@ class Api {
     loadWeights(name) {
 
         const body = { name }
+        const lastWeight = this.syncFetch("/weights/load", body);
 
-        return this.syncFetch("/weights/load", body);
+        return lastWeight
 
+    }
+    loadAllWeigths(name) {
+
+        const body = { name }
+        const allWights = this.syncFetch("/weights/loadall", body);
+
+        return allWights
     }
 
 }

@@ -13,10 +13,19 @@ Download the code and run the src/index.html on browser.
 It's not necessary to work but if you want to save automatically the weights then before to start file:///home/cars/src/index.html on browser you need to run "node main.js" on terminal, take a look above:
 
 Run the server with:
-~~~bash  
-    cd src/server    
-    node main.js
-    Server is running on http://localhost:1905
+~~~js
+cd src/server    
+node main.js
+Server is running on http://localhost:1905
+~~~
+
+Do you want to put server on Pm2?
+
+~~~bash
+src/server>pm2 start "node main" --name car-1905 # Add
+src/server>pm2 save # Save for OS restart case
+src/server>pm2 restart car-1905 # Restart if necessary
+src/server>pm2 delete car-1905 # Delete if necessary
 ~~~
 
 ⚡️ Do you want to receive messages on your telegram about the cars progress?
@@ -25,10 +34,12 @@ You need to create a bot on Telegram and get its token and user id first.
 
 Rename file .env.example to .env and then configure these variables like examples below:
 
-    TELEGRAM_TOKEN="5769999991:AalskdjfhaldskfjhasdfgddxW9xK-EJHJHI"
-    TELEGRAM_USERID="8989898986"  
-    SERVER_HOST=localhost  
-    SERVER_PORT=1905
+~~~js
+TELEGRAM_TOKEN="5769999991:AalskdjfhaldskfjhasdfgddxW9xK-EJHJHI"
+TELEGRAM_USERID="8989898986"  
+SERVER_HOST=localhost  
+SERVER_PORT=1905
+~~~
 
 After remake your command: node main.js
 
@@ -85,10 +96,14 @@ w      | Toggle slot display
 x      | Stop create new cars
 y      | Enables/disables engine sound
 z      | Lights 
-*      | Manual learning
+\*      | Manual learning
 UP     | Accelerate
 DOWN   | Brake
 D      | Dynamic gear
 R      | Reverse gear
 3      | Show trace
+4      | Add second last car into track
+5      | Add thirth last car into track
+6      | Add fourth last car into track
 
+ 

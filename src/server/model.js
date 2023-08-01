@@ -47,6 +47,28 @@ class Model {
 
         return weights;
     }
+    weightsLoadAll(content) {
+
+        const data = JSON.parse(content);
+        const file = this.file(data);
+        const weights = [];
+
+        if (fs.existsSync(file)) {
+
+            let content = fs.readFileSync(file, { encoding: 'utf8' });
+            const linhas = content.toString().trim().split('\r\n');
+
+            for (let i = 0; i < linhas.length; i++) {
+                if (linhas[i].length > 0) {
+                    weights.push(linhas[i]);
+                }
+            }
+
+
+        }
+
+        return JSON.stringify(weights);
+    }
 
     getGpuTemperature(content, cb) {
         const gpuTempeturyCommand = 'nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader'

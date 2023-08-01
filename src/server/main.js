@@ -36,6 +36,13 @@ const requestListener = function (req, res) {
                 res.end(ret);
             });
             break
+        case "/weights/loadall":
+            req.on('end', function () {
+                const ret = model.weightsLoadAll(content);
+                res.writeHead(200);
+                res.end(ret);
+            });
+            break
         case "/getgputemperature":
             req.on('end', function () {
                 model.getGpuTemperature(content, (temp) => {

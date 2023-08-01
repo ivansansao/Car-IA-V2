@@ -493,6 +493,43 @@ class Genetic {
             return { weights: "" };
         }
     }
+    loadAllWeights(track) {
+
+        try {
+
+            const weights = api.loadAllWeigths('track' + track).toString().trim() || '[{"weights": ""}]';
+            return JSON.parse(weights);
+
+        } catch (error) {
+            console.log("Pista: " + track);
+            console.error(error);
+            return [{ weights: "" }];
+        }
+    }
+    loadLastWeights(track, last = 0) {
+
+        try {
+
+            const trackName = 'track' + track
+            const stringWeights = api.loadAllWeigths(trackName).toString().trim() || '[{"weights": ""}]';
+            const weights = JSON.parse(stringWeights)
+            const id = weights.length - 1 - last
+            const selected = weights[id]
+            return JSON.parse(selected);
+
+        } catch (error) {
+            console.log("Pista: " + track);
+            console.error(error);
+            return { weights: "" };
+        }
+    }
+
+    addLastCar(whatLast = 0) {
+        const w = this.loadLastWeights(pista.selectedPista, whatLast).weights
+        const lastCar = new Car({ ...this.getData(), marca: 'L' })
+        lastCar.ia.setWeightsFromString(w, this.shapes)
+        pista.addCar(lastCar, `Último ${whatLast} carro salvo!`)
+    }
 
     getBetterCar() {
         this.classifyCars()

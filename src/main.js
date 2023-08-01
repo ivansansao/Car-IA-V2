@@ -73,7 +73,7 @@ let pg;
 let globalMutations = [];
 let gpuTemp = 0;
 let gpuTempLimit = 78;
-let rankingMode = 0;
+let rankingMode = 1;
 let frameRateLimit = 59;
 
 function preload() {

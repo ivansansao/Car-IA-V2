@@ -57,7 +57,7 @@ class Pista {
             cars.unshift(car);
             vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0)
         } else {
-            // console.log('Car já existe, CRC: ', crc32(car.ia.showWeights(true)), ' Comment: ', comment);
+            console.log('Car já existe, CRC: ', crc32(car.ia.showWeights(true)), ' Comment: ', comment);
         }
     }
 
