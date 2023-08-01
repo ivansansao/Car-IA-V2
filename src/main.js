@@ -233,10 +233,6 @@ function draw() {
 
     }
 
-    if (cars.length > 99) {
-        stopCreateNewCars(true)
-    }
-
     if (vivos < maxCar) {
 
         if (frameCount % 40 == 0) {
@@ -248,7 +244,9 @@ function draw() {
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 
             if (perToEnd > 50) {
-                addMoreCar();
+                if (cars.length < 100) {
+                    addMoreCar();
+                }
             }
         }
 
