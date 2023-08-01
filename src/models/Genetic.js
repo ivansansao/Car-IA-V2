@@ -528,6 +528,7 @@ class Genetic {
         const w = this.loadLastWeights(pista.selectedPista, whatLast).weights
         const lastCar = new Car({ ...this.getData(), marca: 'L' })
         lastCar.ia.setWeightsFromString(w, this.shapes)
+        lastCar.setColor(whatLast * 2)
         pista.addCar(lastCar, `Último ${whatLast} carro salvo!`)
     }
 

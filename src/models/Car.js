@@ -56,6 +56,7 @@ class Car {
             { name: 'amarelo', cor: 60 },
             { name: 'rosa', cor: 321 },
             { name: 'azul', cor: 219 },
+            { name: 'roxo', cor: 269 },
         ];
 
         if (this.pos.x == -1) {
@@ -108,20 +109,26 @@ class Car {
         return (mark[0] == 'c' || mark[0] == 'x');
     }
 
-    setColor() {
+    setColor(corIndex) {
 
         if (this.elitism) {
             this.cor = 'rgb(255,255,255)';
         } else {
 
             let indexColor = 0;
-            if (this.ia.mutated <= this.palette.length && this.ia.mutated > 0) {
-                indexColor = this.palette[this.ia.mutated - 1].cor;
+
+            if (corIndex) {
+                indexColor = this.palette[corIndex - 1].cor;
             } else {
 
-                let indexMut = this.ia.mutated;
-                if (indexMut > 20) indexMut = 20;
-                indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
+                if (this.ia.mutated <= this.palette.length && this.ia.mutated > 0) {
+                    indexColor = this.palette[this.ia.mutated - 1].cor;
+                } else {
+
+                    let indexMut = this.ia.mutated;
+                    if (indexMut > 20) indexMut = 20;
+                    indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
+                }
             }
 
             this.cor = 'hsla(' + indexColor + ',100%,50%,1)';
