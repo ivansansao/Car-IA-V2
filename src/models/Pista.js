@@ -190,7 +190,7 @@ class Pista {
             collideCars = false;
             wallsPista = getPista4();
             this.ranhuras = getRanhuras4();
-            this.timeOutStopped = 90;
+            this.timeOutStopped = 100;
 
             if (this.localNascimento.x == 0) {
                 this.localNascimento = createVector(400, 65);

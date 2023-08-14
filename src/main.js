@@ -244,7 +244,7 @@ function draw() {
             const perToEnd = 100 - (timer / pista.trackSize * 100)
 
             if (perToEnd > 50) {
-                if (cars.length < 100) {
+                if (cars.length < 200) {
                     addMoreCar();
                 }
             }

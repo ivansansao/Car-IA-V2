@@ -182,6 +182,16 @@ class Genetic {
          */
         if (addCarFromTracks) this.addCarFromTracks(ancestral)
 
+        /**+
+         * 
+         * Add many cars
+         * 
+         */
+
+        for (let i = 0; i < 100; i++) {
+            addMoreCar()
+        }
+
         /**
         * End
         */

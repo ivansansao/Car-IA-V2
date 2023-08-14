@@ -718,7 +718,7 @@ class Car {
         }
         if (this.lastKmVerified > 0) {
 
-            if (abs(this.lastKmVerified - this.km) < 2) {
+            if (abs(this.lastKmVerified - this.km) < 10) {
                 this.kill(true, this.deadWayType.stopped);
             }
         }

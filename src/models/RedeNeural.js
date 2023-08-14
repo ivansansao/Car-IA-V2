@@ -258,6 +258,7 @@ class RedeNeural {
 
                             const n = Number(random(0, values.length - 1).toFixed(0));
                             const w = values[n] + randomGaussian();
+                            // const w = values[n] + random(-2, 2);
                             const uniqueChange = `(${i}.${n}.${w.toFixed(2)})`
 
                             if (!this.mutatedNeurons.includes(uniqueChange)) {
