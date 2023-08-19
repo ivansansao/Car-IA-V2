@@ -239,37 +239,56 @@ class RedeNeural {
 
         tf.tidy(() => {
 
-            // maxMutations = max(maxMutations, 1)
+            /**
+             * Weight blocks
+             * 0.216,0.528,0.263; // Block 0
+             * 0.745,0.787; // Block 1
+             * 0.998,0.447; // Block 2
+             * 0.411,0.951,0.155 // Block 3
+             */
 
-            // maxMutations = Number(random(1,4).toFixed(0));
 
             const weights = this.model.getWeights();
+            const blocks = weights.length;
             const mutatedWeights = [];
+            let w;
 
             for (let i = 0; i < weights.length; i++) {
 
                 let tensor = weights[i];
                 let shape = weights[i].shape;
                 let values = tensor.dataSync().slice();
+                const sortedBlock = round(random(0, blocks - 1))
 
-                for (let j = 0; j < values.length; j++) {
-                    if (random(1) < rate) {
-                        if (this.mutated < maxMutations) {
+                if (i == sortedBlock) {
+                    // console.log(sortedBlock + '   Bloco sorteado')
 
-                            const n = Number(random(0, values.length - 1).toFixed(0));
-                            const w = values[n] + randomGaussian();
-                            // const w = values[n] + random(-2, 2);
-                            const uniqueChange = `(${i}.${n}.${w.toFixed(2)})`
+                    for (let j = 0; j < values.length; j++) {
+                        if (random(1) < rate) {
+                            if (this.mutated < maxMutations) {
 
-                            if (!this.mutatedNeurons.includes(uniqueChange)) {
-                                values[n] = w;
-                                this.mutated++;
-                                this.mutatedNeurons += uniqueChange
+                                const n = Number(random(0, values.length - 1).toFixed(0));
+                                if (random() > 0.5) {
+                                    w = randomGaussian();
+                                } else {
+                                    w = values[n] + randomGaussian();
+                                }
+                                // const w = randomGaussian();
+                                // const w = values[n] + random(-2, 2);
+
+                                const uniqueChange = `(B${i} N${n} W${w.toFixed(2)})`
+
+                                if (!this.mutatedNeurons.includes(uniqueChange)) {
+                                    values[n] = w;
+                                    this.mutated++;
+                                    this.mutatedNeurons += uniqueChange
+                                }
+
                             }
-
+                            break
                         }
-                    }
 
+                    }
                 }
 
                 let newTensor = tf.tensor(values, shape);

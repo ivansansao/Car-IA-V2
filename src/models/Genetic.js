@@ -94,12 +94,18 @@ class Genetic {
         })
 
         /**
-         * Add sons to betters list
+         * Add first car to betters list
          */
 
-        for (const car of this.getFirsts(this.melhor)) {
-            this.addCarToBetters(car);
-        }
+        this.addCarToBetters(this.melhor);
+
+        /**
+         * Add firsts to betters list
+         */
+
+        // for (const car of this.getFirsts(this.melhor)) {
+        //     this.addCarToBetters(car);
+        // }
 
         /**
          * Create sons doing reprodutive process.
@@ -188,9 +194,9 @@ class Genetic {
          * 
          */
 
-        for (let i = 0; i < 100; i++) {
-            addMoreCar()
-        }
+        // for (let i = 0; i < 100; i++) {
+        //     addMoreCar()
+        // }
 
         /**
         * End
@@ -355,7 +361,7 @@ class Genetic {
 
     reproduce(anc = '', rep = []) {
 
-        if (rep.length < 2) {
+        if (false && rep.length < 2) {
             console.log(`
             Reprodução < 2 foi passado e não vai ocorrer cruzamento!
             Correto é exemplo:
