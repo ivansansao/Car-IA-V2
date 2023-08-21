@@ -1,3 +1,6 @@
+Sensors (See more animations below)
+![Alt Text](src/assets/p3-sensor.gif)
+
 # Cars-AI  
 
 This project uses Google TensorFlow for the car's neural network.
@@ -42,9 +45,6 @@ SERVER_PORT=1905
 ~~~
 
 After remake your command: node main.js
-
-Sensors
-![Alt Text](src/assets/p3-sensor.gif)
 
 Start runway
 ![Alt Text](src/assets/p3-start.gif)
