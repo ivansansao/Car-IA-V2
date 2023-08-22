@@ -7,9 +7,14 @@ class Scoreboard {
         this.rowHeight = 25;
         this.rows = 10;
         this.height = 75 + (this.rowHeight * this.rows);
+        this.marginTop = 30
+        this.marginLeft = 14
+        this.widths = [30, 60, 120, 80, 50, 60, 320, 245, 150]
         this.centerize();
     }
     centerize() {
+
+        this.width = this.getCol(this.widths.length)
 
         const top = ((windowHeight + this.height) / 2) - this.height;
         const left = ((windowWidth + this.width) / 2) - this.width;
@@ -18,7 +23,9 @@ class Scoreboard {
     move(top, left) {
         this.top = top;
         this.left = left;
-        this.cols = [14, 40, 100, 190, 290, 350, 430, 600, 780].map(e => this.left + e);
+
+        this.cols = [14, 40, 120, 190, 290, 350, 430, 600, 780].map(e => this.left + e);
+        this.nextColCount = 0;
     }
     update() {
 
@@ -38,7 +45,7 @@ class Scoreboard {
                     cor: car.cor,
                     marca: car.marca,
                     alive: car.batido ? 'X' : '',
-                    mn: car.ia.mutatedNeurons.substring(0, 18),
+                    mn: car.ia.mutatedNeurons.substring(0, 30),
                     ranking: car.ranking(),
                     crc: crc32(car.ia.showWeights(true)),
                     parent: car.parent,
@@ -67,6 +74,27 @@ class Scoreboard {
 
 
     }
+    getCol(c) {
+        let sumWidth = this.widths[0]
+
+        for (let i = 0; i < min(c, this.widths.length); i++) {
+            sumWidth += this.widths[i]
+        }
+
+        return sumWidth
+
+    }
+    resetNextColLeft() {
+        this.nextColCount = 0
+    }
+    getNextColLeft() {
+
+        const c = this.left + this.marginLeft - this.getCol(0) + this.getCol(this.nextColCount)
+        this.nextColCount++
+
+        return c
+
+    }
     show() {
 
         let row = this.top + 30;
@@ -92,20 +120,22 @@ class Scoreboard {
         noStroke();
         fill(125);
         textStyle('bold')
-        text('', this.cols[icol++], row);
-        text('POS', this.cols[icol++], row);
-        text('CARRO', this.cols[icol++], row);
-        text('KM', this.cols[icol++], row);
-        text('VM', this.cols[icol++], row);
-        text('MUT', this.cols[icol++], row);
-        text('MUTAÇÕES', this.cols[icol++], row);
-        text('CHAVE', this.cols[icol++], row);
-        text('CRC PESOS', this.cols[icol++], row);
+        this.resetNextColLeft()
+        text('', this.getNextColLeft(), row);
+        text('POS', this.getNextColLeft(), row);
+        text('CARRO', this.getNextColLeft(), row);
+        text('KM', this.getNextColLeft(), row);
+        text('VM', this.getNextColLeft(), row);
+        text('MUT', this.getNextColLeft(), row);
+        text('MUTAÇÕES', this.getNextColLeft(), row);
+        text('CHAVE', this.getNextColLeft(), row);
+        text('CRC-PESOS', this.getNextColLeft(), row);
 
         // Table.        
         row += this.rowHeight;
-        textSize(20);
+        textSize(18);
         stroke(100);
+
 
         for (let i = 0; i < this.cars.length; i++) {
             icol = 0;
@@ -114,15 +144,16 @@ class Scoreboard {
             row += this.rowHeight;
             const sup = car.parent
 
-            text(car.alive, this.cols[icol++], row);
-            text(i + 1 + "º", this.cols[icol++], row);
-            text(car.marca + car.id + '|' + sup, this.cols[icol++], row);
-            text((car.lap > 0 ? '(' + car.lap + ') ' : '') + car.km, this.cols[icol++], row);
-            text(car.vm, this.cols[icol++], row);
-            text(car.mut, this.cols[icol++], row);
-            text(car.mn, this.cols[icol++], row);
-            text(car.ranking, this.cols[icol++], row);
-            text(car.crc, this.cols[icol++], row);
+            this.resetNextColLeft()
+            text(car.alive, this.getNextColLeft(), row);
+            text(i + 1 + "º", this.getNextColLeft(), row);
+            text(car.marca + car.id + '|' + sup, this.getNextColLeft(), row);
+            text((car.lap > 0 ? '(' + car.lap + ') ' : '') + car.km, this.getNextColLeft(), row);
+            text(car.vm, this.getNextColLeft(), row);
+            text(car.mut, this.getNextColLeft(), row);
+            text(car.mn, this.getNextColLeft(), row);
+            text(car.ranking, this.getNextColLeft(), row);
+            text(car.crc, this.getNextColLeft(), row);
         }
 
         textAlign(LEFT);

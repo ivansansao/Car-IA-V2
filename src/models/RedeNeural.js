@@ -261,38 +261,32 @@ class RedeNeural {
                 const sortedBlock = round(random(0, blocks - 1))
 
                 if (i == sortedBlock) {
-                    // console.log(sortedBlock + '   Bloco sorteado')
 
-                    for (let j = 0; j < values.length; j++) {
-                        if (random(1) < rate) {
-                            if (this.mutated < maxMutations) {
+                    if (random(1) < rate) {
 
-                                const n = Number(random(0, values.length - 1).toFixed(0));
-                                if (random() > 0.5) {
-                                    w = randomGaussian();
-                                } else {
-                                    w = values[n] + randomGaussian();
-                                }
-                                // const w = randomGaussian();
-                                // const w = values[n] + random(-2, 2);
+                        if (this.mutated < maxMutations) {
 
-                                const uniqueChange = `(B${i} N${n} W${w.toFixed(2)})`
-
-                                if (!this.mutatedNeurons.includes(uniqueChange)) {
-                                    values[n] = w;
-                                    this.mutated++;
-                                    this.mutatedNeurons += uniqueChange
-                                }
-
+                            const n = Number(random(0, values.length - 1).toFixed(0));
+                            if (random() > 0.5) {
+                                // w = randomGaussian();
+                                w = values[n] + random(-9, 9);
+                            } else {
+                                w = values[n] + randomGaussian();
                             }
-                            break
-                        }
+                            // const w = randomGaussian();
 
+                            const uniqueChange = `(B${i} N${n} W${w.toFixed(2)})`
+
+                            if (!this.mutatedNeurons.includes(uniqueChange)) {
+                                values[n] = w;
+                                this.mutated++;
+                                this.mutatedNeurons += uniqueChange
+                            }
+                        }
                     }
                 }
 
-                let newTensor = tf.tensor(values, shape);
-                mutatedWeights[i] = newTensor;
+                mutatedWeights[i] = tf.tensor(values, shape);
 
             }
 

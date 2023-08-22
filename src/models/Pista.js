@@ -42,23 +42,21 @@ class Pista {
 
     addCar(car, comment = '') {
 
-        if (!this.existCar(car)) {
-
-            if (car.marca == 's') {
-                const crc = crc32(car.ia.showWeights(true))
-                if (carsCrcHistory.includes(crc)) {
-                    console.log(`Carro marca ${car.marca} CRC ${crc} já correu!`);
-                    return
-                } else {
-                    carsCrcHistory.push(crc);
-                }
+        if (!car.isParent()) {
+            const crc = crc32(car.ia.showWeights(true))
+            if (carsCrcHistory.includes(crc)) {
+                console.log(`Carro marca ${car.marca} CRC ${crc} já correu! ${comment}`);
+                return
+            } else {
+                carsCrcHistory.push(crc);
             }
-
-            cars.unshift(car);
-            vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0)
-        } else {
-            // console.log('Car já existe, CRC: ', crc32(car.ia.showWeights(true)), ' Comment: ', comment, 'Marca: ', car.marca);
         }
+        cars.unshift(car);
+        vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0)
+
+
+        // console.log('Car já existe, CRC: ', crc32(car.ia.showWeights(true)), ' Comment: ', comment, 'Marca: ', car.marca);
+
     }
 
     existCar(car) {
