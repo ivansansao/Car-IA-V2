@@ -1,3 +1,6 @@
+Click here to run!  
+https://ivansansao.github.io/Cars-AI/index.html
+
 Sensors (See more animations below)
 ![Alt Text](src/assets/p3-sensor.gif)
 
