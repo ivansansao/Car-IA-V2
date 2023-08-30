@@ -1,4 +1,4 @@
-Click here to run!  
+Click here to run online and press 'c' to change tracks!  
 https://ivansansao.github.io/Cars-AI/index.html
 
 Sensors (See more animations below)
