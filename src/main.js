@@ -434,7 +434,7 @@ function ShowMousePoint() {
     }
 }
 
-function addMoreCar() {
+async function addMoreCar() {
 
     if (genetic.melhor) {
 
