@@ -54,7 +54,7 @@ function setup() {
     world.cars.push(new Car());
     world.cars[0].pos.x = 50;
     world.cars[0].pos.j = windowHeight / 2;
-    world.cars[0].heading = PI*1.5;
+    world.cars[0].heading = PI * 1.5;
 
     for (let i = 0; i < 10; i++) {
         world.cars.push(new Car());
@@ -65,7 +65,7 @@ function setup() {
 function draw() {
     // scale(2)
 
-    background(200, 200, 200);
+    background(255, 255, 255);
     image(pg, 0, 0)
 
     if (frameCount % 1000 == 0) {
@@ -107,7 +107,7 @@ function draw() {
     // text(roda%(PI*2),10,50)
     // text(abs(roda)%(PI*2),10,75)
 
-    roda-=0.01
+    roda -= 0.01
 
 }
 
