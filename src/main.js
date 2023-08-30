@@ -85,10 +85,12 @@ function preload() {
 }
 
 function setup() {
+    const customWidth = max(windowWidth, 1870)
+    const customHeight = max(windowHeight, 920)
 
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(customWidth, customHeight);
 
-    pg = createGraphics(windowWidth, windowHeight);
+    pg = createGraphics(customWidth, customHeight);
 
     tf.setBackend('cpu');
 
