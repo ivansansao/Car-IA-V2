@@ -21,6 +21,7 @@
 */
 
 
+let errosOnScreen = ''
 let selectManyBetters = true;
 let showTrace = false;
 let manualLearning = false;
@@ -303,6 +304,12 @@ function draw() {
         }
 
     }
+
+    textSize(20);
+    stroke(255);
+    fill(125);
+    text(errosOnScreen, 16, 920)
+    text('1', 10, 40)
 
 
 }

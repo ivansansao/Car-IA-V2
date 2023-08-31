@@ -32,13 +32,7 @@ class Api {
         try {
             xhr.send(JSON.stringify(content));
         } catch (error) {
-            textSize(20);
-            stroke(255);
-            fill(125);
-            textStyle('bold')
-            text(error.message, 16, 920)
-            console.log(error)
-            noLoop()
+            errosOnScreen = error.message
             return '';
         }
         return xhr.responseText;
