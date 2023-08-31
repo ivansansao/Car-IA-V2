@@ -447,7 +447,7 @@ async function addMoreCar() {
         // Just mutate after first generation.
         if (nGeracao > 0) {
             child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-            child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 2).toFixed(0)));
+            child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 20).toFixed(0)));
         }
 
         // if (frameCount % 5 == 0)

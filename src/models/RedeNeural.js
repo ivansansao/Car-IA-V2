@@ -13,8 +13,8 @@ class RedeNeural {
         this.input_nodes = 13 + 9; // 22
         this.hidden_nodes = 8;
         this.output_nodes = 8;
-        this.f1 = f1 || "linear"; // this.getAnyActivation();
-        this.f2 = f2 || "selu"; // this.getAnyActivation();
+        this.f1 = f1 || this.getAnyActivation();
+        this.f2 = f2 || this.getAnyActivation();
         this.mutated = 0; // Number of genes mutateds, zero is not mutated
         this.mutatedNeurons = '';
 
@@ -235,7 +235,7 @@ class RedeNeural {
     }
 
 
-    mutate(rate, maxMutations = Infinity) {
+    mutate(rate, maxMutations = 99) {
 
         tf.tidy(() => {
 
@@ -247,33 +247,27 @@ class RedeNeural {
              * 0.411,0.951,0.155 // Block 3
              */
 
-
             const weights = this.model.getWeights();
             const blocks = weights.length;
             const mutatedWeights = [];
             let w;
 
-            for (let i = 0; i < weights.length; i++) {
 
-                let tensor = weights[i];
-                let shape = weights[i].shape;
-                let values = tensor.dataSync().slice();
-                const sortedBlock = round(random(0, blocks - 1))
+            for (let m = 0; m < maxMutations; m++) {
 
-                if (i == sortedBlock) {
+                if (this.mutated < maxMutations) {
 
-                    if (random(1) < rate) {
+                    for (let i = 0; i < blocks; i++) {
 
-                        if (this.mutated < maxMutations) {
+                        let tensor = weights[i];
+                        let shape = weights[i].shape;
+                        let values = tensor.dataSync().slice();
+                        const sortedBlock = round(random(0, blocks - 1))
+
+                        if (i == sortedBlock) {
 
                             const n = Number(random(0, values.length - 1).toFixed(0));
-                            if (random() > 0.5) {
-                                // w = randomGaussian();
-                                w = values[n] + random(-9, 9);
-                            } else {
-                                w = values[n] + randomGaussian();
-                            }
-                            // const w = randomGaussian();
+                            w = values[n] + randomGaussian();
 
                             const uniqueChange = `(B${i} N${n} W${w.toFixed(2)})`
 
@@ -283,11 +277,11 @@ class RedeNeural {
                                 this.mutatedNeurons += uniqueChange
                             }
                         }
+
+                        mutatedWeights[i] = tf.tensor(values, shape);
+
                     }
                 }
-
-                mutatedWeights[i] = tf.tensor(values, shape);
-
             }
 
             this.model.setWeights(mutatedWeights);

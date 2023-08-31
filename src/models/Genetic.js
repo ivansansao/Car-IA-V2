@@ -13,10 +13,16 @@ class Genetic {
         this.shapes = new RedeNeural({}).shape();
         this.id = this.makeId()
 
-        for (let i = 0; i <= 6; i++) {
+        this.loadData()
+
+    }
+
+    loadData() {
+        this.pesos = [];
+        this.pesos.push({});
+        for (let i = 1; i <= 6; i++) {
             this.pesos.push(this.loadWeights(i));
         }
-
     }
 
     makeId() {
@@ -30,14 +36,26 @@ class Genetic {
     }
 
     getData() {
-        return this.pesos[pista.selectedPista];
+        const pesos = this.pesos[pista.selectedPista];
+
+        if (this.melhor) {
+            if (nGeracao > 0) {
+                if (!pesos.f1) pesos.f1 = this.melhor.ia.f1
+                if (!pesos.f2) pesos.f2 = this.melhor.ia.f2
+            }
+        }
+
+        return pesos
     }
 
     getFirstWeights() {
-        console.log('Pegando do arquivo...')
+        console.log('First generation!')
 
         zerarFrota()
+
         this.melhores = []
+        this.loadData()
+
         const data = this.getData()
 
         if ('localNascimentoX' in data) {
@@ -70,7 +88,7 @@ class Genetic {
         const lastRoundBetter = this.getBetterCar()
         const fileCar = this.getFileCar()
 
-        if (fileCar.isBetterThan(lastRoundBetter)) {
+        if (!this.melhor || fileCar.isBetterThan(lastRoundBetter)) {
 
             this.getFirstWeights();
             if (addCarFromTracks) {
@@ -525,45 +543,50 @@ class Genetic {
         api.saveWeights('track' + pista.selectedPista, JSON.stringify(data));
 
     }
+    defaultSettings() {
+        return { weights: "", km: Infinity, lap: 0 }
+    }
+
     loadWeights(track) {
+
 
         try {
 
-            const weights = api.loadWeights('track' + track).toString().trim() || '{"weights": ""}';
+            const weights = api.loadWeights('track' + track).toString().trim() || undefined;
             return JSON.parse(weights);
 
         } catch (error) {
             console.log("Pista: " + track);
-            console.error(error);
-            return { weights: "" };
+            console.log(error);
+            return this.defaultSettings();
         }
     }
     loadAllWeights(track) {
 
         try {
 
-            const weights = api.loadAllWeigths('track' + track).toString().trim() || '[{"weights": ""}]';
+            const weights = api.loadAllWeigths('track' + track).toString().trim() || undefined
             return JSON.parse(weights);
 
         } catch (error) {
             console.log("Pista: " + track);
-            console.error(error);
-            return [{ weights: "" }];
+            console.log(error);
+            return [this.defaultSettings()];
         }
     }
     getWifesFromFile(track) {
         try {
 
             const trackName = 'track' + track
-            const stringWeights = api.loadAllWeigths(trackName).toString().trim() || '[{"weights": ""}]';
+            const stringWeights = api.loadAllWeigths(trackName).toString().trim() || undefined
             const weights = JSON.parse(stringWeights)
             const parsedWeigths = weights.map((e) => JSON.parse(e))
             const wifes = parsedWeigths.filter((e) => e.comment?.includes("@wife"))
             return wifes
 
         } catch (error) {
-            console.error("Erro Pista: " + track, error);
-            return [{ weights: "" }];
+            console.log("Erro Pista: " + track, error);
+            return [this.defaultSettings()];
         }
 
     }
@@ -572,7 +595,7 @@ class Genetic {
         try {
 
             const trackName = 'track' + track
-            const stringWeights = api.loadAllWeigths(trackName).toString().trim() || '[{"weights": ""}]';
+            const stringWeights = api.loadAllWeigths(trackName).toString().trim() || undefined
             const weights = JSON.parse(stringWeights)
             const id = weights.length - 1 - last
             const selected = weights[id]
@@ -580,16 +603,16 @@ class Genetic {
 
         } catch (error) {
             console.log("Pista: " + track);
-            console.error(error);
-            return { weights: "" };
+            console.log(error);
+            return this.defaultSettings();
         }
     }
 
     newCarFromStringWeight(stringWeight, carConfig) {
         const car = new Car(carConfig)
         car.ia.setWeightsFromString(stringWeight, this.shapes)
-        car.km = carConfig.km
-        car.lap = carConfig.lap
+        car.km = carConfig.km ? carConfig.km : car.km
+        car.lap = carConfig.lap ? carConfig.lap : car.lap
         return car
     }
 
@@ -613,7 +636,8 @@ class Genetic {
     }
 
     isBetterThanSaved(car) {
-        return car.isBetterThan(this.getData())
+        const isBetter = car.isBetterThan(this.getData())
+        return isBetter
     }
     addManualCar() {
         manualLearning = true
