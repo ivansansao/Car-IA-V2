@@ -239,7 +239,7 @@ function draw() {
 
     if (vivos < maxCar) {
 
-        if (frameCount % 40 == 0) {
+        if (frameCount % 200 == 0) {
             gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
         }
 

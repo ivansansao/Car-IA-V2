@@ -31,6 +31,9 @@ const requestListener = function (req, res) {
             break
         case "/weights/load":
             req.on('end', function () {
+
+                console.log('Req pesos from: ', req.headers.host);
+
                 const ret = model.weightsLoad(content);
                 res.writeHead(200);
                 res.end(ret);
@@ -46,6 +49,7 @@ const requestListener = function (req, res) {
         case "/getgputemperature":
             req.on('end', function () {
                 model.getGpuTemperature(content, (temp) => {
+                    console.log('Req gpu from: ', req.headers.host);
                     res.writeHead(200);
                     res.end(temp);
                 });
