@@ -175,6 +175,8 @@ function draw() {
         }
     }
 
+    text('Server: ' + api.url, 1130, 20)
+
     for (const car of cars) {
 
         if (!car.batido) {

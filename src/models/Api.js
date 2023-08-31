@@ -2,6 +2,7 @@ class Api {
     constructor() {
         const isCloud = window.location.origin.includes('https')
         this.url = isCloud ? 'http://187.23.108.203:1905' : 'http://localhost:1905'
+        console.log("Server on: ", this.url)
     }
 
     fetch(page, content) {
