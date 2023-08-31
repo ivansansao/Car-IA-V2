@@ -1287,15 +1287,19 @@ class Car {
 
         let isBetter = false;
 
-        if (this.lap > car.lap) {
-            isBetter = true;
-        } else if (this.lap == car.lap) {
-            if (this.km < car.km) {
+        if (car) {
+            if (this.lap > car.lap) {
                 isBetter = true;
+            } else if (this.lap == car.lap) {
+                if (this.km < car.km) {
+                    isBetter = true;
+                }
             }
+            return isBetter;
         }
 
-        return isBetter;
+        return true
+
     }
 
 }

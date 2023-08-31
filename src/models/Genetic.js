@@ -34,7 +34,10 @@ class Genetic {
     }
 
     getFirstWeights() {
+        console.log('Pegando do arquivo...')
 
+        zerarFrota()
+        this.melhores = []
         const data = this.getData()
 
         if ('localNascimentoX' in data) {
@@ -64,9 +67,11 @@ class Genetic {
 
     nextGeneration() {
 
-        if (!this.melhor) {
+        const lastRoundBetter = this.getBetterCar()
+        const fileCar = this.getFileCar()
 
-            zerarFrota();
+        if (fileCar.isBetterThan(lastRoundBetter)) {
+
             this.getFirstWeights();
             if (addCarFromTracks) {
                 this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
@@ -583,6 +588,8 @@ class Genetic {
     newCarFromStringWeight(stringWeight, carConfig) {
         const car = new Car(carConfig)
         car.ia.setWeightsFromString(stringWeight, this.shapes)
+        car.km = carConfig.km
+        car.lap = carConfig.lap
         return car
     }
 
@@ -594,10 +601,14 @@ class Genetic {
     }
 
     getBetterCar() {
-        this.classifyCars()
-        const better = cars[0]
-        this.classifyCars(true)
-        return better
+        if (cars.length > 0) {
+
+            this.classifyCars()
+            const better = cars[0]
+            this.classifyCars(true)
+            return better
+        }
+        return false
 
     }
 
@@ -615,6 +626,12 @@ class Genetic {
     }
     saveBetter() {
         this.saveWeights(this.melhor)
+    }
+
+    getFileCar() {
+        const fileData = this.loadWeights(pista.selectedPista)
+        const fileCar = this.newCarFromStringWeight(fileData.weights, { ...fileData })
+        return fileCar
     }
 
 }
