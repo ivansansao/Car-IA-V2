@@ -21,6 +21,4 @@ RUN npm install
 
 WORKDIR /opt/carsapi
 
-COPY .env .
-
 CMD [ "node", "main.js" ]
