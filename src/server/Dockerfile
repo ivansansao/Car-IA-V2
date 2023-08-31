@@ -15,8 +15,6 @@ WORKDIR /opt/carsapi
 COPY package.json package-lock.json* ./
 ENV PATH /opt/carsapi/node_modules/.bin:$PATH
 
-
-COPY .env.example .env
 COPY . .
 
 RUN npm install
