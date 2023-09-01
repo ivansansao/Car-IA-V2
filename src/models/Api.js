@@ -1,7 +1,7 @@
 class Api {
     constructor() {
         const isCloud = window.location.origin.includes('https')
-        this.ip = isCloud ? 'http://0.0.0.0' : 'http://0.0.0.0'
+        this.ip = isCloud ? 'http://localhost' : 'http://localhost'
         this.url = this.ip + ":1905"
         console.log("Server on: ", this.url)
     }
