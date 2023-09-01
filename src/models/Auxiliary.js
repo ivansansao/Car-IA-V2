@@ -165,3 +165,57 @@ function createName() {
 function round3(numb) {
     return Math.round(numb * 1000) / 1000
 }
+
+
+
+// ----- 
+
+function splitWeight(str = '') {
+    str = str.replace(/;/g, ',null,')
+    return str.split(',')
+}
+function joinWeight(arr = []) {
+    const str = arr.join(',').replace(/,null,/g, ';')
+    return str
+}
+
+function weightSortedMap(strWeigths, action, maxMutations) {
+
+    const arrWeight = splitWeight(strWeigths)
+    const total = arrWeight.length
+    maxMutations = maxMutations ? maxMutations : total - 2
+
+    for (let m = 0; m < maxMutations; m++) {
+
+        for (let x = 0; x < 999; x++) {
+            const sorted = Math.round(Math.random() * (total - 1))
+            if (arrWeight[sorted] !== 'null') {
+                arrWeight[sorted] = action(Number(arrWeight[sorted]), sorted)
+                break
+            }
+        }
+
+    }
+
+    return joinWeight(arrWeight)
+}
+
+// ---
+
+function weightRandomMixString(mom = '', dad = '') {
+
+    const arrMom = splitWeight(mom)
+    const arrDad = splitWeight(dad)
+    const arrSon = []
+
+    for (let i = 0; i < arrMom.length; i++) {
+        if (Math.random() > 0.5) {
+            arrSon.push(arrMom[i])
+        } else {
+            arrSon.push(arrDad[i])
+        }
+    }
+
+    return joinWeight(arrSon)
+
+}

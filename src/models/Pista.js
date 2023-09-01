@@ -51,6 +51,7 @@ class Pista {
                 carsCrcHistory.push(crc);
             }
         }
+        car.setColor()
         cars.unshift(car);
         vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0)
 

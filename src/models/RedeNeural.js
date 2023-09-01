@@ -234,8 +234,26 @@ class RedeNeural {
 
     }
 
+    mutate(rate, maxMutations) {
 
-    mutate(rate, maxMutations = 999) {
+        tf.tidy(() => {
+
+            const handleElement = (value, sorted) => {
+                this.mutated++;
+                this.mutatedNeurons += `N${sorted} `
+                return value + randomGaussian()
+            }
+
+            const weights = this.showWeights(true)
+            const newOne = weightSortedMap(weights, handleElement, maxMutations)
+            this.setWeightsFromString(newOne, this.shape())
+
+        })
+
+    }
+
+
+    mutate_01092023(rate, maxMutations = 999) {
 
         tf.tidy(() => {
 

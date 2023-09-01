@@ -106,15 +106,7 @@ class Genetic {
         this.gotCloserBest = this.getGotCloserBest();
         const weightCopies = this.melhor.ia.getCopiedWeights();
 
-        /**
-         * Add wifes to betters list
-         */
 
-        const wifes = this.getWifesFromFile(pista.selectedPista)
-        wifes.map((wife) => {
-            const car = this.newCarFromStringWeight(wife.weights, { ...this.getData(), marca: 'w' })
-            this.addCarToBetters(car)
-        })
 
         /**
          * Add first car to betters list
@@ -134,6 +126,8 @@ class Genetic {
          * Create sons doing reprodutive process.
          */
 
+        this.classifyCars()
+
         const sons = [];
         for (let i = 0; i < this.melhores.length - 1; i++) {
             const son = this.makeSon(ancestral, this.melhores, i + 2)
@@ -141,6 +135,15 @@ class Genetic {
         }
         for (let i = 0; i < 7; i++) {
             const son = this.makeSon(ancestral, cars, i + 2)
+            if (son) sons.push(son);
+        }
+
+        const firstsExclusive = this.getFirstsNoKmRepeated(10)
+
+        for (let i = 0; i < firstsExclusive.length; i++) {
+            const dad = this.melhor
+            const mom = firstsExclusive[i]
+            const son = this.mixRandomFromDadMom(dad, mom, 'e')
             if (son) sons.push(son);
         }
 
@@ -188,6 +191,19 @@ class Genetic {
             child.ia.model.setWeights(weightCopies);
             pista.addCar(child, 'Elitismo');
         }
+
+        /**
+         * Add sons from relationship with wife
+         */
+
+        const wifes = this.getWifesFromFile(pista.selectedPista)
+        wifes.map((wife) => {
+            for (let qtdSons = 0; qtdSons < 6; qtdSons++) {
+                const momCar = this.newCarFromStringWeight(wife.weights, { ...this.getData(), marca: 'w' })
+                const somMixCar = this.mixRandomFromDadMom(this.melhor, momCar, 'f')
+                pista.addCar(somMixCar, 'Mix Dad Mom')
+            }
+        })
 
         /**
          * 
@@ -460,6 +476,29 @@ class Genetic {
         return son;
     }
 
+    getFirstsNoKmRepeated(maxQtd = cars.length) {
+        this.classifyCars()
+        const firsts = []
+
+        let lastKm = cars[0].km
+
+        for (let i = 0; i < cars.length; i++) {
+            const car = cars[i]
+
+            if (car.km !== lastKm) {
+                firsts.push(car)
+                if (firsts.length >= maxQtd) {
+                    break
+                }
+            }
+
+            lastKm = car.km
+        }
+
+
+        return firsts
+    }
+
     /*
     Retorna os primeiros colocados.
      */
@@ -657,5 +696,14 @@ class Genetic {
         const fileCar = this.newCarFromStringWeight(fileData.weights, { ...fileData })
         return fileCar
     }
+
+    mixRandomFromDadMom(momCar, dadCar, marca = 'f', parent = 'md') {
+        const momStr = momCar.ia.showWeights(true)
+        const dadStr = dadCar.ia.showWeights(true)
+        const sonStr = weightRandomMixString(momStr, dadStr)
+        const sonCar = this.newCarFromStringWeight(sonStr, { ...this.getData(), marca, lap: 0, km: Infinity })
+        return sonCar
+    }
+
 
 }
