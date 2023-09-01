@@ -152,7 +152,7 @@ class Genetic {
 
         // Add created sons
 
-        console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated} NM: ${this.melhor.ia.mutatedNeurons}`);
+        console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated}`);
 
         if (this.brokeRecord({ melhor: this.melhor })) {
 

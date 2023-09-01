@@ -235,7 +235,7 @@ class RedeNeural {
     }
 
 
-    mutate(rate, maxMutations = 99) {
+    mutate(rate, maxMutations = 999) {
 
         tf.tidy(() => {
 
@@ -247,44 +247,39 @@ class RedeNeural {
              * 0.411,0.951,0.155 // Block 3
              */
 
+            // console.log("ANTES: ", this.showWeights(true))
+
             const weights = this.model.getWeights();
             const blocks = weights.length;
-            const mutatedWeights = [];
-            let w;
-
 
             for (let m = 0; m < maxMutations; m++) {
 
-                if (this.mutated < maxMutations) {
+                const sortedBlock = round(random(0, blocks - 1))
 
-                    for (let i = 0; i < blocks; i++) {
+                for (let i = 0; i < blocks; i++) {
 
-                        let tensor = weights[i];
-                        let shape = weights[i].shape;
-                        let values = tensor.dataSync().slice();
-                        const sortedBlock = round(random(0, blocks - 1))
+                    let tensor = weights[i];
+                    let shape = weights[i].shape;
+                    let values = tensor.dataSync().slice();
 
-                        if (i == sortedBlock) {
+                    if (i == sortedBlock) {
 
-                            const n = Number(random(0, values.length - 1).toFixed(0));
-                            w = values[n] + randomGaussian();
+                        const n = Number(random(0, values.length - 1).toFixed(0));
+                        const w = values[n] + randomGaussian();
 
-                            const uniqueChange = `(B${i} N${n} W${w.toFixed(2)})`
-
-                            if (!this.mutatedNeurons.includes(uniqueChange)) {
-                                values[n] = w;
-                                this.mutated++;
-                                this.mutatedNeurons += uniqueChange
-                            }
-                        }
-
-                        mutatedWeights[i] = tf.tensor(values, shape);
-
+                        values[n] = w
+                        this.mutated++;
+                        this.mutatedNeurons += `(B${i} N${n} W${w.toFixed(2)})`
                     }
+
+                    weights[i] = tf.tensor(values, shape);
+
                 }
             }
 
-            this.model.setWeights(mutatedWeights);
+            this.model.setWeights(weights);
+            // console.log("Muts: ", this.mutated)
+            // console.log("DEPOIS: ", this.showWeights(true))
 
         });
 
