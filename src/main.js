@@ -309,7 +309,7 @@ function draw() {
     stroke(255);
     fill(125);
     text(errosOnScreen, 16, 920)
-    text('1', 10, 40)
+    text('2', 10, 40)
 
 
 }
