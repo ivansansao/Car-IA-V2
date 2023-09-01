@@ -1,7 +1,8 @@
 class Api {
     constructor() {
         const isCloud = window.location.origin.includes('https')
-        this.url = isCloud ? 'http://187.23.108.203:1905' : 'http://localhost:1905'
+        this.ip = isCloud ? 'http://187.23.108.203' : 'http://localhost'
+        this.url = this.ip + ":1905"
         console.log("Server on: ", this.url)
     }
 
@@ -33,6 +34,7 @@ class Api {
             xhr.send(JSON.stringify(content));
         } catch (error) {
             errosOnScreen = error.message
+            console.error(error)
             return '';
         }
         return xhr.responseText;
