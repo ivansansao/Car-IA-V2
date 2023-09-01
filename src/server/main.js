@@ -21,6 +21,8 @@ const requestListener = function (req, res) {
     let content = '';
     req.on('data', chunk => content += chunk);
 
+    console.log(req.headers.host, req.url)
+
     switch (req.url) {
         case "/weights/save":
             req.on('end', function () {
@@ -32,7 +34,6 @@ const requestListener = function (req, res) {
         case "/weights/load":
             req.on('end', function () {
 
-                console.log('Req pesos from: ', req.headers.host);
 
                 const ret = model.weightsLoad(content);
                 res.writeHead(200);
@@ -49,7 +50,7 @@ const requestListener = function (req, res) {
         case "/getgputemperature":
             req.on('end', function () {
                 model.getGpuTemperature(content, (temp) => {
-                    console.log('Req gpu from: ', req.headers.host);
+
                     res.writeHead(200);
                     res.end(temp);
                 });

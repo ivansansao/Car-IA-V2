@@ -305,11 +305,11 @@ function draw() {
 
     }
 
-    textSize(20);
+    textSize(14);
     stroke(255);
     fill(125);
     text(errosOnScreen, 16, 920)
-    text('2', 10, 40)
+    text('3', 10, 40)
 
 
 }
