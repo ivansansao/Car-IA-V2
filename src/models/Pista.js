@@ -45,7 +45,7 @@ class Pista {
         if (!car.isParent()) {
             const crc = crc32(car.ia.showWeights(true))
             if (carsCrcHistory.includes(crc)) {
-                console.log(`Carro marca ${car.marca} CRC ${crc} já correu! ${comment}`);
+                // console.log(`Carro marca ${car.marca} CRC ${crc} já correu! ${comment}`);
                 return
             } else {
                 carsCrcHistory.push(crc);
