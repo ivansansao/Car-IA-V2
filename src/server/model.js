@@ -12,12 +12,17 @@ class Model {
 
     weightsSave(content) {
 
-        const data = JSON.parse(content);
-        const xData = data.weights + "\r\n";
-        const w = JSON.parse(data.weights);
-        fs.appendFileSync(this.file(data), xData);
+        if (content) {
 
-        botSay(`Recorde na pista ${w.track}, G${w.generation} lap: ${w.lap} km: ${w.km}`);
+
+            const data = JSON.parse(content);
+            const xData = data.weights + "\r\n";
+            const w = JSON.parse(data.weights);
+            fs.appendFileSync(this.file(data), xData);
+
+            botSay(`Recorde na pista ${w.track}, G${w.generation} lap: ${w.lap} km: ${w.km}`);
+
+        }
 
         return '';
 
@@ -54,22 +59,26 @@ class Model {
     }
     weightsLoadAll(content) {
 
-        const data = JSON.parse(content);
-        const file = this.file(data);
         const weights = [];
 
-        if (fs.existsSync(file)) {
+        if (content) {
 
-            let content = fs.readFileSync(file, { encoding: 'utf8' });
-            const linhas = content.toString().trim().split('\r\n');
+            const data = JSON.parse(content);
+            const file = this.file(data);
 
-            for (let i = 0; i < linhas.length; i++) {
-                if (linhas[i].length > 0) {
-                    weights.push(linhas[i]);
+            if (fs.existsSync(file)) {
+
+                let content = fs.readFileSync(file, { encoding: 'utf8' });
+                const linhas = content.toString().trim().split('\r\n');
+
+                for (let i = 0; i < linhas.length; i++) {
+                    if (linhas[i].length > 0) {
+                        weights.push(linhas[i]);
+                    }
                 }
+
+
             }
-
-
         }
 
         return JSON.stringify(weights);
