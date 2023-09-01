@@ -25,23 +25,28 @@ class Model {
 
     weightsLoad(content) {
 
-        const data = JSON.parse(content);
-        const file = this.file(data);
         let weights = '';
 
-        if (fs.existsSync(file)) {
+        if (content) {
 
-            let content = fs.readFileSync(file, { encoding: 'utf8' });
-            const linhas = content.toString().trim().split('\r\n');
+            const data = JSON.parse(content);
+            const file = this.file(data);
 
-            // Retorna a última linha do arquivo.
-            for (let i = linhas.length - 1; i >= 0; i--) {
-                if (linhas[i].length > 0) {
-                    weights = linhas[i];
-                    break;
+            if (fs.existsSync(file)) {
+
+                let content = fs.readFileSync(file, { encoding: 'utf8' });
+                const linhas = content.toString().trim().split('\r\n');
+
+                // Retorna a última linha do arquivo.
+                for (let i = linhas.length - 1; i >= 0; i--) {
+                    if (linhas[i].length > 0) {
+                        weights = linhas[i];
+                        break;
+                    }
                 }
-            }
 
+
+            }
 
         }
 

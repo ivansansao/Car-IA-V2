@@ -10,7 +10,7 @@ const host = process.env.SERVER_HOST || "0.0.0.0";
 const port = process.env.SERVER_PORT || "1905";
 const model = new Model();
 
-botSay('Olá, seu servidor CARIA está no ar!');
+// botSay('Olá, seu servidor CARIA está no ar!');
 
 const requestListener = function (req, res) {
 
