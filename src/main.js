@@ -176,8 +176,6 @@ function draw() {
         }
     }
 
-    text('Server: ' + api.url, 1130, 20)
-
     for (const car of cars) {
 
         if (!car.batido) {
@@ -293,8 +291,9 @@ function draw() {
 
     }
 
-
     if (!world.trainigMode) {
+
+        text('Server: ' + api.url, 1130, 20)
 
         ShowMousePoint()
 
@@ -451,12 +450,13 @@ async function addMoreCar() {
 
         const melhor = genetic.getNextOfBetters();
 
-        let child = new Car({ ...genetic.getData(), marca: 'm', parent: melhor.marca });
+        let child = new Car({ ...genetic.getData(), marca: 'r', parent: melhor.marca });
 
         // Just mutate after first generation.
         if (nGeracao > 0) {
             child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-            child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 10).toFixed(0)));
+            child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)));
+            child.marca = 'm'
         }
 
         // if (frameCount % 5 == 0)

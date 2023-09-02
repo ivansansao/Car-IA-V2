@@ -4,6 +4,7 @@ class Pista {
 
     constructor() {
 
+        this.maxMutations = 2;
         this.waveFronted = false;
         this.startRoad = { i: 0, j: 0, value: 0 };
         this.corDaPista = { r: 224, g: 225, b: 243 };
@@ -133,6 +134,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista1();
+            this.maxMutations = 2
             this.ranhuras = getRanhuras1();
             this.timeOutStopped = 100;
             this.localNascimento = createVector(1500, 120);
@@ -148,6 +150,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista2();
+            this.maxMutations = 2
             this.ranhuras = getRanhuras2();
             this.timeOutStopped = 100;
             this.population = 20;
@@ -163,6 +166,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista3();
+            this.maxMutations = 2
             this.timeOutStopped = 100;
             this.backcolor = [154, 179, 161];
             this.startRoad = { i: 1192, j: 280, value: 0 };
@@ -188,6 +192,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista4();
+            this.maxMutations = 2
             this.ranhuras = getRanhuras4();
             this.timeOutStopped = 100;
 
@@ -207,6 +212,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista5();
+            this.maxMutations = 2
             this.ranhuras = getRanhuras5();
             this.timeOutStopped = 100;
             this.localNascimento = createVector(1530, 372);
@@ -220,6 +226,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista6();
+            this.maxMutations = 2
             this.ranhuras = getRanhuras6();
             this.timeOutStopped = 1000;
             this.localNascimento = createVector(-1, -1);
@@ -227,6 +234,23 @@ class Pista {
             this.backcolor = [52, 126, 163];
             this.startRoad = { i: this.localNascimento.x, j: this.localNascimento.y, value: 0 };
             this.corDaPista = { r: 52, g: 126, b: 163 };
+            this.lapSensors[0].pos.x = this.startRoad.i + 10;
+            this.lapSensors[0].pos.y = this.startRoad.j - 10;
+
+        } else if (this.selectedPista == 7) {
+
+            collideCars = false;
+            wallsPista = getPista7();
+            this.maxMutations = 5
+            this.ranhuras = {}
+            this.timeOutStopped = 100;
+            if (this.localNascimento.x < 0) this.localNascimento = createVector(700, 288);
+
+            // this.startRoad = { i: 59, j: 396, value: 0 };
+            this.startRoad = { i: 400, j: 288, value: 0 };
+            this.corDaPista = { r: 220, g: 220, b: 220 };
+            this.anguloNascimento = radians(0);
+            this.backcolor = [220, 220, 220];
             this.lapSensors[0].pos.x = this.startRoad.i + 10;
             this.lapSensors[0].pos.y = this.startRoad.j - 10;
 
@@ -258,6 +282,8 @@ class Pista {
             this.spritesheet = getSpriteFundo5();
         } else if (this.selectedPista == 6) {
             this.spritesheet = getSpriteFundo6();
+        } else if (this.selectedPista == 7) {
+            this.spritesheet = getSpriteFundo7();
         }
         this.spriteRip = getSpriteRip1();
     }
@@ -271,7 +297,7 @@ class Pista {
         this.spriteLoaded = false;
         this.waveFronted = false;
 
-        if (this.selectedPista == 6) {
+        if (this.selectedPista == 7) {
             this.selectedPista = 1;
         } else {
             this.selectedPista++;
@@ -1418,6 +1444,35 @@ function getPista6() {
     return points;
 
 }
+
+function getPista7() {
+
+    const points = [];
+
+    points.push({ a: 48, b: 347, c: 48, d: 229, m: 0, t: 0 });
+    points.push({ a: 48, b: 229, c: 1709, d: 229, m: 0, t: 0 });
+    points.push({ a: 1709, b: 229, c: 1709, d: 453, m: 0, t: 0 });
+    points.push({ a: 1709, b: 453, c: 46, d: 453, m: 0, t: 0 });
+    points.push({ a: 48, b: 453, c: 48, d: 334, m: 0, t: 0 });
+    points.push({ a: 138, b: 340, c: 1614, d: 340, m: 0, t: 0 });
+
+    // Finish
+    points.push({ a: 370, b: 230, c: 370, d: 340, m: 0, t: 0 });
+
+    // Area
+    // points.push({ a: 138, b: 339, c: 1614, d: 340, m: 0, t: 0 });
+    // points.push({ a: 1614, b: 340, c: 1572, d: 341, m: 0, t: 0 });
+    // points.push({ a: 1572, b: 341, c: 1575, d: 329, m: 0, t: 0 });
+    // points.push({ a: 1575, b: 329, c: 1602, d: 325, m: 0, t: 0 });
+    // points.push({ a: 1602, b: 325, c: 1626, d: 327, m: 0, t: 0 });
+    // points.push({ a: 1626, b: 327, c: 1629, d: 338, m: 0, t: 0 });
+    // points.push({ a: 1629, b: 338, c: 1627, d: 349, m: 0, t: 0 });
+    // points.push({ a: 1627, b: 349, c: 1609, d: 352, m: 0, t: 0 });
+    // points.push({ a: 1609, b: 352, c: 1574, d: 342, m: 0, t: 0 });
+
+    return points;
+
+}
 function getRanhuras6() {
 
     const points = [];
@@ -1459,15 +1514,19 @@ function getRanhuras6() {
  */
 function spriteLoaded() {
 
-    if (pista.spritesheet !== undefined) {
-        pista.spritesheet.loadPixels();
-        makeMatrixRoads();
-        waveFront();
-        // showRoads(funShowRoads);        
-    }
+    if (typeof pista !== 'undefined') {
 
-    pista.waveFronted = true;
-    pista.spriteLoaded = true;
+        if (pista.spritesheet !== undefined) {
+            pista.spritesheet.loadPixels();
+            makeMatrixRoads();
+            waveFront();
+            // showRoads(funShowRoads);        
+        }
+
+        pista.waveFronted = true;
+        pista.spriteLoaded = true;
+
+    }
 
 }
 

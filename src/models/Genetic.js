@@ -20,7 +20,7 @@ class Genetic {
     loadData() {
         this.pesos = [];
         this.pesos.push({});
-        for (let i = 1; i <= 6; i++) {
+        for (let i = 1; i <= 7; i++) {
             this.pesos.push(this.loadWeights(i));
         }
     }
@@ -45,7 +45,7 @@ class Genetic {
             }
         }
 
-        return pesos
+        return pesos || this.defaultSettings()
     }
 
     getFirstWeights() {
@@ -214,9 +214,9 @@ class Genetic {
 
         for (const son of sons) {
 
-            let mutated = new Car({ ...this.getData(), marca: 'sm', parent: son.marca });
+            let mutated = new Car({ ...this.getData(), marca: 'm', parent: son.marca });
             mutated.ia.model.setWeights(son.ia.getCopiedWeights());
-            mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
+            mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 1);
 
             pista.addCar(son, 'Filho sem mutação');
             pista.addCar(mutated, 'Filho com mutação');
@@ -280,7 +280,7 @@ class Genetic {
             if (weightTrack.weights) {
                 let childTrack = new Car({ ...this.getData() });
                 childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
-                childTrack.mutate(Number(random(0.01, 0.015).toFixed(15)), 6);
+                childTrack.mutate(Number(random(0.01, 0.015).toFixed(15)), 1);
                 childTrack.marca = 'Tm'
                 pista.addCar(childTrack, 'Mutted car from another track ' + childTrack.marca);
             }
@@ -310,6 +310,7 @@ class Genetic {
             if (pista) {
                 const tmpMelhor = this.getBetterCar();
                 if (tmpMelhor) {
+
                     pista.setFlag(tmpMelhor.pos.x, tmpMelhor.pos.y, tmpMelhor.km, tmpMelhor.cor);
                     this.melhorCorrente = tmpMelhor;
                 }
@@ -393,7 +394,6 @@ class Genetic {
 
         let child = new Car({ ...this.getData(), marca: 's', parent: '' });
         child.ia.setWeightsFromString(weightSon, this.shapes);
-        child.ia.mutated = 1;
         return child;
 
     }
@@ -650,8 +650,8 @@ class Genetic {
     newCarFromStringWeight(stringWeight, carConfig) {
         const car = new Car(carConfig)
         car.ia.setWeightsFromString(stringWeight, this.shapes)
-        car.km = carConfig.km ? carConfig.km : car.km
-        car.lap = carConfig.lap ? carConfig.lap : car.lap
+        // car.km = carConfig.km ? carConfig.km : car.km
+        // car.lap = carConfig.lap ? carConfig.lap : car.lap
         return car
     }
 
@@ -697,11 +697,12 @@ class Genetic {
         return fileCar
     }
 
-    mixRandomFromDadMom(momCar, dadCar, marca = 'f', parent = 'md') {
+    mixRandomFromDadMom(momCar, dadCar, marca = 'f') {
+        const parent = momCar.marca + dadCar.marca
         const momStr = momCar.ia.showWeights(true)
         const dadStr = dadCar.ia.showWeights(true)
         const sonStr = weightRandomMixString(momStr, dadStr)
-        const sonCar = this.newCarFromStringWeight(sonStr, { ...this.getData(), marca, lap: 0, km: Infinity })
+        const sonCar = this.newCarFromStringWeight(sonStr, { ...this.getData(), marca, lap: 0, km: Infinity, parent })
         return sonCar
     }
 

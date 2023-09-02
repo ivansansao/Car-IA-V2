@@ -1,7 +1,8 @@
 class Car {
 
-    constructor({ elitism, marca, parent, inteligente, randomHeading, f1, f2, pos }) {
+    constructor({ elitism, marca, parent, inteligente, randomHeading, f1, f2, priority }) {
 
+        this.priority = priority | random(0, 50).toFixed(0)
         this.elitism = elitism | false;
         this.pos = pista.localNascimento.copy();
         this.lastPos = createVector();
@@ -14,14 +15,9 @@ class Car {
         this.inteligente = (inteligente === undefined) ? true : inteligente;;
         this.batido = false;
         this.timer = 0;
-        this.km = Infinity;
-        this.kmMax = 0;
-        this.kmMin = 0;
-        this.kmMMCount = 0;
         this.rightDoorAngle = 0;
         this.leftDoorAngle = 0;
         this.lastKmVerified = 0;
-        this.lastKm = 0;
         this.step = 0; // Length of step or moviment of car
         this._marca = marca || '?';
         this.parent = parent || '';
@@ -50,6 +46,11 @@ class Car {
         this.accHistory = [];
         this.initialTime = frameCount;
         this.finalTime = this.initialTime;
+        this.km = Infinity
+        this.lastKm = Infinity
+        this.kmMax = 0;
+        this.kmMin = 0;
+        this.kmMMCount = 0;
         this.palette = [
             { name: 'verde água', cor: 157 },
             { name: 'azul água', cor: 186 },
@@ -74,6 +75,7 @@ class Car {
 
         this.setColor();
         this.drawedDead = false;
+        this.outLapCount = 0
 
     }
 
@@ -347,16 +349,34 @@ class Car {
         }
     }
 
+    getRoadPosition() {
+
+        let rs = false
+
+        const x = Number(this.pos.x.toFixed(0));
+        const y = Number(this.pos.y.toFixed(0));
+
+        if (roads[x]) {
+            rs = roads[x][y]
+        }
+
+        return rs
+    }
+
     update() {
 
         if (this.batido) {
             return false;
         }
 
+        if (this.km == Infinity) {
+            this.km = this.getRoadPosition()
+        }
+
         this.lastKm = this.km;
         this.heading += this.rotation * 0.3;
 
-        let irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
+        const irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
 
         this.pos.add(irPara);
 
@@ -366,13 +386,10 @@ class Car {
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
 
-        const posX = Number(this.pos.x.toFixed(0));
-        const posY = Number(this.pos.y.toFixed(0));
+        const posOnRoad = this.getRoadPosition()
 
-        if (roads[posX] != undefined) {
-            if (roads[posX][posY] > 0) {
-                this.km = roads[posX][posY];
-            }
+        if (posOnRoad && posOnRoad > 0) {
+            this.km = posOnRoad
         }
 
         this.timer = timer;
@@ -391,27 +408,34 @@ class Car {
             }
         }
 
-        if (roads[this.pos.x]) {
+        if (posOnRoad == -1) {
 
-            const est = roads[this.pos.x][this.pos.y];
+            // console.log(`Carro '${this.marca}' vazou da pista vez -> `, this.outLapCount);
+            if (this.outLapCount > 1) {
 
-            if (est == -1) {
-                foo.speak('Carro vazou da pista');
-                console.log(`Carro '${this.marca}' vazou da pista`);
+                // foo.speak('Carro vazou da pista');
+                // console.log(`Carro '${this.marca}' vazou da pista`);
                 this.km = Infinity;
                 this.lap = 0;
                 this.kill(false, this.deadWayType.offTrack);
+
             }
-        }
+            this.outLapCount++
 
-        this.step = this.lastKm - this.km;
+        } else {
 
-        if (this.step == Infinity) {
-            this.step = 0;
-        }
+            this.step = this.lastKm - this.km;
 
-        if (abs(this.step) > 100) {
-            this.hitFinishLine(this.step < 0)
+            if (this.step == Infinity) {
+                this.step = 0;
+            }
+
+            if (abs(this.step) > 100) {
+                const up = this.lastKm < this.km
+                const moveAllowed = up // && abs(this.km) != Infinity
+                this.hitFinishLine(moveAllowed)
+            }
+
         }
 
     }
@@ -419,8 +443,8 @@ class Car {
     hitFinishLine(allowedMove) {
 
         if (allowedMove) {
+            console.log("VOLTA? ", this.km, this.lastKm)
             this.lap++;
-
             if (world.endsWhenFinishLine) {
                 genetic.nextGeneration();
             } else {
@@ -560,6 +584,7 @@ class Car {
 
         const lap = String(this.lap).padStart(4, '0');
         const km = String(pista.trackSize - this.km).padStart(5, '0');
+        const imp = String(this.priority).padStart(2, '0');
         let mut;
 
         if (rankingMode == 0)
@@ -569,7 +594,7 @@ class Car {
 
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
-        return lap + '-' + km + '-' + vm + '-' + mut;
+        return lap + '-' + km + '-' + vm + '-' + mut + '-' + imp;
     }
 
     kill(normalDead, deadWay) {
