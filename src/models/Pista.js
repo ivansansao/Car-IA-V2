@@ -1567,6 +1567,8 @@ function makeMatrixRoads() {
 
             if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
                 roads[i][j] = 0;
+            } else if ((r == 105 && g == 105 && b == 105) || (r == 0 && g == 0 && b == 0)) {
+                roads[i][j] = -2;
             } else {
                 roads[i][j] = -1;
             }

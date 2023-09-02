@@ -75,7 +75,6 @@ class Car {
 
         this.setColor();
         this.drawedDead = false;
-        this.outLapCount = 0
 
     }
 
@@ -389,7 +388,9 @@ class Car {
         const posOnRoad = this.getRoadPosition()
 
         if (posOnRoad && posOnRoad > 0) {
-            this.km = posOnRoad
+            if (posOnRoad !== -2) { // -2 finish line
+                this.km = posOnRoad
+            }
         }
 
         this.timer = timer;
@@ -410,19 +411,14 @@ class Car {
 
         if (posOnRoad == -1) {
 
-            // console.log(`Carro '${this.marca}' vazou da pista vez -> `, this.outLapCount);
-            if (this.outLapCount > 1) {
+            // foo.speak('Carro vazou da pista');
+            // console.log(`Carro '${this.marca}' vazou da pista`);
+            this.km = Infinity;
+            this.lap = 0;
+            this.kill(false, this.deadWayType.offTrack);
 
-                // foo.speak('Carro vazou da pista');
-                // console.log(`Carro '${this.marca}' vazou da pista`);
-                this.km = Infinity;
-                this.lap = 0;
-                this.kill(false, this.deadWayType.offTrack);
 
-            }
-            this.outLapCount++
-
-        } else {
+        } else if (posOnRoad !== -2) {
 
             this.step = this.lastKm - this.km;
 
@@ -443,7 +439,7 @@ class Car {
     hitFinishLine(allowedMove) {
 
         if (allowedMove) {
-            console.log("VOLTA? ", this.km, this.lastKm)
+            console.log("LAP++ ", this.km, this.lastKm)
             this.lap++;
             if (world.endsWhenFinishLine) {
                 genetic.nextGeneration();
