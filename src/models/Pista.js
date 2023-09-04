@@ -118,6 +118,8 @@ class Pista {
         this.setPistaTimeOut();
         pg.clear();
 
+        world.endsWhenFinishLine = false
+
 
         // // Track map.
         // this.spritesheet.loadPixels();
@@ -238,6 +240,8 @@ class Pista {
             this.lapSensors[0].pos.y = this.startRoad.j - 10;
 
         } else if (this.selectedPista == 7) {
+
+            world.endsWhenFinishLine = true
 
             collideCars = false;
             wallsPista = getPista7();
@@ -1457,7 +1461,7 @@ function getPista7() {
     points.push({ a: 138, b: 340, c: 1614, d: 340, m: 0, t: 0 });
 
     // Finish
-    points.push({ a: 370, b: 230, c: 370, d: 340, m: 0, t: 0 });
+    // points.push({ a: 370, b: 230, c: 370, d: 340, m: 0, t: 0 });
 
     // Area
     // points.push({ a: 138, b: 339, c: 1614, d: 340, m: 0, t: 0 });
@@ -1520,6 +1524,7 @@ function spriteLoaded() {
             pista.spritesheet.loadPixels();
             makeMatrixRoads();
             waveFront();
+            setFinishLineNumber(pista.trackSize)
             // showRoads(funShowRoads);        
         }
 
@@ -1550,6 +1555,30 @@ function funShowRoads(i, j, e) {
 
 }
 
+function setFinishLineNumber(sizeOfTrack) {
+
+    for (let i = 0; i < roads.length; i++) {
+        const line = roads[i];
+        for (let j = 0; j < line.length; j++) {
+            if (roads[i][j] == -2) {
+                roads[i][j] = sizeOfTrack
+            }
+
+        }
+
+    }
+
+
+}
+function isFinalStripColor(r, g, b) {
+
+    if (r == 0 && g == 0 && b == 0) return true
+    if (r == 105 && g == 105 && b == 105) return true
+
+    return false
+
+}
+
 function makeMatrixRoads() {
 
     let pixelIndex, r, g, b;
@@ -1567,8 +1596,8 @@ function makeMatrixRoads() {
 
             if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
                 roads[i][j] = 0;
-            } else if ((r == 105 && g == 105 && b == 105) || (r == 0 && g == 0 && b == 0)) {
-                roads[i][j] = -2;
+            } else if (isFinalStripColor(r, g, b)) {
+                roads[i][j] = -2; // max pista
             } else {
                 roads[i][j] = -1;
             }

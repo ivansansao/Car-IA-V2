@@ -362,17 +362,33 @@ class Car {
         return rs
     }
 
+    getKm() {
+
+        const posOnRoad = this.getRoadPosition()
+
+        if (this.km == Infinity) {
+            return posOnRoad
+        }
+
+        return this.km
+
+    }
+
+    updateKm() {
+        const p = this.getRoadPosition()
+        if (p >= 0) {
+            this.km = p
+        }
+    }
+
     update() {
 
         if (this.batido) {
             return false;
         }
 
-        if (this.km == Infinity) {
-            this.km = this.getRoadPosition()
-        }
 
-        this.lastKm = this.km;
+        this.lastKm = this.getKm()
         this.heading += this.rotation * 0.3;
 
         const irPara = p5.Vector.fromAngle(this.heading).mult(3).mult(this.gear == -1 ? -this.speed : this.speed);
@@ -385,13 +401,7 @@ class Car {
         this.rotation = 0;
         this.speed = Number(this.speed.toFixed(3));
 
-        const posOnRoad = this.getRoadPosition()
-
-        if (posOnRoad && posOnRoad > 0) {
-            if (posOnRoad !== -2) { // -2 finish line
-                this.km = posOnRoad
-            }
-        }
+        this.updateKm()
 
         this.timer = timer;
 
@@ -409,50 +419,53 @@ class Car {
             }
         }
 
-        if (posOnRoad == -1) {
-
-            // foo.speak('Carro vazou da pista');
-            // console.log(`Carro '${this.marca}' vazou da pista`);
-            this.km = Infinity;
-            this.lap = 0;
-            this.kill(false, this.deadWayType.offTrack);
-
-
-        } else if (posOnRoad !== -2) {
-
-            this.step = this.lastKm - this.km;
-
-            if (this.step == Infinity) {
-                this.step = 0;
+        if (this.isWall()) {
+            if (this.isWallUp()) {
+                this.onJump()
+            } else {
+                this.onFall()
             }
-
-            if (abs(this.step) > 100) {
-                const up = this.lastKm < this.km
-                const moveAllowed = up // && abs(this.km) != Infinity
-                this.hitFinishLine(moveAllowed)
-            }
-
         }
 
     }
 
-    hitFinishLine(allowedMove) {
+    isWall() {
+        if (this.getRoadPosition() > 0) {
+            return abs(this.km - this.lastKm) > 100
+        }
+        return false
+    }
 
-        if (allowedMove) {
-            console.log("LAP++ ", this.km, this.lastKm)
-            this.lap++;
-            if (world.endsWhenFinishLine) {
-                genetic.nextGeneration();
-            } else {
-                const newTimeOut = pista.trackSize * (this.lap + 1);
-                pista.pistaTimeOut = max(pista.pistaTimeOut, newTimeOut);
-            }
-
-        } else {
-            this.km = Infinity;
-            this.kill(true, this.deadWayType.crashed);
+    isWallUp() {
+        //                 9000  9000  8   7   6   5   4
+        //                 Start line
+        //                 ------------------------------
+        //                 |
+        // 3   2   1   0   |
+        // -----------------
+        if (this.isWall()) {
+            return this.km > this.lastKm
         }
 
+        return false
+    }
+
+    onJump() {
+        if (world.endsWhenFinishLine) {
+            genetic.nextGeneration();
+        } else {
+
+            this.lap++;
+            const newTimeOut = pista.trackSize * (this.lap + 1);
+            pista.pistaTimeOut = max(pista.pistaTimeOut, newTimeOut);
+        }
+
+    }
+
+    onFall() {
+        this.km = Infinity;
+        this.lap = 0
+        this.kill(true, this.deadWayType.crashed);
     }
 
     getPontoAfrente(offset = 0) {
@@ -472,6 +485,7 @@ class Car {
             ray.pos.y = this.pos.y;
 
             const dirRaio = this.getPontoAfrente(ray.defAngle);
+
 
             if (this.showSensorPoint) circle(dirRaio.x, dirRaio.y, 4);
 
