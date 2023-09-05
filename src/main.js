@@ -405,8 +405,9 @@ function drawHeader() {
             percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
             const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
             const genId = genetic.id
+            const vm = genetic.melhor.humanVm()
 
-            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} ] NAME: ${genId} f: ${f1}/${f2} Cars: ${cars.length} FR: ${getFrameRate().toFixed(0)}`, 10, 20);
+            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} vm: ${vm} ] NAME: ${genId} f: ${f1}/${f2} Cars: ${cars.length} FR: ${getFrameRate().toFixed(0)}`, 10, 20);
 
         }
 

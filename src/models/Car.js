@@ -46,8 +46,8 @@ class Car {
         this.accHistory = [];
         this.initialTime = frameCount;
         this.finalTime = this.initialTime;
-        this.km = Infinity
-        this.lastKm = Infinity
+        this.km = this.getRoadPosition() || Infinity
+        this.lastKm = this.km
         this.kmMax = 0;
         this.kmMin = 0;
         this.kmMMCount = 0;
@@ -75,6 +75,8 @@ class Car {
 
         this.setColor();
         this.drawedDead = false;
+
+        // if (this.isParent()) console.log(this.marca, this.km)
 
     }
 
@@ -366,7 +368,7 @@ class Car {
 
         const posOnRoad = this.getRoadPosition()
 
-        if (this.km == Infinity) {
+        if (this.km == Infinity || this.km == -Infinity) {
             return posOnRoad
         }
 
@@ -451,11 +453,11 @@ class Car {
     }
 
     onJump() {
+        // console.log("onJump ", this.marca, this.lastKm, this.km)
+        this.lap++;
         if (world.endsWhenFinishLine) {
             genetic.nextGeneration();
         } else {
-
-            this.lap++;
             const newTimeOut = pista.trackSize * (this.lap + 1);
             pista.pistaTimeOut = max(pista.pistaTimeOut, newTimeOut);
         }
@@ -463,6 +465,7 @@ class Car {
     }
 
     onFall() {
+        // console.log("onFall")
         this.km = Infinity;
         this.lap = 0
         this.kill(true, this.deadWayType.crashed);
@@ -1337,6 +1340,10 @@ class Car {
 
         return true
 
+    }
+
+    humanVm() {
+        return map(this.getAverageSpeed(), 0, 3.5, 0, 100).toFixed(0)
     }
 
 }

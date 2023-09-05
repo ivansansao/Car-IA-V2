@@ -85,6 +85,11 @@ class Genetic {
 
     nextGeneration() {
 
+        if (!pista.waveFronted || !pista.spriteLoaded) {
+            eliminarTodosCars()
+            return
+        }
+
         const lastRoundBetter = this.getBetterCar()
         const fileCar = this.getFileCar()
 
@@ -155,7 +160,7 @@ class Genetic {
 
         // Add created sons
 
-        console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated}`);
+        console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} vm: ${this.melhor.humanVm()} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated}`);
 
         if (this.brokeRecord({ melhor: this.melhor })) {
 
@@ -233,9 +238,9 @@ class Genetic {
          * 
          */
 
-        // for (let i = 0; i < 100; i++) {
-        //     addMoreCar()
-        // }
+        for (let i = 0; i < pista.carsOnStart; i++) {
+            addMoreCar()
+        }
 
         /**
         * End

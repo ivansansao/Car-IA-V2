@@ -4,6 +4,7 @@ class Pista {
 
     constructor() {
 
+        this.carsOnStart = 0
         this.maxMutations = 2;
         this.waveFronted = false;
         this.startRoad = { i: 0, j: 0, value: 0 };
@@ -118,6 +119,7 @@ class Pista {
         this.setPistaTimeOut();
         pg.clear();
 
+        this.carsOnStart = 0
         world.endsWhenFinishLine = false
 
 
@@ -152,7 +154,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista2();
-            this.maxMutations = 2
+            this.maxMutations = 50
             this.ranhuras = getRanhuras2();
             this.timeOutStopped = 100;
             this.population = 20;
@@ -242,6 +244,7 @@ class Pista {
         } else if (this.selectedPista == 7) {
 
             world.endsWhenFinishLine = true
+            this.carsOnStart = 20
 
             collideCars = false;
             wallsPista = getPista7();
