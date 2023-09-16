@@ -237,19 +237,21 @@ function draw() {
     }
 
     if (vivos < maxCar) {
+        if (pista.addCarsDynamically) {
 
-        if (frameCount % 200 == 0) {
-            gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
-        }
+            if (frameCount % 200 == 0) {
+                gpuTemp = Number(api.syncFetch('/getgputemperature', {}))
+            }
 
-        if ((getFrameRate() > frameRateLimit && gpuTemp < gpuTempLimit) || vivos < 10) {
+            if ((getFrameRate() > frameRateLimit && gpuTemp < gpuTempLimit) || vivos < 10) {
 
-            const perToEnd = 100 - (timer / pista.trackSize * 100)
+                const perToEnd = 100 - (timer / pista.trackSize * 100)
 
-            if (perToEnd > 50) {
-                // if (cars.length < 200) {
-                addMoreCar();
-                // }
+                if (perToEnd > 50) {
+                    // if (cars.length < 200) {
+                    addMoreCar();
+                    // }
+                }
             }
         }
 

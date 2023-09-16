@@ -5,6 +5,7 @@ class Pista {
     constructor() {
 
         this.carsOnStart = 0
+        this.addCarsDynamically = true
         this.maxMutations = 2;
         this.waveFronted = false;
         this.startRoad = { i: 0, j: 0, value: 0 };
@@ -36,6 +37,7 @@ class Pista {
 
         this.textBackColor = [255, 255, 255];
         this.spriteLoaded = false;
+
 
         this.make();
 
@@ -120,6 +122,7 @@ class Pista {
         pg.clear();
 
         this.carsOnStart = 0
+        this.addCarsDynamically = true
         world.endsWhenFinishLine = false
 
 
@@ -136,8 +139,12 @@ class Pista {
 
         if (this.selectedPista == 1) {
 
+            world.endsWhenFinishLine = true
+            this.carsOnStart = 80
+
             collideCars = false;
             wallsPista = getPista1();
+            this.addCarsDynamically = false
             this.maxMutations = 2
             this.ranhuras = getRanhuras1();
             this.timeOutStopped = 100;
@@ -244,8 +251,8 @@ class Pista {
         } else if (this.selectedPista == 7) {
 
             world.endsWhenFinishLine = true
-            this.carsOnStart = 20
-
+            this.carsOnStart = 80
+            this.addCarsDynamically = false
             collideCars = false;
             wallsPista = getPista7();
             this.maxMutations = 5
