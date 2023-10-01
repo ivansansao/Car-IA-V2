@@ -1580,10 +1580,17 @@ function setFinishLineNumber(sizeOfTrack) {
 
 
 }
-function isFinalStripColor(r, g, b) {
+function isFinalStripColor(r, g, b, a) {
 
-    if (r == 0 && g == 0 && b == 0) return true
-    if (r == 105 && g == 105 && b == 105) return true
+    if (a == 255) {
+
+        // Warning: Png transparency means rgb 0,0,0
+        if (r == 0 && g == 0 && b == 0) {
+            return true
+        } else if (r == 105 && g == 105 && b == 105) {
+            return true
+        }
+    }
 
     return false
 
@@ -1591,7 +1598,7 @@ function isFinalStripColor(r, g, b) {
 
 function makeMatrixRoads() {
 
-    let pixelIndex, r, g, b;
+    let pixelIndex, r, g, b, a;
     roads = [];
 
     for (let i = 0; i < pista.spritesheet.width; i++) {
@@ -1603,10 +1610,11 @@ function makeMatrixRoads() {
             r = pista.spritesheet.pixels[pixelIndex + 0];
             g = pista.spritesheet.pixels[pixelIndex + 1];
             b = pista.spritesheet.pixels[pixelIndex + 2];
+            a = pista.spritesheet.pixels[pixelIndex + 3];
 
             if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
                 roads[i][j] = 0;
-            } else if (isFinalStripColor(r, g, b)) {
+            } else if (isFinalStripColor(r, g, b, a)) {
                 roads[i][j] = -2; // max pista
             } else {
                 roads[i][j] = -1;
