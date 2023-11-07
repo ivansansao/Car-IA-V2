@@ -219,3 +219,35 @@ function weightRandomMixString(mom = '', dad = '') {
     return joinWeight(arrSon)
 
 }
+
+function feeling(dist) {
+
+    /*
+
+    0.1 Pertíssimo
+    0.2 Muito perto
+    0.3 Perto
+    0.4 Pertinho
+    0.5 Normal
+    0.6 Longinho
+    0.7 Longe
+    0.8 Muito longe
+    0.9 Longíssimo
+
+    */
+
+    if (dist < 10) { // Muito perto
+        return 0.1
+    } else if (dist < 20) { // Perto
+        return 0.2
+    } else if (dist < 30) { // Normal
+        return 0.5
+    } else if (dist < 50) { // Longe        
+        return 0.7
+    } else if (dist < 100) { // Muito longe
+        return 0.8
+    } else { // Longíssimo
+        return 0.9
+    }
+
+}

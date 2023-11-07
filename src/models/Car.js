@@ -811,7 +811,8 @@ class Car {
     }
     getNormalizedDist(i, maxDist) {
         const extDist = this.getExternDistanceWall(i)
-        const normalized = map(min(extDist, maxDist), 0, maxDist, 0, 1)
+        // const normalized = map(min(extDist, maxDist), 0, maxDist, 0, 1)
+        const normalized = feeling(extDist)
 
         if (distNormalized) return normalized
         return extDist

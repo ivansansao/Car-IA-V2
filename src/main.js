@@ -25,7 +25,7 @@ let errosOnScreen = ''
 let selectManyBetters = true;
 let showTrace = false;
 let manualLearning = false;
-let distNormalized = false
+let distNormalized = true
 let addCarFromTracks = false;
 let percentComplete = 0;
 let api = null;
@@ -196,6 +196,7 @@ function draw() {
             //         carInputs.push(car.getExternDistanceWall(i));
             //     }
             // }
+            // console.log(car.getNormalizedDist(0, 200))
 
             carInputs.push(car.getNormalizedDist(0, 200));
             carInputs.push(car.getNormalizedDist(1, 200));

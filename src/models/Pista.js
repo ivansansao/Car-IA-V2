@@ -203,7 +203,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista4();
-            this.maxMutations = 2
+            this.maxMutations = 3
             this.ranhuras = getRanhuras4();
             this.timeOutStopped = 100;
 
@@ -1084,6 +1084,13 @@ function getPista4() {
     points.push({ a: 1675, b: 397, c: 1691, d: 382, m: 0, t: 0 });
     points.push({ a: 1691, b: 382, c: 1722, d: 382, m: 0, t: 0 });
     points.push({ a: 1722, b: 382, c: 1746, d: 396, m: 0, t: 0 });
+
+    // Interdivisions
+    // points.push({ a: 415, b: 237, c: 437, d: 290, m: 0, t: 0 });
+    // points.push({ a: 520, b: 202, c: 644, d: 186, m: 0, t: 0 });
+    // points.push({ a: 869, b: 218, c: 939, d: 215, m: 0, t: 0 });
+    // points.push({ a: 138, b: 170, c: 167, d: 224, m: 0, t: 0 });
+
 
     return points;
 

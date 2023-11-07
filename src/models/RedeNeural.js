@@ -21,7 +21,7 @@ class RedeNeural {
         this.model = tf.sequential();
         this.model.add(tf.layers.dense({ units: this.hidden_nodes, inputShape: [this.input_nodes], activation: this.f1 }));
         // this.model.add(tf.layers.dense({units: 5, inputShape: [5], activation: 'relu'}));        
-        this.model.add(tf.layers.dense({ units: this.output_nodes, activation: this.f2 }));
+        // this.model.add(tf.layers.dense({ units: this.output_nodes, activation: this.f2 }));
 
         // const input = tf.input({ shape: [input_nodes] });
         // const denseLayer1 = tf.layers.dense({ units: hidden_nodes, activation: this.f1 }); // def. sigmoid
