@@ -21,6 +21,7 @@
 */
 
 
+let selectedCarOnMouse = null;
 let errosOnScreen = ''
 let selectManyBetters = true;
 let showTrace = false;
@@ -301,6 +302,7 @@ function draw() {
         text('Server: ' + api.url, 1130, 20)
 
         ShowMousePoint()
+        selectCarOnMouse()
 
         if (world.showScoreboard) {
             scoreboard.update();
@@ -384,6 +386,7 @@ function drawManualLearning() {
     drawHeader()
     ShowMousePoint()
 
+
     if (world.showScoreboard) {
         scoreboard.update();
         scoreboard.show();
@@ -416,6 +419,28 @@ function drawHeader() {
 
         }
 
+    }
+
+}
+
+function selectCarOnMouse() {
+
+    if (mouseIsPressed) {
+
+        const mx = Number(mouseX.toFixed(0));
+        const my = Number(mouseY.toFixed(0));
+
+        for (const car of cars) {
+
+            if (car.batido) {
+                if (dist(mx, my, car.pos.x, car.pos.y) < 4) {
+                    selectedCarOnMouse = car
+                    text(`ID Car: ${car.id}`, mx, my);
+                    console.log('point')
+                    break
+                }
+            }
+        }
     }
 
 }

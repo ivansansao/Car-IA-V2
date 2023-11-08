@@ -94,14 +94,18 @@ class Genetic {
         const lastRoundBetter = this.getBetterCar()
         const fileCar = this.getFileCar()
 
-        if (!this.melhor || fileCar.isBetterThan(lastRoundBetter)) {
+        if (!selectedCarOnMouse) {
 
-            this.getFirstWeights();
-            if (addCarFromTracks) {
-                this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
+
+            if (!this.melhor || fileCar.isBetterThan(lastRoundBetter)) {
+
+                this.getFirstWeights();
+                if (addCarFromTracks) {
+                    this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
+                }
+                return
+
             }
-            return
-
         }
 
         const ancestral = this.melhor.ia.showWeights(true);
@@ -246,6 +250,8 @@ class Genetic {
         /**
         * End
         */
+
+        selectedCarOnMouse = null
 
     }
 
@@ -670,11 +676,15 @@ class Genetic {
 
     getBetterCar() {
         if (cars.length > 0) {
+            if (selectedCarOnMouse) {
+                return selectedCarOnMouse
+            } else {
 
-            this.classifyCars()
-            const better = cars[0]
-            this.classifyCars(true)
-            return better
+                this.classifyCars()
+                const better = cars[0]
+                this.classifyCars(true)
+                return better
+            }
         }
         return false
 

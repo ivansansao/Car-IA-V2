@@ -644,13 +644,24 @@ class Car {
                 fill(this.cor);
             }
             if (this.isParent()) {
-                // circle(this.pos.x, this.pos.y, 12);
-                rect(this.pos.x - 6, this.pos.y - 3, 12, 6);
-
-            } else {
-                circle(this.pos.x, this.pos.y, 10);
+                rect(this.pos.x - 9, this.pos.y - 1, 18, 2);
+                rect(this.pos.x - 1, this.pos.y - 9, 2, 18);
             }
 
+            circle(this.pos.x, this.pos.y, 10);
+
+            if (this.batido) {
+
+                if (showDeadCars && !this.drawedDead) {
+                    pg.push();
+                    pg.translate(this.pos.x, this.pos.y);
+                    pg.rotate(this.heading);
+                    this.drawDeadCar();
+                    pg.pop();
+                    this.drawedDead = true;
+                }
+
+            }
             return false;
         }
 
@@ -822,6 +833,7 @@ class Car {
         const extDist = this.getExternDistanceWall(i)
         // const normalized = map(min(extDist, maxDist), 0, maxDist, 0, 1)
         const normalized = feeling(extDist)
+        // const normalized = distToFibonacci(extDist)
 
         if (distNormalized) return normalized
         return extDist

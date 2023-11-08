@@ -246,10 +246,58 @@ function feeling(dist) {
         return 0.7
     } else if (dist < 100) { // Muito longe
         return 0.8
-    } else if (dist < 200) { // Muito longe
+    } else {
         return 0.9
-    } else { // Longíssimo
-        return 1.0
     }
 
+
+    // if (dist < 10) { // Muito perto
+    //     return 0.1
+    // } else if (dist < 20) { // Perto
+    //     return 0.2
+    // } else if (dist < 30) { // Normal
+    //     return 0.3
+    // } else if (dist < 40) { // Normal
+    //     return 0.4
+    // } else if (dist < 50) { // Longe        
+    //     return 0.5
+    // } else if (dist < 60) { // Longe        
+    //     return 0.6
+    // } else if (dist < 100) { // Muito longe
+    //     return 0.7
+    // } else if (dist < 200) { // Muito longe
+    //     return 0.8
+    // } else if (dist < 300) { // Muito longe
+    //     return 0.9
+    // } else { // Longíssimo
+    //     return 1.0
+    // }
+
+}
+
+function distToFibonacci(dist) {
+
+    if (dist < 5) {
+        return 0.0
+    } else if (dist < 10) {
+        return 0.1
+    } else if (dist < 15) {
+        return 0.2
+    } else if (dist < 25) {
+        return 0.3
+    } else if (dist < 40) {
+        return 0.4
+    } else if (dist < 65) {
+        return 0.5
+    } else if (dist < 105) {
+        return 0.6
+    } else if (dist < 170) {
+        return 0.7
+    } else if (dist < 275) {
+        return 0.8
+    } else if (dist < 445) {
+        return 0.9
+    } else {
+        return 1.0
+    }
 }

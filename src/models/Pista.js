@@ -13,7 +13,7 @@ class Pista {
         this.walls = [];
         this.showWalls = true;
         this.ranhuras = [];
-        this.selectedPista = 7;
+        this.selectedPista = 4;
         this.spritesheet = null;
         this.spriteRip = null;
         this.localNascimento = createVector(0, 0);
