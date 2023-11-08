@@ -246,8 +246,10 @@ function feeling(dist) {
         return 0.7
     } else if (dist < 100) { // Muito longe
         return 0.8
-    } else { // Longíssimo
+    } else if (dist < 200) { // Muito longe
         return 0.9
+    } else { // Longíssimo
+        return 1.0
     }
 
 }

@@ -259,12 +259,14 @@ function draw() {
     }
 
     if (timer > pista.pistaTimeOut) {
+        console.log("timer > pista.pistaTimeOut");
         timer = 0;
         eliminarTodosCars();
     }
 
     if (vivos == 0) {
         timer = 0;
+        // console.log("Vivos == 0");
         genetic.nextGeneration();
     }
 

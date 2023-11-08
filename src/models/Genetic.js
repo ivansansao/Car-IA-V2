@@ -85,8 +85,9 @@ class Genetic {
 
     nextGeneration() {
 
+        eliminarTodosCars()
         if (!pista.waveFronted || !pista.spriteLoaded) {
-            eliminarTodosCars()
+            // eliminarTodosCars()
             return
         }
 

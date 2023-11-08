@@ -13,7 +13,7 @@ class Pista {
         this.walls = [];
         this.showWalls = true;
         this.ranhuras = [];
-        this.selectedPista = 4;
+        this.selectedPista = 7;
         this.spritesheet = null;
         this.spriteRip = null;
         this.localNascimento = createVector(0, 0);
@@ -251,7 +251,7 @@ class Pista {
         } else if (this.selectedPista == 7) {
 
             world.endsWhenFinishLine = true
-            this.carsOnStart = 80
+            this.carsOnStart = 100
             this.addCarsDynamically = false
             collideCars = false;
             wallsPista = getPista7();
@@ -356,6 +356,8 @@ class Pista {
                     text(wall.a.x, wall.a.x, wall.a.y);
                 }
             }
+
+            circle(this.localNascimento.x, this.localNascimento.y, 4)
         }
 
         // this.lapSensors[0].show();

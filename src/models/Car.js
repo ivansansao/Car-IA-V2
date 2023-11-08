@@ -423,7 +423,7 @@ class Car {
 
         if (this.isWall()) {
             if (this.isWallUp()) {
-                this.onJump()
+                this.onGoUp()
             } else {
                 this.onFall()
             }
@@ -433,7 +433,9 @@ class Car {
 
     isWall() {
         if (this.getRoadPosition() > 0) {
-            return abs(this.km - this.lastKm) > 100
+            const rs = abs(this.km - this.lastKm) > 300
+            // console.log('isWall : ' + abs(this.km - this.lastKm))
+            return rs
         }
         return false
     }
@@ -452,11 +454,12 @@ class Car {
         return false
     }
 
-    onJump() {
-        // console.log("onJump ", this.marca, this.lastKm, this.km)
+    onGoUp() {
+        // console.log("onGoUp ", this.marca, this.lastKm, this.km)
         this.lap++;
         if (world.endsWhenFinishLine) {
             genetic.nextGeneration();
+            // eliminarTodosCars();
         } else {
             const newTimeOut = pista.trackSize * (this.lap + 1);
             pista.pistaTimeOut = max(pista.pistaTimeOut, newTimeOut);
@@ -640,7 +643,13 @@ class Car {
                 stroke(0);
                 fill(this.cor);
             }
-            circle(this.pos.x, this.pos.y, 10);
+            if (this.isParent()) {
+                // circle(this.pos.x, this.pos.y, 12);
+                rect(this.pos.x - 6, this.pos.y - 3, 12, 6);
+
+            } else {
+                circle(this.pos.x, this.pos.y, 10);
+            }
 
             return false;
         }
@@ -1353,6 +1362,7 @@ function eliminarTodosCars() {
     for (const car of cars) {
         car.kill(false, car.deadWayType.endOfTime);
     }
+    vivos = 0
 }
 
 function killAllClearingWeights() {
