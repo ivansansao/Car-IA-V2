@@ -12,6 +12,10 @@ class Car {
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
         this.ia = new RedeNeural({ f1, f2 });
+        this.useMia = false
+        this.mia = new NeuralNetwork({ inputs: 22, outputs: 8 });
+        this.mia.addLayer({ size: 8, activationFunction: (n) => Math.max(0, n) })
+        this.mia.compile()
         this.inteligente = (inteligente === undefined) ? true : inteligente;;
         this.batido = false;
         this.timer = 0;
@@ -153,7 +157,14 @@ class Car {
                 7 - Left
             */
 
-            let resposta = this.ia.pensar(inputs);
+            let resposta
+            if (this.useMia) {
+                this.mia.think({ inputs });
+                resposta = this.mia.layers[this.mia.layers.length - 1].value.map(e => e.output)
+            } else {
+                resposta = this.ia.pensar(inputs);
+            }
+
             let maiorI;
             let maiorR;
 
@@ -812,13 +823,19 @@ class Car {
 
 
     mutate(rate, maxMutations) {
-        while (this.ia.mutated == 0) {
-            // this.ia.mutateNoRepeat(rate, maxMutations);
-            this.ia.mutate(rate, maxMutations);
-        }
-        this.setColor();
 
-        return this.ia.mutated
+        if (this.useMia) {
+            this.mia.mutate(maxMutations)
+        } else {
+
+            while (this.ia.mutated == 0) {
+                // this.ia.mutateNoRepeat(rate, maxMutations);
+                this.ia.mutate(rate, maxMutations);
+            }
+            this.setColor();
+
+            return this.ia.mutated
+        }
     }
 
     getExternDistanceWall(i) {
