@@ -40,8 +40,8 @@ class Genetic {
 
         if (this.melhor) {
             if (nGeracao > 0) {
-                if (!pesos.f1) pesos.f1 = this.melhor.ia.f1
-                if (!pesos.f2) pesos.f2 = this.melhor.ia.f2
+                if (!pesos.f1) pesos.f1 = this.melhor.getF1()
+                if (!pesos.f2) pesos.f2 = this.melhor.getF2()
             }
         }
 
@@ -73,7 +73,7 @@ class Genetic {
 
         if (pesos.length > 0) {
             if (world.startWeightSaved) {
-                child.ia.setWeightsFromString(pesos, this.shapes);
+                child.setWeightsFromString(pesos, this.shapes);
             }
         }
         pista.addCar(child, 'Primeira carga');
@@ -101,20 +101,20 @@ class Genetic {
 
                 this.getFirstWeights();
                 if (addCarFromTracks) {
-                    this.addCarFromTracks(this.getBetterCar().ia.showWeights(true))
+                    this.addCarFromTracks(this.getBetterCar().showWeights(true))
                 }
                 return
 
             }
         }
 
-        const ancestral = this.melhor.ia.showWeights(true);
+        const ancestral = this.melhor.showWeights(true);
 
         this.melhores = [];
         this.classifyCars();
         this.melhor = this.getBetterCar();
         this.gotCloserBest = this.getGotCloserBest();
-        const weightCopies = this.melhor.ia.getCopiedWeights();
+        const weightCopies = this.melhor.getCopiedWeights();
 
 
 
@@ -165,7 +165,7 @@ class Genetic {
 
         // Add created sons
 
-        console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} vm: ${this.melhor.humanVm()} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.ia.mutated}`);
+        console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} vm: ${this.melhor.humanVm()} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.mutated()}`);
 
         if (this.brokeRecord({ melhor: this.melhor })) {
 
@@ -177,7 +177,7 @@ class Genetic {
                 if (this.isBetterThanSaved(this.melhor)) {
                     this.saveWeights(this.melhor);
                     foo.speak(`${pista.recordKm.toFixed(0)}`);
-                    this.melhor.ia.showWeights();
+                    this.melhor.showWeights();
                 }
             }
 
@@ -198,7 +198,7 @@ class Genetic {
 
         if (elitism) {
             let child = new Car({ ...this.getData(), elitism: true, marca: 'c', parent: this.melhor.marca });
-            child.ia.model.setWeights(weightCopies);
+            child.setWeights(weightCopies);
             pista.addCar(child, 'Elitismo');
         }
 
@@ -225,7 +225,7 @@ class Genetic {
         for (const son of sons) {
 
             let mutated = new Car({ ...this.getData(), marca: 'm', parent: son.marca });
-            mutated.ia.model.setWeights(son.ia.getCopiedWeights());
+            mutated.setWeights(son.getCopiedWeights());
             mutated.mutate(Number(random(0.01, 0.015).toFixed(15)), 1);
 
             pista.addCar(son, 'Filho sem mutação');
@@ -267,7 +267,7 @@ class Genetic {
             if (weightTrack.weights) {
                 let childTrack = new Car({ ...this.getData() });
                 const sonWeight = this.reproduceMixing(ancestral, weightTrack.weights)
-                childTrack.ia.setWeightsFromString(sonWeight, this.shapes);
+                childTrack.setWeightsFromString(sonWeight, this.shapes);
                 childTrack.marca = 'Tx'
                 pista.addCar(childTrack, 'Mixed another track with this better ' + childTrack.marca);
             }
@@ -279,7 +279,7 @@ class Genetic {
         for (const weightTrack of this.pesos) {
             if (weightTrack.weights) {
                 let childTrack = new Car({ ...this.getData() });
-                childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
+                childTrack.setWeightsFromString(weightTrack.weights, this.shapes);
                 childTrack.marca = 'To'
                 pista.addCar(childTrack, 'Car from another track ' + childTrack.marca);
             }
@@ -291,7 +291,7 @@ class Genetic {
         for (const weightTrack of this.pesos) {
             if (weightTrack.weights) {
                 let childTrack = new Car({ ...this.getData() });
-                childTrack.ia.setWeightsFromString(weightTrack.weights, this.shapes);
+                childTrack.setWeightsFromString(weightTrack.weights, this.shapes);
                 childTrack.mutate(Number(random(0.01, 0.015).toFixed(15)), 1);
                 childTrack.marca = 'Tm'
                 pista.addCar(childTrack, 'Mutted car from another track ' + childTrack.marca);
@@ -396,16 +396,16 @@ class Genetic {
         // console.log(indexParents);
 
         // Add better first cause first one has priority in reproduce method.
-        reproductives.push(carList[0].ia.showWeights(true))
+        reproductives.push(carList[0].showWeights(true))
 
         for (const i of indexParents) {
-            reproductives.push(carList[i].ia.showWeights(true));
+            reproductives.push(carList[i].showWeights(true));
         }
 
         const weightSon = this.reproduce(ancestral, reproductives);
 
         let child = new Car({ ...this.getData(), marca: 's', parent: '' });
-        child.ia.setWeightsFromString(weightSon, this.shapes);
+        child.setWeightsFromString(weightSon, this.shapes);
         return child;
 
     }
@@ -552,7 +552,7 @@ class Genetic {
                 if (!this.melhores.find(e => e.ranking() == car.ranking())) {
 
                     // Se ainda não tem essa rede neural em Melhores.
-                    if (!this.melhores.find(e => e.ia.showWeights(true) == car.ia.showWeights(true))) {
+                    if (!this.melhores.find(e => e.showWeights(true) == car.showWeights(true))) {
                         this.melhores.push(car)
                         return true
                     }
@@ -586,10 +586,10 @@ class Genetic {
             acc: (this.gotCloserBest / cars.length * 100).toFixed(0) + "%",
             closest: this.gotCloserBest,
             carsLength: cars.length,
-            f1: car.ia.f1,
-            f2: car.ia.f2,
+            f1: car.getF1(),
+            f2: car.getF2(),
             distNormalized: distNormalized,
-            weights: car.ia.showWeights(true),
+            weights: car.showWeights(true),
         }
         api.saveWeights('track' + pista.selectedPista, JSON.stringify(data));
 
@@ -661,7 +661,7 @@ class Genetic {
 
     newCarFromStringWeight(stringWeight, carConfig) {
         const car = new Car(carConfig)
-        car.ia.setWeightsFromString(stringWeight, this.shapes)
+        car.setWeightsFromString(stringWeight, this.shapes)
         // car.km = carConfig.km ? carConfig.km : car.km
         // car.lap = carConfig.lap ? carConfig.lap : car.lap
         return car
@@ -715,8 +715,8 @@ class Genetic {
 
     mixRandomFromDadMom(momCar, dadCar, marca = 'f') {
         const parent = momCar.marca + dadCar.marca
-        const momStr = momCar.ia.showWeights(true)
-        const dadStr = dadCar.ia.showWeights(true)
+        const momStr = momCar.showWeights(true)
+        const dadStr = dadCar.showWeights(true)
         const sonStr = weightRandomMixString(momStr, dadStr)
         const sonCar = this.newCarFromStringWeight(sonStr, { ...this.getData(), marca, lap: 0, km: Infinity, parent })
         return sonCar

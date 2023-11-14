@@ -128,11 +128,11 @@ class Car {
                 indexColor = this.palette[corIndex - 1].cor;
             } else {
 
-                if (this.ia.mutated <= this.palette.length && this.ia.mutated > 0) {
-                    indexColor = this.palette[this.ia.mutated - 1].cor;
+                if (this.mutated() <= this.palette.length && this.mutated() > 0) {
+                    indexColor = this.palette[this.mutated() - 1].cor;
                 } else {
 
-                    let indexMut = this.ia.mutated;
+                    let indexMut = this.mutated();
                     if (indexMut > 20) indexMut = 20;
                     indexColor = Math.floor(map(indexMut, 0, 20, 15, 300));
                 }
@@ -160,7 +160,7 @@ class Car {
             let resposta
             if (this.useMia) {
                 this.mia.think({ inputs });
-                resposta = this.mia.layers[this.mia.layers.length - 1].value.map(e => e.output)
+                resposta = this.mia.layers[this.mia.layers.length - 1].neurons.map(e => e.output)
             } else {
                 resposta = this.ia.pensar(inputs);
             }
@@ -615,9 +615,9 @@ class Car {
         let mut;
 
         if (rankingMode == 0)
-            mut = String(999 - this.ia.mutated).padStart(3, '0');
+            mut = String(999 - this.mutated()).padStart(3, '0');
         else
-            mut = String(this.ia.mutated).padStart(3, '0');
+            mut = String(this.mutated()).padStart(3, '0');
 
         const vm = String(this.getAverageSpeed().toFixed(4)).padStart(7, '0');
 
@@ -738,7 +738,7 @@ class Car {
             // text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
             text(`Acelerador: ${this.acceleration == 'up' ? 'Acelerou' : this.acceleration == 'down' ? 'Desacelerou' : ''}`, x + 2, y += 12);
-            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.ia.mutated} ID: ${this.id}`, x + 2, y += 12);
+            text(`Freio: ${this.braking ? 'Freiou' : 'Soltou'} -  ${this.marca} Muts: ${this.mutated()} ID: ${this.id}`, x + 2, y += 12);
 
 
         }
@@ -821,19 +821,78 @@ class Car {
         }
     }
 
+    setWeights(copiedWeights) {
+        if (this.useMia) {
+            this.mia.setWeights({ text: copiedWeights })
+        } else {
+            this.ia.model.setWeights(copiedWeights);
+        }
+    }
+
+    showWeights(toReturn) {
+        if (this.useMia) {
+            if (toReturn)
+                return this.mia.weights.toString()
+            else
+                console.log(this.mia.weights.toString())
+        } else {
+            return this.ia.showWeights(toReturn)
+        }
+
+    }
+
+    setWeightsFromString(pesos, shapes) {
+        if (this.useMia) {
+            this.mia.setWeights({ text: pesos })
+        } else {
+            this.ia.setWeightsFromString(pesos, shapes)
+        }
+    }
+
+    getCopiedWeights() {
+        if (this.useMia) {
+            return this.mia.weights.toString()
+        }
+        return this.ia.getCopiedWeights()
+
+    }
+    getF1() {
+        if (this.useMia) {
+            return 'Fix'
+        }
+        return this.ia.f1
+    }
+    getF2() {
+        if (this.useMia) {
+            return 'Fix'
+        }
+        return this.ia.f2
+    }
+    mutated() {
+        if (this.useMia) {
+            return this.mia.mutated
+        }
+        return this.ia.mutated
+    }
+    getMutatedNeurons() {
+        if (this.useMia) {
+            return this.mia.mutatedNeurons
+        }
+        return this.ia.mutatedNeurons
+    }
 
     mutate(rate, maxMutations) {
 
         if (this.useMia) {
-            this.mia.mutate(maxMutations)
+            this.mia.mutate({ many: maxMutations })
+            this.setColor();
+            return this.mia.mutated
         } else {
 
             while (this.ia.mutated == 0) {
-                // this.ia.mutateNoRepeat(rate, maxMutations);
                 this.ia.mutate(rate, maxMutations);
             }
             this.setColor();
-
             return this.ia.mutated
         }
     }

@@ -377,7 +377,7 @@ class Car {
             text(`Ranhuras: ${this.ranhurasColetadas.length}`, x, y += 12);
             text(`km: ${this.km}`, x, y += 12);
             text(`Marca: ${this.marca}`, x, y += 12);
-            text(`CRC RNA: ${crc32(this.ia.showWeights(true))}`, x, y += 12);
+            text(`CRC RNA: ${crc32(this.showWeights(true))}`, x, y += 12);
             // text(`Voltas: ${this.lapCount}`, x+50, y); // Não está funcionando ainda.
 
         }

@@ -40,14 +40,14 @@ class Scoreboard {
                     id: car.id,
                     lap: car.lap,
                     km: pista.trackSize - car.km,
-                    mut: car.ia.mutated,
+                    mut: car.mutated(),
                     vm: car.humanVm(),
                     cor: car.cor,
                     marca: car.marca,
                     alive: car.batido ? 'X' : '',
-                    mn: car.ia.mutatedNeurons.substring(0, 30),
+                    mn: car.getMutatedNeurons().substring(0, 30),
                     ranking: car.ranking(),
-                    crc: crc32(car.ia.showWeights(true)),
+                    crc: crc32(car.showWeights(true)),
                     parent: car.parent,
                 })
             }

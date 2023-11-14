@@ -485,8 +485,13 @@ async function addMoreCar() {
 
         // Just mutate after first generation.
         if (nGeracao > 0) {
-            child.ia.model.setWeights(melhor.ia.getCopiedWeights());
-            child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)));
+            child.setWeights(melhor.getCopiedWeights());
+            if (getPercentComplete() > 0 && getPercentComplete() < 10) {
+                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 30).toFixed(0)));
+
+            } else {
+                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)));
+            }
             child.marca = 'm'
         }
 
@@ -542,4 +547,8 @@ function zerarFrota() {
 function newCarId() {
     carId++;
     return carId;
+}
+
+function getPercentComplete() {
+    return 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
 }
