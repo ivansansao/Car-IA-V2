@@ -176,7 +176,7 @@ class Genetic {
             if (nGeracao > 0) {
                 if (this.isBetterThanSaved(this.melhor)) {
                     this.saveWeights(this.melhor);
-                    foo.speak(`${pista.recordKm.toFixed(0)}`);
+                    foo.speak(`${(pista.trackSize - pista.recordKm).toFixed(0)}`);
                     this.melhor.showWeights();
                 }
             }
