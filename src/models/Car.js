@@ -1,7 +1,6 @@
 class Car {
 
     constructor({ elitism, marca, parent, inteligente, randomHeading, f1, f2, priority }) {
-
         this.priority = priority | random(0, 50).toFixed(0)
         this.elitism = elitism | false;
         this.pos = pista.localNascimento.copy();
@@ -12,7 +11,7 @@ class Car {
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
         this.ia = new RedeNeural({ f1, f2 });
-        this.useMia = false
+        this.useMia = true
         this.mia = new NeuralNetwork({ inputs: 22, outputs: 8 });
         this.mia.addLayer({ size: 8, activationFunction: (n) => Math.max(0, n) })
         this.mia.compile()
@@ -858,13 +857,13 @@ class Car {
     }
     getF1() {
         if (this.useMia) {
-            return 'Fix'
+            return 'relu'
         }
         return this.ia.f1
     }
     getF2() {
         if (this.useMia) {
-            return 'Fix'
+            return 'relu'
         }
         return this.ia.f2
     }

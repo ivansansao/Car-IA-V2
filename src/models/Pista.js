@@ -203,7 +203,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista4();
-            this.maxMutations = 3
+            this.maxMutations = 10
             this.ranhuras = getRanhuras4();
             this.timeOutStopped = 100;
 
