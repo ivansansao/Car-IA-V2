@@ -251,11 +251,11 @@ class Pista {
         } else if (this.selectedPista == 7) {
 
             world.endsWhenFinishLine = true
-            this.carsOnStart = 100
+            this.carsOnStart = 200
             this.addCarsDynamically = false
             collideCars = false;
             wallsPista = getPista7();
-            this.maxMutations = 5
+            this.maxMutations = 20
             this.ranhuras = {}
             this.timeOutStopped = 100;
             if (this.localNascimento.x < 0) this.localNascimento = createVector(700, 288);

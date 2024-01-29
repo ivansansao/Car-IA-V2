@@ -21,6 +21,7 @@
 */
 
 
+let carSensors = 5;
 let selectedCarOnMouse = null;
 let errosOnScreen = ''
 let selectManyBetters = true;
@@ -199,28 +200,32 @@ function draw() {
             // }
             // console.log(car.getNormalizedDist(0, 200))
 
-            carInputs.push(car.getNormalizedDist(0, 200));
-            carInputs.push(car.getNormalizedDist(1, 200));
-            carInputs.push(car.getNormalizedDist(2, 200));
-            carInputs.push(car.getNormalizedDist(3, 200));
-            carInputs.push(car.getNormalizedDist(4, 200));
-            carInputs.push(car.getNormalizedDist(5, 200));
+            for (let i = 0; i < carSensors; i++) {
+                carInputs.push(car.getNormalizedDist(i, 200));
+            }
 
-            carInputs.push(car.getNormalizedDist(6, 200));
-            carInputs.push(car.getNormalizedDist(7, 200));
-            carInputs.push(car.getNormalizedDist(8, 200));
-            carInputs.push(car.getNormalizedDist(8, 200));
-            carInputs.push(car.getNormalizedDist(10, 200));
-            carInputs.push(car.getNormalizedDist(11, 200));
-            carInputs.push(car.getNormalizedDist(12, 200));
-            carInputs.push(car.getNormalizedDist(13, 200));
-            carInputs.push(car.getNormalizedDist(14, 200));
+            // carInputs.push(car.getNormalizedDist(0, 200));
+            // carInputs.push(car.getNormalizedDist(1, 200));
+            // carInputs.push(car.getNormalizedDist(2, 200));
+            // carInputs.push(car.getNormalizedDist(3, 200));
+            // carInputs.push(car.getNormalizedDist(4, 200));
+            // carInputs.push(car.getNormalizedDist(5, 200));
 
-            carInputs.push(car.getNormalizedDist(15, 200));
-            carInputs.push(car.getNormalizedDist(16, 200));
-            carInputs.push(car.getNormalizedDist(17, 200));
-            carInputs.push(car.getNormalizedDist(18, 200));
-            carInputs.push(car.getNormalizedDist(19, 200));
+            // carInputs.push(car.getNormalizedDist(6, 200));
+            // carInputs.push(car.getNormalizedDist(7, 200));
+            // carInputs.push(car.getNormalizedDist(8, 200));
+            // carInputs.push(car.getNormalizedDist(8, 200));
+            // carInputs.push(car.getNormalizedDist(10, 200));
+            // carInputs.push(car.getNormalizedDist(11, 200));
+            // carInputs.push(car.getNormalizedDist(12, 200));
+            // carInputs.push(car.getNormalizedDist(13, 200));
+            // carInputs.push(car.getNormalizedDist(14, 200));
+
+            // carInputs.push(car.getNormalizedDist(15, 200));
+            // carInputs.push(car.getNormalizedDist(16, 200));
+            // carInputs.push(car.getNormalizedDist(17, 200));
+            // carInputs.push(car.getNormalizedDist(18, 200));
+            // carInputs.push(car.getNormalizedDist(19, 200));
 
             car.think(carInputs);
             car.verificaColisaoRanhura(pista.ranhuras);
@@ -475,7 +480,7 @@ function ShowMousePoint() {
     }
 }
 
-async function addMoreCar() {
+function addMoreCar() {
 
     if (genetic.melhor) {
 

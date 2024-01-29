@@ -11,10 +11,6 @@ class Car {
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
         this.ia = new RedeNeural({ f1, f2 });
-        this.useMia = true
-        this.mia = new NeuralNetwork({ inputs: 22, outputs: 8 });
-        this.mia.addLayer({ size: 8, activationFunction: (n) => Math.max(0, n) })
-        this.mia.compile()
         this.inteligente = (inteligente === undefined) ? true : inteligente;;
         this.batido = false;
         this.timer = 0;
@@ -67,14 +63,41 @@ class Car {
             this.pos = createVector(random(20, 1700), random(20, 800));
         }
 
-        for (let i = 0; i < 360; i += 18) {
-            this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
+        // for (let i = 0; i < 360; i += 18) {
+        //     this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
+        // }
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(0 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(1 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(2 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(3 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(4 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(5 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(6 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(7 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(8 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(9 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(10 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(11 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(12 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(13 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(14 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(15 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(16 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(17 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(18 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(19 * 18), this.showRays));
 
-        }
+        carSensors = 5;
+
         // for (let i = 270; i < 450; i += 9) {
         //     this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
 
         // }
+
+        this.useMia = true
+        this.mia = new NeuralNetwork({ inputs: carSensors + 2, outputs: 8 });
+        this.mia.addLayer({ size: 8, activationFunction: (n) => Math.max(0, n) })
+        this.mia.compile()
 
         this.setColor();
         this.drawedDead = false;
@@ -971,7 +994,8 @@ class Car {
                 stroke(255);
                 textSize(12)
                 // text(i, menorHit.x, menorHit.y);
-                text(ray.savedDistance, menorHit.x, menorHit.y);
+                // text(ray.savedDistance, menorHit.x, menorHit.y);
+                text(i, menorHit.x, menorHit.y);
 
                 if (this.showSensorValue) {
                     noStroke();
@@ -1430,6 +1454,10 @@ class Car {
             } else if (this.lap == car.lap) {
                 if (this.km < car.km) {
                     isBetter = true;
+                } else if (this.km == car.km) {
+                    if (this.getAverageSpeed() < car.getAverageSpeed()) {
+                        isBetter = true;
+                    }
                 }
             }
             return isBetter;
@@ -1440,7 +1468,7 @@ class Car {
     }
 
     humanVm() {
-        return map(this.getAverageSpeed(), 0, 3.5, 0, 100).toFixed(0)
+        return map(this.getAverageSpeed(), 0, 3.5, 0, 100).toFixed(1)
     }
 
 }
