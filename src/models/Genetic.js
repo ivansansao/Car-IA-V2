@@ -111,7 +111,7 @@ class Genetic {
         const ancestral = this.melhor.showWeights(true);
 
         this.melhores = [];
-        this.classifyCars();
+        this.classifyCars(false, cars);
         this.melhor = this.getBetterCar();
         this.gotCloserBest = this.getGotCloserBest();
         const weightCopies = this.melhor.getCopiedWeights();
@@ -136,7 +136,7 @@ class Genetic {
          * Create sons doing reprodutive process.
          */
 
-        this.classifyCars()
+        this.classifyCars(false, cars)
 
         const sons = [];
         for (let i = 0; i < this.melhores.length - 1; i++) {
@@ -320,7 +320,7 @@ class Genetic {
 
         if (showFlag) {
             if (pista) {
-                const tmpMelhor = this.getBetterCar();
+                const tmpMelhor = this.getBetterCarDied();
                 if (tmpMelhor) {
 
                     pista.setFlag(tmpMelhor.pos.x, tmpMelhor.pos.y, tmpMelhor.km, tmpMelhor.cor);
@@ -376,11 +376,11 @@ class Genetic {
 
     }
 
-    classifyCars(worstFirst) {
+    classifyCars(worstFirst, carList) {
         if (worstFirst)
-            cars.sort((a, b) => (a.ranking() < b.ranking() ? -1 : 1));
+            carList.sort((a, b) => (a.ranking() < b.ranking() ? -1 : 1));
         else
-            cars.sort((a, b) => (a.ranking() > b.ranking() ? -1 : 1));
+            carList.sort((a, b) => (a.ranking() > b.ranking() ? -1 : 1));
     }
 
     makeSon(ancestral = '', carList = [], crosses = 0) {
@@ -489,7 +489,7 @@ class Genetic {
     }
 
     getFirstsNoKmRepeated(maxQtd = cars.length) {
-        this.classifyCars()
+        this.classifyCars(false, cars)
         const firsts = []
 
         let lastKm = cars[0].km
@@ -519,7 +519,7 @@ class Genetic {
         let primeiros = [];
         let lastKm = 0;
 
-        this.classifyCars()
+        this.classifyCars(false, cars)
 
         for (let i = 0; i < cars.length; i++) {
 
@@ -680,11 +680,22 @@ class Genetic {
                 return selectedCarOnMouse
             } else {
 
-                this.classifyCars()
+                this.classifyCars(false, cars)
                 const better = cars[0]
-                this.classifyCars(true)
+                this.classifyCars(true, cars)
                 return better
             }
+        }
+        return false
+
+    }
+    getBetterCarDied() {
+        const dieds = cars.filter(car => car.batido)
+        if (dieds.length > 0) {
+            this.classifyCars(false, dieds)
+            const better = dieds[0]
+            this.classifyCars(true, dieds)
+            return better
         }
         return false
 

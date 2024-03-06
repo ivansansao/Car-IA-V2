@@ -33,7 +33,7 @@ class Scoreboard {
 
             this.cars = [];
             // cars.sort((a, b) => (a.ranking() < b.ranking() ? 1 : -1))
-            genetic.classifyCars()
+            genetic.classifyCars(false, cars)
             for (let i = 0; i < min(cars.length, this.rows); i++) {
                 const car = cars[i];
                 this.cars.push({

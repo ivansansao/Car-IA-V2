@@ -30,6 +30,7 @@ class Car {
         this.lapCount = 0;
         this.showInfo = false;
         this.speed = 0;
+        this.maxSpeed = 2;
         this.gear = 0; // -1 Reverse, 1 Dinamic
         this.braking = false;
         this.acceleration = '';
@@ -39,7 +40,7 @@ class Car {
         this.showRays = false;
         this.lap = 0;
         this.engineSound = new EngineSound();
-        this.deadWayType = { crashed: 0, stopped: 1, endOfTime: 2, offTrack: 3, late: 4 };
+        this.deadWayType = { crashed: 0, stopped: 1, endOfTime: 2, offTrack: 3, late: 4, slug: 5 };
         this.deadWay = undefined;
         this.normalDead = false;
         this.accHistory = [];
@@ -75,9 +76,9 @@ class Car {
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(6 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(7 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(8 * 18), this.showRays));
-        this.rays.push(new Ray(this.pos.copy(), 20, radians(9 * 18), this.showRays)); // Back Right
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(9 * 18), this.showRays)); // Back Right
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(10 * 18), this.showRays));
-        this.rays.push(new Ray(this.pos.copy(), 20, radians(11 * 18), this.showRays)); // Back Left
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(11 * 18), this.showRays)); // Back Left
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(12 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(13 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(14 * 18), this.showRays));
@@ -254,8 +255,8 @@ class Car {
 
             if (this.gear == 1) {
                 // Limita a velocidade pra frente em 2
-                if (this.speed > 2) {
-                    this.speed = 2;
+                if (this.speed > this.maxSpeed) {
+                    this.speed = this.maxSpeed;
                 }
             } else {
 
@@ -811,6 +812,13 @@ class Car {
 
             if (abs(this.lastKmVerified - this.km) < 10) {
                 this.kill(true, this.deadWayType.stopped);
+            }
+        }
+
+        if (pista.trackSize - this.km > 400) {
+
+            if (this.humanVm() < killSlugLessThan) {
+                this.kill(true, this.deadWayType.slug);
             }
         }
 
@@ -1468,6 +1476,10 @@ class Car {
 
     humanVm() {
         return map(this.getAverageSpeed(), 0, 3.5, 0, 100).toFixed(1)
+    }
+
+    normalizedSpeed() {
+        return Number(map(this.speed, 0, this.maxSpeed, 0, 1).toFixed(1))
     }
 
 }

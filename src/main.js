@@ -21,6 +21,7 @@
 */
 
 
+let killSlugLessThan = 0;
 let carObj = null;
 let selectedCarOnMouse = null;
 let errosOnScreen = ''
@@ -194,12 +195,11 @@ function draw() {
             }
 
             const carInputs = [];
-
             car.update();
             car.look(wallsAndCars);
 
             carInputs.push(car.gear);
-            carInputs.push(car.speed);
+            carInputs.push(car.normalizedSpeed());
 
             // for (let i = 0; i < 20; i++) {
             //     if (car.marca == 'c' || car.marca == 'X') {
