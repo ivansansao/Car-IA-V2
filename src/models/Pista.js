@@ -124,6 +124,7 @@ class Pista {
         this.carsOnStart = 0
         this.addCarsDynamically = true
         world.endsWhenFinishLine = false
+        this.killIfLate = 0
 
 
         // // Track map.
@@ -177,7 +178,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista3();
-            this.maxMutations = 2
+            this.maxMutations = 50
             this.timeOutStopped = 100;
             this.backcolor = [154, 179, 161];
             this.startRoad = { i: 1192, j: 280, value: 0 };
@@ -250,8 +251,9 @@ class Pista {
 
         } else if (this.selectedPista == 7) {
 
+            this.killIfLate = 200
             world.endsWhenFinishLine = true
-            this.carsOnStart = 200
+            this.carsOnStart = 800
             this.addCarsDynamically = false
             collideCars = false;
             wallsPista = getPista7();

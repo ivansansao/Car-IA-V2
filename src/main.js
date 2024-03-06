@@ -21,7 +21,7 @@
 */
 
 
-let carSensors = 5;
+let carObj = null;
 let selectedCarOnMouse = null;
 let errosOnScreen = ''
 let selectManyBetters = true;
@@ -76,7 +76,7 @@ let pg;
 let globalMutations = [];
 let gpuTemp = 0;
 let gpuTempLimit = 78;
-let rankingMode = 1;
+let rankingMode = 0;
 let frameRateLimit = 59;
 
 function preload() {
@@ -112,6 +112,7 @@ function setup() {
     }
 
     genetic.nextGeneration();
+    carObj = new Car({})
 
     clear()
 
@@ -177,10 +178,20 @@ function draw() {
             }
         }
     }
+    let better = 0
+    if (frameCount % 10 == 0 && pista.killIfLate) {
+        better = genetic.getBetterCar()
+    }
 
     for (const car of cars) {
 
         if (!car.batido) {
+
+            if (better.km > 0 && car.km > 0 && better.km < car.km && car.km - better.km > pista.killIfLate) {
+                if (car.id != better.id && !car.isParent()) {
+                    car.kill(true, car.deadWayType.late)
+                }
+            }
 
             const carInputs = [];
 
@@ -200,7 +211,7 @@ function draw() {
             // }
             // console.log(car.getNormalizedDist(0, 200))
 
-            for (let i = 0; i < carSensors; i++) {
+            for (let i = 0; i < carObj.rays.length; i++) {
                 carInputs.push(car.getNormalizedDist(i, 200));
             }
 
@@ -235,6 +246,7 @@ function draw() {
             if (!world.trainigMode) {
                 car.show();
             }
+
 
 
             // } else if (showDeadCars) {
