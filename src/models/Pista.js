@@ -125,6 +125,7 @@ class Pista {
         this.addCarsDynamically = true
         world.endsWhenFinishLine = false
         this.killIfLate = 0
+        killSlugLessThan = 0
 
 
         // // Track map.
@@ -219,6 +220,7 @@ class Pista {
             this.lapSensors[0].pos.y = this.startRoad.j - 38;
             this.lapSensors[0].width = 10;
             this.lapSensors[0].height = 71;
+            killSlugLessThan = 70
 
         } else if (this.selectedPista == 5) {
 
