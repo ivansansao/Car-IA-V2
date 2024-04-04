@@ -394,6 +394,10 @@ class Car {
             rs = roads[x][y]
         }
 
+        if (rs == 0) {
+            console.log('getRoadPosition(): Zero', rs, 'x:', x, 'y:', y)
+        }
+
         return rs
     }
 
@@ -659,6 +663,10 @@ class Car {
             this.deadWay = deadWay;
 
             vivos = cars.reduce((a, c) => a += c.batido ? 0 : 1, 0);
+
+            if (this.km == 0) {
+                console.log('Deaded 0: ', this)
+            }
 
         }
     }

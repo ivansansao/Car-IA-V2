@@ -501,7 +501,15 @@ function addMoreCar() {
         let child = new Car({ ...genetic.getData(), marca: 'r', parent: melhor.marca });
 
         // Just mutate after first generation.
-        if (nGeracao > 0) {
+        if (nGeracao == 0) {
+
+            if (frameCount % 2 == 0) {
+                child.setWeights(melhor.getCopiedWeights());
+                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)));
+            }
+
+        } else {
+
             child.setWeights(melhor.getCopiedWeights());
             if (getPercentComplete() > 0 && getPercentComplete() < 10) {
                 child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 30).toFixed(0)));

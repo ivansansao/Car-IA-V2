@@ -1548,6 +1548,7 @@ function spriteLoaded() {
             makeMatrixRoads();
             waveFront();
             setFinishLineNumber(pista.trackSize)
+            clearLostsZeros()
             // showRoads(funShowRoads);        
         }
 
@@ -1558,6 +1559,23 @@ function spriteLoaded() {
 
 }
 
+/**
+ * After the waveFront transforms the track's 0 pixels into increasing numbers,
+ * there might still be 0 pixels off the track where the Wave Front couldn't reach.
+ * These zeros need to be eliminated because if they are close to the track,
+ * it could return the car's position as Zero, which would be a final km.
+ */
+
+function clearLostsZeros() {
+    for (let i = 0; i < roads.length; i++) {
+        for (let j = 0; j < roads[i].length; j++) {
+            if (roads[i][j] === 0) {
+                roads[i][j] = -1
+            }
+        }
+    }
+}
+
 function funShowRoads(i, j, e) {
 
     if (e > 0) {
@@ -1566,13 +1584,16 @@ function funShowRoads(i, j, e) {
         const mapX = Math.floor(map(roads[i][j], pista.trackSize, 0, 250, 0));
         const cor = 'hsla(' + mapX + ',100%,50%,0.8)';
 
-
         pg.fill(cor)
-
-        const oi = (i * 1)
-        const oj = (j * 1)
         pg.circle(i, j, 1);
 
+    }
+
+    if (e == 0) {
+        pg.fill(255, 0, 0)
+        pg.circle(i, j, 18);
+        pg.text(`(${i},${j})`, i, j + 8)
+        console.log('AXAZERO', i, j, e)
     }
 
 
@@ -1626,7 +1647,7 @@ function makeMatrixRoads() {
             a = pista.spritesheet.pixels[pixelIndex + 3];
 
             if (r == pista.corDaPista.r && g == pista.corDaPista.g && b == pista.corDaPista.b) {
-                roads[i][j] = 0;
+                roads[i][j] = 0; // Zero é a pista e será processada no wavefront!
             } else if (isFinalStripColor(r, g, b, a)) {
                 roads[i][j] = -2; // max pista
             } else {
