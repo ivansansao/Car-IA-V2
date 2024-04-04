@@ -22,7 +22,7 @@ class Car {
         this.parent = parent || '';
         this.aliveTime = 0;
         this.updates = 0;
-        this.showSensorValue = false;
+        this.showSensorValue = true;
         this.qtdReh = 0;
         this.ranhurasColetadas = [];
         this.id = newCarId();
@@ -1481,7 +1481,7 @@ class Car {
     }
 
     normalizedSpeed() {
-        return Number(map(this.speed, 0, this.maxSpeed, 0, 1).toFixed(1))
+        return Number(map(this.speed, 0, this.maxSpeed, 0, 1).toFixed(0))
     }
 
 }

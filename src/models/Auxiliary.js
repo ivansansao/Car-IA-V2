@@ -236,19 +236,29 @@ function feeling(dist) {
 
     */
 
-    if (dist < 10) { // Muito perto
-        return 0.1
-    } else if (dist < 20) { // Perto
-        return 0.2
-    } else if (dist < 30) { // Normal
-        return 0.5
-    } else if (dist < 50) { // Longe        
-        return 0.7
-    } else if (dist < 100) { // Muito longe
-        return 0.8
-    } else {
-        return 0.9
-    }
+    dist = dist > 300 ? 300 : dist
+
+    return Number(map(dist, 0, 300, 0, 30).toFixed(0))
+
+    // if (dist < 10) { // Muito perto
+    //     return 0.1
+    // } else if (dist < 20) { // Perto
+    //     return 0.2
+    // } else if (dist < 30) { // Normal
+    //     return 0.3
+    // } else if (dist < 50) { // Longe        
+    //     return 0.4
+    // } else if (dist < 100) { // Muito longe
+    //     return 0.5
+    // } else if (dist < 150) { // Muito longe
+    //     return 0.6
+    // } else if (dist < 200) { // Muito longe
+    //     return 0.7
+    // } else if (dist < 300) { // Muito longe
+    //     return 0.8
+    // } else {
+    //     return 0.9
+    // }
 
 
     // if (dist < 10) { // Muito perto

@@ -66,7 +66,7 @@ class Genetic {
             pista.anguloNascimento = radians(data.anguloNascimento)
         }
 
-        distNormalized = data.distNormalized ?? false
+        distNormalized = data.distNormalized ?? distNormalized
 
         let child = new Car({ ...data, elitism: true, marca: 'X' });
         let pesos = this.pesos[pista.selectedPista].weights;
