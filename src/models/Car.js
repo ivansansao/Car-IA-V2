@@ -1480,7 +1480,7 @@ class Car {
                     isBetter = true;
                 } else if (this.km == car.km) {
                     if (car.constructor.name === 'Car') {
-                        if (this.getAverageSpeed() < car.getAverageSpeed()) {
+                        if (this.getAverageSpeed() > car.getAverageSpeed()) {
                             isBetter = true;
                         }
                     }
