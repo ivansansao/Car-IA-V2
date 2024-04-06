@@ -3,10 +3,10 @@ class Car {
     constructor({ elitism, marca, parent, inteligente, randomHeading, f1, f2, priority }) {
         this.priority = priority | random(0, 50).toFixed(0)
         this.elitism = elitism | false;
-        this.pos = pista.localNascimento.copy();
+        this.pos = pista ? pista.localNascimento.copy() : createVector();
         this.lastPos = createVector();
         this.ray = 10;
-        this.heading = randomHeading ? random(360) : pista.anguloNascimento;
+        this.heading = randomHeading ? random(360) : (pista?.anguloNascimento | 0);
         this.rotation = 0;
         this.cor = 'hsla(' + Math.floor(Math.random() * 360) + ',100%,50%,0.8)';
         this.volanteAngle = '';
@@ -46,7 +46,7 @@ class Car {
         this.accHistory = [];
         this.initialTime = frameCount;
         this.finalTime = this.initialTime;
-        this.km = this.getRoadPosition() || Infinity
+        this.km = pista ? (this.getRoadPosition() || Infinity) : Infinity
         this.lastKm = this.km
         this.kmMax = 0;
         this.kmMin = 0;

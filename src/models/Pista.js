@@ -19,10 +19,10 @@ class Pista {
         this.localNascimento = createVector(0, 0);
         this.anguloNascimento = radians(180);
         this.carMajorDistance = 0;
+        this.recordCar = new Car({})
         this.recordFlag = new Flag();
         this.recordKm = Infinity;
         this.recordLap = 0;
-
         this.recordRanhuras = 0;
         this.population = 25;
         this.timeOutStopped = 100;
@@ -314,6 +314,7 @@ class Pista {
         genetic.melhor = null;
         genetic.melhores = [];
         nGeracao = 0;
+        this.recordCar = new Car({})
         this.recordKm = Infinity;
         this.recordLap = 0;
         this.spriteLoaded = false;

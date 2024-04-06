@@ -169,14 +169,17 @@ class Genetic {
 
         if (this.brokeRecord({ melhor: this.melhor })) {
 
-            pista.recordKm = this.melhor.km;
-            pista.recordLap = this.melhor.lap;
-            pista.recordRanhuras = this.melhor.ranhurasColetadas.length;
+            pista.recordKm = this.melhor.km; // Repreciate by recordCar
+            pista.recordLap = this.melhor.lap; // Repreciate by recordCar
+            pista.recordRanhuras = this.melhor.ranhurasColetadas.length; // Repreciate by recordCar
+
+            pista.recordCar = { ...this.melhor }
 
             if (nGeracao > 0) {
                 if (this.isBetterThanSaved(this.melhor)) {
                     this.saveWeights(this.melhor);
-                    foo.speak(`${(pista.trackSize - pista.recordKm).toFixed(0)}`);
+                    // foo.speak(`${(pista.trackSize - pista.recordKm).toFixed(0)}`);  // Repreciate 'recordKm' by recordCar
+                    foo.speak(`${(pista.trackSize - pista.recordCar.km).toFixed(0)}`);
                     this.melhor.showWeights();
                 }
             }
@@ -302,17 +305,19 @@ class Genetic {
 
     brokeRecord({ melhor }) {
 
-        let broke = false;
+        return melhor.isBetterThan(pista.recordCar)
 
-        if (melhor.lap > pista.recordLap) {
-            broke = true;
-        } else if (melhor.lap == pista.recordLap) {
-            if (melhor.km < pista.recordKm) {
-                broke = true;
-            }
-        }
+        // -- Repreciate by recordCar -- 
+        // let broke = false;
+        // if (melhor.lap > pista.recordLap) {
+        //     broke = true;
+        // } else if (melhor.lap == pista.recordLap) {
+        //     if (melhor.km < pista.recordKm) {
+        //         broke = true;
+        //     }
+        // }
 
-        return broke;
+        // return broke;
 
     }
 
