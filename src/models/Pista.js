@@ -38,9 +38,7 @@ class Pista {
         this.textBackColor = [255, 255, 255];
         this.spriteLoaded = false;
 
-
         this.make();
-
 
     }
 
@@ -79,6 +77,10 @@ class Pista {
             if (where.includes('R')) {
                 sensor.color = car.cor;
                 car.lap++;
+
+                console.log("RAVA 2 onGoUp ", this.marca, this.lastKm, this.km)
+                noLoop()
+
 
                 if (world.endsWhenFinishLine) {
                     genetic.nextGeneration();
@@ -125,7 +127,6 @@ class Pista {
         this.addCarsDynamically = true
         world.endsWhenFinishLine = false
         this.killIfLate = 0
-        killSlugLessThan = 0
 
 
         // // Track map.
@@ -138,6 +139,8 @@ class Pista {
         // console.log(this.spritesheet)
         // makeMatrixRoads();
         // waveFront();
+
+        killSlugLessThan = 0
 
         if (this.selectedPista == 1) {
 
@@ -177,6 +180,7 @@ class Pista {
 
         } else if (this.selectedPista == 3) {
 
+            killSlugLessThan = 50
             collideCars = false;
             wallsPista = getPista3();
             this.maxMutations = 50
@@ -1611,7 +1615,6 @@ function setFinishLineNumber(sizeOfTrack) {
         }
 
     }
-
 
 }
 function isFinalStripColor(r, g, b, a) {

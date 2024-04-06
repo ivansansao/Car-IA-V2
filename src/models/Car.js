@@ -426,6 +426,10 @@ class Car {
             return false;
         }
 
+        if (this.getRoadPosition() < 0) {
+            // Verify final track cause should be -2!!!!
+            this.kill(true, this.deadWayType.offTrack)
+        }
 
         this.lastKm = this.getKm()
         this.heading += this.rotation * 0.3;
@@ -492,8 +496,13 @@ class Car {
     }
 
     onGoUp() {
-        // console.log("onGoUp ", this.marca, this.lastKm, this.km)
         this.lap++;
+
+        // this.showInfo = true
+        // this.drawCar()
+        // console.log("RAVA 1 onGoUp ", this.marca, this.lastKm, this.km, this.pos)
+        // noLoop()
+
         if (world.endsWhenFinishLine) {
             genetic.nextGeneration();
             // eliminarTodosCars();

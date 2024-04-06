@@ -1,4 +1,5 @@
 node_modules/
+src/assets/build/
 temp/
 testes*.js
 .env
