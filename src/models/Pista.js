@@ -21,9 +21,6 @@ class Pista {
         this.carMajorDistance = 0;
         this.recordCar = new Car({})
         this.recordFlag = new Flag();
-        this.recordKm = Infinity;
-        this.recordLap = 0;
-        this.recordRanhuras = 0;
         this.population = 25;
         this.timeOutStopped = 100;
         this.backcolor = [68, 170, 0];
@@ -315,8 +312,6 @@ class Pista {
         genetic.melhores = [];
         nGeracao = 0;
         this.recordCar = new Car({})
-        this.recordKm = Infinity;
-        this.recordLap = 0;
         this.spriteLoaded = false;
         this.waveFronted = false;
 

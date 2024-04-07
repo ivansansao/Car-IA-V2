@@ -167,20 +167,17 @@ class Genetic {
 
         console.log(`G${addZero(nGeracao)} (${getHourMin()}) km: ${this.melhor.lap} - ${this.melhor.km} vm: ${this.melhor.humanVm()} M: ${this.melhor.marca} R: ${this.melhor.ranhurasColetadas.length} ID: ${this.melhor.id} CARS: ${cars.length} Perto: ${addZero(this.gotCloserBest)} ${(this.gotCloserBest / cars.length * 100).toFixed(0)}% Muts: ${this.melhor.mutated()}`);
 
-        if (this.brokeRecord({ melhor: this.melhor })) {
-
-            pista.recordKm = this.melhor.km; // Repreciate by recordCar
-            pista.recordLap = this.melhor.lap; // Repreciate by recordCar
-            pista.recordRanhuras = this.melhor.ranhurasColetadas.length; // Repreciate by recordCar
+        if (this.melhor.isBetterThan(pista.recordCar)) {
 
             pista.recordCar = { ...this.melhor }
 
             if (nGeracao > 0) {
-                if (this.isBetterThanSaved(this.melhor)) {
+                if (this.melhor.isBetterThan(this.getData())) {
                     this.saveWeights(this.melhor);
-                    // foo.speak(`${(pista.trackSize - pista.recordKm).toFixed(0)}`);  // Repreciate 'recordKm' by recordCar
                     foo.speak(`${(pista.trackSize - pista.recordCar.km).toFixed(0)}`);
                     this.melhor.showWeights();
+                } else {
+                    console.log('It is not better than saved file!')
                 }
             }
 
@@ -301,24 +298,6 @@ class Genetic {
             }
             ti++
         }
-    }
-
-    brokeRecord({ melhor }) {
-
-        return melhor.isBetterThan(pista.recordCar)
-
-        // -- Repreciate by recordCar -- 
-        // let broke = false;
-        // if (melhor.lap > pista.recordLap) {
-        //     broke = true;
-        // } else if (melhor.lap == pista.recordLap) {
-        //     if (melhor.km < pista.recordKm) {
-        //         broke = true;
-        //     }
-        // }
-
-        // return broke;
-
     }
 
     setFlag() {
@@ -706,10 +685,6 @@ class Genetic {
 
     }
 
-    isBetterThanSaved(car) {
-        const isBetter = car.isBetterThan(this.getData())
-        return isBetter
-    }
     addManualCar() {
         manualLearning = true
         eliminarTodosCars();
