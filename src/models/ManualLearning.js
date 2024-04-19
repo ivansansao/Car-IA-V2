@@ -23,30 +23,11 @@ class ManualLearning {
         const line = [];
 
         line.push(car.gear);
-        line.push(car.speed);
+        line.push(car.normalizedSpeed());
 
-        line.push(car.getNormalizedDist(0, 200));
-        line.push(car.getNormalizedDist(1, 200));
-        line.push(car.getNormalizedDist(2, 200));
-        line.push(car.getNormalizedDist(3, 200));
-        line.push(car.getNormalizedDist(4, 200));
-        line.push(car.getNormalizedDist(5, 200));
-
-        line.push(car.getNormalizedDist(6, 200));
-        line.push(car.getNormalizedDist(7, 200));
-        line.push(car.getNormalizedDist(8, 200));
-        line.push(car.getNormalizedDist(8, 200));
-        line.push(car.getNormalizedDist(10, 200));
-        line.push(car.getNormalizedDist(11, 200));
-        line.push(car.getNormalizedDist(12, 200));
-        line.push(car.getNormalizedDist(13, 200));
-        line.push(car.getNormalizedDist(14, 200));
-
-        line.push(car.getNormalizedDist(15, 200));
-        line.push(car.getNormalizedDist(16, 200));
-        line.push(car.getNormalizedDist(17, 200));
-        line.push(car.getNormalizedDist(18, 200));
-        line.push(car.getNormalizedDist(19, 200));
+        for (let i = 0; i < car.rays.length; i++) {
+            line.push(car.getNormalizedDist(i, 200));
+        }
 
         line.push(this.key_Up)
         line.push(this.key_Keep)
@@ -56,8 +37,6 @@ class ManualLearning {
         line.push(this.key_Right)
         line.push(this.key_Streight)
         line.push(this.key_Left)
-
-
 
         if (!this.has(line) && this.data.length < 2000) {
             this.data.push(line)

@@ -222,66 +222,14 @@ function weightRandomMixString(mom = '', dad = '') {
 
 function feeling(dist) {
 
-    /*
-
-    0.1 Pertíssimo
-    0.2 Muito perto
-    0.3 Perto
-    0.4 Pertinho
-    0.5 Normal
-    0.6 Longinho
-    0.7 Longe
-    0.8 Muito longe
-    0.9 Longíssimo
-
-    */
 
     dist = dist > 300 ? 300 : dist
 
-    return Number(map(dist, 0, 300, 0, 30).toFixed(0))
+    if (dist == 0) {
+        return 0.00
+    }
 
-    // if (dist < 10) { // Muito perto
-    //     return 0.1
-    // } else if (dist < 20) { // Perto
-    //     return 0.2
-    // } else if (dist < 30) { // Normal
-    //     return 0.3
-    // } else if (dist < 50) { // Longe        
-    //     return 0.4
-    // } else if (dist < 100) { // Muito longe
-    //     return 0.5
-    // } else if (dist < 150) { // Muito longe
-    //     return 0.6
-    // } else if (dist < 200) { // Muito longe
-    //     return 0.7
-    // } else if (dist < 300) { // Muito longe
-    //     return 0.8
-    // } else {
-    //     return 0.9
-    // }
-
-
-    // if (dist < 10) { // Muito perto
-    //     return 0.1
-    // } else if (dist < 20) { // Perto
-    //     return 0.2
-    // } else if (dist < 30) { // Normal
-    //     return 0.3
-    // } else if (dist < 40) { // Normal
-    //     return 0.4
-    // } else if (dist < 50) { // Longe        
-    //     return 0.5
-    // } else if (dist < 60) { // Longe        
-    //     return 0.6
-    // } else if (dist < 100) { // Muito longe
-    //     return 0.7
-    // } else if (dist < 200) { // Muito longe
-    //     return 0.8
-    // } else if (dist < 300) { // Muito longe
-    //     return 0.9
-    // } else { // Longíssimo
-    //     return 1.0
-    // }
+    return Number(map(dist, 0, 300, 0.01, 2.00).toFixed(2))
 
 }
 
