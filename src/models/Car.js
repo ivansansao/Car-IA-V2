@@ -67,9 +67,9 @@ class Car {
         // for (let i = 0; i < 360; i += 18) {
         //     this.rays.push(new Ray(this.pos.copy(), 20, radians(i), this.showRays));
         // }
-        // this.rays.push(new Ray(this.pos.copy(), 20, radians(0 * 18), this.showRays)); // Front
-        this.rays.push(new Ray(this.pos.copy(), 20, radians(1 * 18), this.showRays));
-        // this.rays.push(new Ray(this.pos.copy(), 20, radians(2 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(0 * 18), this.showRays)); // Front
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(1 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(2 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(3 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(4 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(5 * 18), this.showRays)); // Front Right
@@ -85,8 +85,8 @@ class Car {
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(15 * 18), this.showRays)); // Front Left
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(16 * 18), this.showRays));
         // this.rays.push(new Ray(this.pos.copy(), 20, radians(17 * 18), this.showRays));
-        // this.rays.push(new Ray(this.pos.copy(), 20, radians(18 * 18), this.showRays));
-        this.rays.push(new Ray(this.pos.copy(), 20, radians(19 * 18), this.showRays));
+        this.rays.push(new Ray(this.pos.copy(), 20, radians(18 * 18), this.showRays));
+        // this.rays.push(new Ray(this.pos.copy(), 20, radians(19 * 18), this.showRays));
 
 
         // for (let i = 270; i < 450; i += 9) {
@@ -1065,7 +1065,9 @@ class Car {
             { ray: 19, collide: 32.5 },
         ]
 
-        return limits[rayIndex].collide;
+        // return limits[rayIndex].collide;
+
+        return 9.0
     }
 
     drawDeadCar() {
