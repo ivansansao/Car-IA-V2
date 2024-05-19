@@ -773,7 +773,7 @@ class Car {
             strokeWeight(1);
             switch (this.acceleration) { case 'up': 'Acelerou'; case 'down': 'Desacelerou'; default: '' };
 
-            text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.getAverageSpeed().toFixed(3)}`, x + 2, y += 12);
+            text(`km: ${this.km} Voltas: ${this.lap} VM: ${this.humanVm()}`, x + 2, y += 12);
             text(`Marcha: ${this.gear == 1 ? 'D' : this.gear == -1 ? 'R' : 'N'} VM: ${this.humanVm()} ${this.lastKm} ${this.step}`, x + 2, y += 12);
             // text(`Velocidade: ${this.speed} NM: ${this.ia.mutatedNeurons}`, x + 2, y += 12);
             text(`Velocidade: ${this.speed}`, x + 2, y += 12);
@@ -833,7 +833,7 @@ class Car {
             }
         }
 
-        if (pista.trackSize - this.km > 600) {
+        if (pista.trackSize - this.km > 800) {
 
             if (this.humanVm() < killSlugLessThan) {
                 this.kill(true, this.deadWayType.slug);
@@ -1020,12 +1020,13 @@ class Car {
                 textSize(12)
                 // text(i, menorHit.x, menorHit.y);
                 // text(ray.savedDistance, menorHit.x, menorHit.y);
-                text(i, menorHit.x, menorHit.y);
+                // text(i, menorHit.x, menorHit.y);
+                // text(this.getNormalizedDist(i, 200), menorHit.x, menorHit.y);
 
                 if (this.showSensorValue) {
                     noStroke();
                     fill(0, 0, 255);
-                    text(`${nearestWall.toFixed(0)} `, menorHit.x + 6, menorHit.y + 2);
+                    text(`${feeling(nearestWall.toFixed(0), 200)} `, menorHit.x + 6, menorHit.y + 2);
                 }
                 // }
 

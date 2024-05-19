@@ -206,7 +206,7 @@ class Pista {
 
             collideCars = false;
             wallsPista = getPista4();
-            this.maxMutations = 20
+            this.maxMutations = 8
             this.ranhuras = getRanhuras4();
             this.timeOutStopped = 100;
 
@@ -221,7 +221,7 @@ class Pista {
             this.lapSensors[0].pos.y = this.startRoad.j - 38;
             this.lapSensors[0].width = 10;
             this.lapSensors[0].height = 71;
-            killSlugLessThan = 70
+            killSlugLessThan = 40
 
         } else if (this.selectedPista == 5) {
 

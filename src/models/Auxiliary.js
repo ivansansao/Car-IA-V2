@@ -223,13 +223,14 @@ function weightRandomMixString(mom = '', dad = '') {
 function feeling(dist) {
 
 
-    dist = dist > 300 ? 300 : dist
+    // dist = dist > 300 ? 300 : dist
 
     if (dist == 0) {
         return 0.00
     }
 
-    return Number(map(dist, 0, 300, 0.01, 2.00).toFixed(2))
+    // return Number(map(dist, 0, 300, 0.01, 2.00).toFixed(2))
+    return (dist / 100).toFixed(2)
 
 }
 
