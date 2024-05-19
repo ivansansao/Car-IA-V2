@@ -22,7 +22,7 @@ class Car {
         this.parent = parent || '';
         this.aliveTime = 0;
         this.updates = 0;
-        this.showSensorValue = true;
+        this.showSensorValue = false;
         this.qtdReh = 0;
         this.ranhurasColetadas = [];
         this.id = newCarId();
