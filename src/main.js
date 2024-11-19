@@ -21,70 +21,70 @@
 */
 
 
-let killSlugLessThan = 0;
-let carObj = null;
-let selectedCarOnMouse = null;
+let killSlugLessThan = 0
+let carObj = null
+let selectedCarOnMouse = null
 let errosOnScreen = ''
-let selectManyBetters = true;
-let showTrace = false;
-let manualLearning = false;
+let selectManyBetters = true
+let showTrace = false
+let manualLearning = false
 let distNormalized = true
-let addCarFromTracks = false;
-let percentComplete = 0;
-let api = null;
-let showDeadCars = false;
-let showFunctionalities = false;
-let roads = [];
+let addCarFromTracks = false
+let percentComplete = 0
+let api = null
+let showDeadCars = false
+let showFunctionalities = false
+let roads = []
 // const startRoad = { i: 500, j: 65, value: 0 }; // linha, coluna, valor
-let world = new World();
-let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 };
-let quantidade = 8;
-let maxCar = 999;
-let genetic = null;
-let vivos = 0;
-let runDemo = false;
-let cars = [];
-let carsCrcHistory = [];
-let walls = [];
-let ray;
-let pista;
-let colocacao = [];
-let evolucao = [];
-let nGeracao = 0;
-let foo;
-let showBackground = true;
-let showWalls = false;
-let showCarsDetais = true;
-let showRanhuras = false;
-let record = 0;
-let carregarCarroSalvo = true;
-let salvarMelhorCarro = true;
-let timer = 0;
-let timerOn = true;
-let collideCars = false;
-let showMousePoint = false;
-let elitism = true;
-let running = true;
-let showInfoCar = false;
-let showFlag = false;
-let luzes = true;
-let carId = 0;
-let scoreboard = null;
-let soundBrake;
-let audio;
-let engine;
-let pg;
-let globalMutations = [];
-let gpuTemp = 0;
-let gpuTempLimit = 78;
-let rankingMode = 0;
-let frameRateLimit = 59;
+let world = new World()
+let crc32 = function (r) { for (var a, o = [], c = 0; c < 256; c++) { a = c; for (var f = 0; f < 8; f++)a = 1 & a ? 3988292384 ^ a >>> 1 : a >>> 1; o[c] = a } for (var n = -1, t = 0; t < r.length; t++)n = n >>> 8 ^ o[255 & (n ^ r.charCodeAt(t))]; return (-1 ^ n) >>> 0 }
+let quantidade = 8
+let maxCar = 999
+let genetic = null
+let vivos = 0
+let runDemo = false
+let cars = []
+let carsCrcHistory = []
+let walls = []
+let ray
+let pista
+let colocacao = []
+let evolucao = []
+let nGeracao = 0
+let foo
+let showBackground = true
+let showWalls = false
+let showCarsDetais = true
+let showRanhuras = false
+let record = 0
+let carregarCarroSalvo = true
+let salvarMelhorCarro = true
+let timer = 0
+let timerOn = true
+let collideCars = false
+let showMousePoint = false
+let elitism = true
+let running = true
+let showInfoCar = false
+let showFlag = false
+let luzes = true
+let carId = 0
+let scoreboard = null
+let soundBrake
+let audio
+let engine
+let pg
+let globalMutations = []
+let gpuTemp = 0
+let gpuTempLimit = 78
+let rankingMode = 0
+let frameRateLimit = 59
 
 function preload() {
     // soundFormats('mp3', 'ogg');
     // soundBrake = loadSound('sound/crow.wav');
     // audio = new Audio('sound/sounds_engine.wav');
-    engine = new EngineSound();
+    engine = new EngineSound()
 
 }
 
@@ -92,27 +92,27 @@ function setup() {
     const customWidth = max(windowWidth, 1870)
     const customHeight = max(windowHeight, 920)
 
-    createCanvas(customWidth, customHeight);
+    createCanvas(customWidth, customHeight)
 
-    pg = createGraphics(customWidth, customHeight);
+    pg = createGraphics(customWidth, customHeight)
 
-    tf.setBackend('cpu');
+    tf.setBackend('cpu')
 
-    api = new Api();
+    api = new Api()
 
-    foo = new p5.Speech();
-    foo.setVoice('Google português do Brasil');
+    foo = new p5.Speech()
+    foo.setVoice('Google português do Brasil')
 
-    genetic = new Genetic();
+    genetic = new Genetic()
 
-    pista = new Pista();
-    scoreboard = new Scoreboard();
+    pista = new Pista()
+    scoreboard = new Scoreboard()
 
     for (let i = 0; i < 8; i++) {
-        walls.push(new Wall());
+        walls.push(new Wall())
     }
 
-    genetic.nextGeneration();
+    genetic.nextGeneration()
     carObj = new Car({})
 
     clear()
@@ -127,36 +127,36 @@ function draw() {
     }
 
     if (pista.spriteLoaded == false) {
-        return;
+        return
     }
 
     if (timerOn) {
-        timer++;
+        timer++
     }
 
     if (world.trainigMode) {
         // background(0);
     } else {
-        background(pista.backcolor);
-        handleKeyIsDown();
+        background(pista.backcolor)
+        handleKeyIsDown()
 
-        imageMode(CORNER);
+        imageMode(CORNER)
         if (pista.spritesheet) {
-            image(pista.spritesheet, 0, 0);
+            image(pista.spritesheet, 0, 0)
         }
 
-        pista.show();
-        image(pg, 0, 0);
-        showCredits();
+        pista.show()
+        image(pg, 0, 0)
+        showCredits()
 
         if (world.showScoreboard) {
-            scoreboard.update();
-            scoreboard.show();
+            scoreboard.update()
+            scoreboard.show()
         }
 
     }
 
-    const wallsAndCars = [...pista.walls];
+    const wallsAndCars = [...pista.walls]
 
     if (collideCars) {
 
@@ -164,17 +164,17 @@ function draw() {
 
             if (!car.batido && abs(car.aliveTime) > 400) {
 
-                const ptd = p5.Vector.fromAngle(car.heading + 90).mult(10).add(car.pos);
-                const pte = p5.Vector.fromAngle(car.heading - 90).mult(10).add(car.pos);
-                wallsAndCars.push({ a: ptd, b: pte, id: car.id });
+                const ptd = p5.Vector.fromAngle(car.heading + 90).mult(10).add(car.pos)
+                const pte = p5.Vector.fromAngle(car.heading - 90).mult(10).add(car.pos)
+                wallsAndCars.push({ a: ptd, b: pte, id: car.id })
 
 
-                const pdd = p5.Vector.fromAngle(car.heading + 0.25).mult(34).add(car.pos);
-                const pde = p5.Vector.fromAngle(car.heading - 0.25).mult(34).add(car.pos);
-                wallsAndCars.push({ a: pdd, b: pde, id: car.id });
+                const pdd = p5.Vector.fromAngle(car.heading + 0.25).mult(34).add(car.pos)
+                const pde = p5.Vector.fromAngle(car.heading - 0.25).mult(34).add(car.pos)
+                wallsAndCars.push({ a: pdd, b: pde, id: car.id })
 
-                wallsAndCars.push({ a: ptd, b: pdd, id: car.id });
-                wallsAndCars.push({ a: pte, b: pde, id: car.id });
+                wallsAndCars.push({ a: ptd, b: pdd, id: car.id })
+                wallsAndCars.push({ a: pte, b: pde, id: car.id })
 
             }
         }
@@ -194,12 +194,12 @@ function draw() {
                 }
             }
 
-            const carInputs = [];
-            car.update();
-            car.look(wallsAndCars);
+            const carInputs = []
+            car.update()
+            car.look(wallsAndCars)
 
-            carInputs.push(car.gear);
-            carInputs.push(car.normalizedSpeed());
+            carInputs.push(car.gear)
+            carInputs.push(car.normalizedSpeed())
 
             // for (let i = 0; i < 20; i++) {
             //     if (car.marca == 'c' || car.marca == 'X') {
@@ -212,7 +212,7 @@ function draw() {
             // console.log(car.getNormalizedDist(0, 200))
 
             for (let i = 0; i < carObj.rays.length; i++) {
-                carInputs.push(car.getNormalizedDist(i, 200));
+                carInputs.push(car.getNormalizedDist(i, 200))
             }
 
             // carInputs.push(car.getNormalizedDist(0, 200));
@@ -238,13 +238,13 @@ function draw() {
             // carInputs.push(car.getNormalizedDist(18, 200));
             // carInputs.push(car.getNormalizedDist(19, 200));
 
-            car.think(carInputs);
-            car.verificaColisaoRanhura(pista.ranhuras);
+            car.think(carInputs)
+            car.verificaColisaoRanhura(pista.ranhuras)
 
             // pista.lapSensors[0].hit(car, car.pos.x, car.pos.y, car.ray);
 
             if (!world.trainigMode) {
-                car.show();
+                car.show()
             }
 
 
@@ -268,7 +268,7 @@ function draw() {
 
                 if (perToEnd > 50) {
                     // if (cars.length < 200) {
-                    addMoreCar();
+                    addMoreCar()
                     // }
                 }
             }
@@ -277,15 +277,15 @@ function draw() {
     }
 
     if (timer > pista.pistaTimeOut) {
-        console.log("timer > pista.pistaTimeOut");
-        timer = 0;
-        eliminarTodosCars();
+        console.log("timer > pista.pistaTimeOut")
+        timer = 0
+        eliminarTodosCars()
     }
 
     if (vivos == 0) {
-        timer = 0;
+        timer = 0
         // console.log("Vivos == 0");
-        genetic.nextGeneration();
+        genetic.nextGeneration()
     }
 
     drawHeader()
@@ -294,8 +294,8 @@ function draw() {
 
         if (world.killOnFindBetter && genetic.melhor) {
 
-            fill(0);
-            text(`Corrente: ${genetic.melhorCorrente.km}-${genetic.melhor.ranhurasColetadas.length} Iguais ${genetic.melhorCorrente == genetic.melhor}`, 10, 35);
+            fill(0)
+            text(`Corrente: ${genetic.melhorCorrente.km}-${genetic.melhor.ranhurasColetadas.length} Iguais ${genetic.melhorCorrente == genetic.melhor}`, 10, 35)
 
             if (genetic.melhorCorrente.marca != 'c') {
                 text('!c', 2, 45)
@@ -305,7 +305,7 @@ function draw() {
                     text('> 50', 2, 65)
                     if (genetic.melhorCorrente.km < genetic.melhor.km) {
                         text('C < M', 2, 75)
-                        stopCreateNewCars();
+                        stopCreateNewCars()
                     }
 
                 }
@@ -322,8 +322,8 @@ function draw() {
         selectCarOnMouse()
 
         if (world.showScoreboard) {
-            scoreboard.update();
-            scoreboard.show();
+            scoreboard.update()
+            scoreboard.show()
         }
 
     }
@@ -340,30 +340,30 @@ function draw() {
 function drawManualLearning() {
 
     if (pista.spriteLoaded == false) {
-        return;
+        return
     }
 
 
 
-    background(pista.backcolor);
+    background(pista.backcolor)
 
 
-    imageMode(CORNER);
+    imageMode(CORNER)
     if (pista.spritesheet) {
-        image(pista.spritesheet, 0, 0);
+        image(pista.spritesheet, 0, 0)
     }
 
-    pista.show();
-    image(pg, 0, 0);
+    pista.show()
+    image(pg, 0, 0)
 
     if (world.showScoreboard) {
-        scoreboard.update();
-        scoreboard.show();
+        scoreboard.update()
+        scoreboard.show()
     }
 
-    handleKeyIsDown();
+    handleKeyIsDown()
 
-    const wallsAndCars = [...pista.walls];
+    const wallsAndCars = [...pista.walls]
 
     for (const car of cars) {
 
@@ -372,16 +372,16 @@ function drawManualLearning() {
             ManualLearning.saveManualCarStatus(car)
 
             if (ManualLearning.key_Up == 1) {
-                car.speedUp();
+                car.speedUp()
             } else if (ManualLearning.key_Brake == 1) {
-                car.brake();
+                car.brake()
             }
             if (ManualLearning.key_Right == 1) {
-                car.vaiPraDireita();
+                car.vaiPraDireita()
             } else if (ManualLearning.key_Left == 1) {
-                car.vaiPraEsquerda();
+                car.vaiPraEsquerda()
             } else {
-                car.vaiReto();
+                car.vaiReto()
             }
             if (ManualLearning.key_Dynamic == 1) {
                 car.engageDinamic()
@@ -389,10 +389,10 @@ function drawManualLearning() {
                 car.engageReverse()
             }
 
-            car.update();
-            car.look(wallsAndCars);
-            car.verificaColisaoRanhura(pista.ranhuras);
-            car.show();
+            car.update()
+            car.look(wallsAndCars)
+            car.verificaColisaoRanhura(pista.ranhuras)
+            car.show()
 
         }
 
@@ -405,8 +405,8 @@ function drawManualLearning() {
 
 
     if (world.showScoreboard) {
-        scoreboard.update();
-        scoreboard.show();
+        scoreboard.update()
+        scoreboard.show()
     }
 
 }
@@ -417,22 +417,22 @@ function drawHeader() {
         if (!world.trainigMode || (world.trainigMode && frameCount % 40 == 0)) {
 
             if (timer % 100 == 0) {
-                if (showFlag) genetic.setFlag();
+                if (showFlag) genetic.setFlag()
             }
 
-            if (world.trainigMode) background(100);
-            strokeWeight(2);
-            stroke(50);
-            fill(pista.textBackColor);
-            textSize(18);
-            const { f1, f2 } = cars[0].ia; // Zero cause doesnt matter whats car is!
-            const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',');
-            percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
-            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`;
+            if (world.trainigMode) background(100)
+            strokeWeight(2)
+            stroke(50)
+            fill(pista.textBackColor)
+            textSize(18)
+            const { f1, f2 } = cars[0].ia // Zero cause doesnt matter whats car is!
+            const mapToKm = (genetic.melhor.km * 0.001).toFixed(3).replace(/\./g, ',')
+            percentComplete = 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0)
+            const txtBetter = `${genetic.melhor.lap} - ${mapToKm} km   ${genetic.melhor.lap ? '' : percentComplete + '%'}  ID: ${genetic.melhor.id}`
             const genId = genetic.id
             const vm = genetic.melhor.humanVm()
 
-            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} vm: ${vm} ] NAME: ${genId} f: ${f1}/${f2} Cars: ${cars.length} FR: ${getFrameRate().toFixed(0)}`, 10, 20);
+            text(`Carros: ${vivos}. T: ${timer}/${pista.pistaTimeOut} Pista: ${pista.selectedPista} G${nGeracao} [ MEL: ${txtBetter} vm: ${vm} ] NAME: ${genId} f: ${f1}/${f2} Cars: ${cars.length} FR: ${getFrameRate().toFixed(0)}`, 10, 20)
 
         }
 
@@ -444,15 +444,15 @@ function selectCarOnMouse() {
 
     if (mouseIsPressed) {
 
-        const mx = Number(mouseX.toFixed(0));
-        const my = Number(mouseY.toFixed(0));
+        const mx = Number(mouseX.toFixed(0))
+        const my = Number(mouseY.toFixed(0))
 
         for (const car of cars) {
 
             if (car.batido) {
                 if (dist(mx, my, car.pos.x, car.pos.y) < 4) {
                     selectedCarOnMouse = car
-                    text(`ID Car: ${car.id}`, mx, my);
+                    text(`ID Car: ${car.id}`, mx, my)
                     console.log('point')
                     break
                 }
@@ -465,28 +465,28 @@ function selectCarOnMouse() {
 function ShowMousePoint() {
     if (showMousePoint) {
 
-        const mx = Number(mouseX.toFixed(0));
-        const my = Number(mouseY.toFixed(0));
-        let est = undefined;
+        const mx = Number(mouseX.toFixed(0))
+        const my = Number(mouseY.toFixed(0))
+        let est = undefined
         if (roads[mx]) {
-            est = roads[mx][my];
+            est = roads[mx][my]
         }
 
 
-        let px = mx;
-        let py = my;
+        let px = mx
+        let py = my
 
         px = (mx > (windowWidth / 2)) ? mx - 200 : mx + 30
         py = (my > (windowHeight / 2)) ? my - 20 : my + 30
 
         stroke(200)
-        strokeWeight(0);
-        fill(255);
-        rect(px - 4, py - 20, 180, 28);
-        fill(50, 50, 255);
-        strokeWeight(0);
+        strokeWeight(0)
+        fill(255)
+        rect(px - 4, py - 20, 180, 28)
+        fill(50, 50, 255)
+        strokeWeight(0)
         textStyle('bold')
-        text(`(${mouseX},${mouseY}) km: ${est}`, px, py);
+        text(`(${mouseX},${mouseY}) km: ${est}`, px, py)
         textStyle('normal')
         // text(`${mx}, ${my} (km: ${est})`, mx - 80, my);
     }
@@ -496,26 +496,26 @@ function addMoreCar() {
 
     if (genetic.melhor) {
 
-        const melhor = genetic.getNextOfBetters();
+        const melhor = genetic.getNextOfBetters()
 
-        let child = new Car({ ...genetic.getData(), marca: 'r', parent: melhor.marca });
+        let child = new Car({ ...genetic.getData(), marca: 'r', parent: melhor.marca })
 
         // Just mutate after first generation.
         if (nGeracao == 0) {
 
             if (frameCount % 2 == 0) {
-                child.setWeights(melhor.getCopiedWeights());
-                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)));
+                child.setWeights(melhor.getCopiedWeights())
+                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)))
             }
 
         } else {
 
-            child.setWeights(melhor.getCopiedWeights());
+            child.setWeights(melhor.getCopiedWeights())
             if (getPercentComplete() > 0 && getPercentComplete() < 10) {
-                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 30).toFixed(0)));
+                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, 30).toFixed(0)))
 
             } else {
-                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)));
+                child.mutate(Number(random(0.0, 1.0).toFixed(15)), Number(random(1, pista.maxMutations).toFixed(0)))
             }
             child.marca = 'm'
         }
@@ -536,7 +536,7 @@ function addMoreCar() {
         //     }
         // }
 
-        pista.addCar(child, 'Adição sob demanda');
+        pista.addCar(child, 'Adição sob demanda')
 
     }
 }
@@ -546,34 +546,34 @@ function showCredits() {
 
     if (pista.selectedPista == 4) {
 
-        noStroke();
-        fill(80, 80, 80);
-        strokeWeight(4);
-        textSize(28);
-        text(`github.com/ivansansao`, 750, 62);
+        noStroke()
+        fill(80, 80, 80)
+        strokeWeight(4)
+        textSize(28)
+        text(`github.com/ivansansao`, 750, 62)
 
-        fill(255);
+        fill(255)
 
-        strokeWeight(4);
-        textSize(20);
-        text(`@TensorFlow`, 250, 510);
+        strokeWeight(4)
+        textSize(20)
+        text(`@TensorFlow`, 250, 510)
 
-        text(`@Intelligence`, 400, 830);
-        text(`@Artificial`, 750, 760);
+        text(`@Intelligence`, 400, 830)
+        text(`@Artificial`, 750, 760)
 
     }
 
 }
 
 function zerarFrota() {
-    cars = [];
+    cars = []
 }
 
 function newCarId() {
-    carId++;
-    return carId;
+    carId++
+    return carId
 }
 
 function getPercentComplete() {
-    return 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0);
+    return 100 - (genetic.melhor.km / pista.trackSize * 100).toFixed(0)
 }

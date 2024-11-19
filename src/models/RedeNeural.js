@@ -10,16 +10,16 @@ class RedeNeural {
 
     constructor({ f1, f2 } = {}) {
 
-        this.input_nodes = 13 + 9; // 22
-        this.hidden_nodes = 8;
-        this.output_nodes = 8;
-        this.f1 = f1 || this.getAnyActivation();
-        this.f2 = f2 || this.getAnyActivation();
-        this.mutated = 0; // Number of genes mutateds, zero is not mutated
-        this.mutatedNeurons = '';
+        this.input_nodes = 3 + 2 // 22
+        this.hidden_nodes = 8
+        this.output_nodes = 8
+        this.f1 = f1 || this.getAnyActivation()
+        this.f2 = f2 || this.getAnyActivation()
+        this.mutated = 0 // Number of genes mutateds, zero is not mutated
+        this.mutatedNeurons = ''
 
-        this.model = tf.sequential();
-        this.model.add(tf.layers.dense({ units: this.hidden_nodes, inputShape: [this.input_nodes], activation: this.f1 }));
+        this.model = tf.sequential()
+        this.model.add(tf.layers.dense({ units: this.hidden_nodes, inputShape: [this.input_nodes], activation: this.f1, useBias: true }))
         // this.model.add(tf.layers.dense({units: 5, inputShape: [5], activation: 'relu'}));        
         // this.model.add(tf.layers.dense({ units: this.output_nodes, activation: this.f2 }));
 
@@ -41,29 +41,29 @@ class RedeNeural {
 
     getAnyActivation(choice) {
 
-        const functions = ['elu', 'linear', 'relu', 'selu', 'sigmoid', 'softmax', 'softplus', 'softsign', 'tanh'];
-        choice = choice || Number(random(0, functions.length - 1).toFixed(0));
-        return functions[choice];
+        const functions = ['elu', 'linear', 'relu', 'selu', 'sigmoid', 'softmax', 'softplus', 'softsign', 'tanh']
+        choice = choice || Number(random(0, functions.length - 1).toFixed(0))
+        return functions[choice]
     }
     pensar(inputs = []) {
 
 
         return tf.tidy(() => {
 
-            const xs = tf.tensor2d([inputs]);
-            const ys = this.model.predict(xs);
-            const outputs = ys.dataSync();
+            const xs = tf.tensor2d([inputs])
+            const ys = this.model.predict(xs)
+            const outputs = ys.dataSync()
 
             return outputs
-        });
+        })
     }
 
     saveMaiorHidput(layer) {
-        this.maiorValueHidden = -1;
+        this.maiorValueHidden = -1
 
         for (let i = 0; i < layer.length; i++) {
             if (layer[i] > this.maiorValueHidden) {
-                this.maiorValueHidden = layer[i];
+                this.maiorValueHidden = layer[i]
             }
         }
 
@@ -73,106 +73,106 @@ class RedeNeural {
 
         tf.tidy(() => {
 
-            const weights = this.model.getWeights();
-            const mutatedWeights = [];
-            let mutations = Number(random(0, maxMutations).toFixed(0));
+            const weights = this.model.getWeights()
+            const mutatedWeights = []
+            let mutations = Number(random(0, maxMutations).toFixed(0))
 
             for (let i = 0; i < weights.length; i++) {
 
-                let tensor = weights[i];
-                let shape = weights[i].shape;
-                let values = tensor.dataSync().slice();
+                let tensor = weights[i]
+                let shape = weights[i].shape
+                let values = tensor.dataSync().slice()
 
                 for (let m = 0; m < mutations; m++) {
 
                     if (this.mutated < mutations) {
 
-                        const j = pista.mutationCounter % 16;
-                        const w = values[j];
+                        const j = pista.mutationCounter % 16
+                        const w = values[j]
 
-                        values[j] = w + randomGaussian();
-                        this.mutated++;
-                        this.mutatedNeurons += j + ',';
-                        pista.mutationCounter++;
+                        values[j] = w + randomGaussian()
+                        this.mutated++
+                        this.mutatedNeurons += j + ','
+                        pista.mutationCounter++
 
                     }
 
                 }
 
-                let newTensor = tf.tensor(values, shape);
-                mutatedWeights[i] = newTensor;
+                let newTensor = tf.tensor(values, shape)
+                mutatedWeights[i] = newTensor
 
             }
-            this.model.setWeights(mutatedWeights);
+            this.model.setWeights(mutatedWeights)
 
-        });
+        })
 
     }
     mutate2(rate, maxMutations = 10) {
 
         tf.tidy(() => {
 
-            const weights = this.model.getWeights();
-            const mutatedWeights = [];
-            let mutations = Number(random(0, maxMutations).toFixed(0));
+            const weights = this.model.getWeights()
+            const mutatedWeights = []
+            let mutations = Number(random(0, maxMutations).toFixed(0))
 
             for (let i = 0; i < weights.length; i++) {
 
-                let tensor = weights[i];
-                let shape = weights[i].shape;
-                let values = tensor.dataSync().slice();
+                let tensor = weights[i]
+                let shape = weights[i].shape
+                let values = tensor.dataSync().slice()
 
                 for (let m = 0; m < mutations; m++) {
 
                     if (this.mutated < mutations) {
 
-                        const j = Number(random(0, values.length).toFixed(0));
-                        const w = values[j];
+                        const j = Number(random(0, values.length).toFixed(0))
+                        const w = values[j]
 
-                        values[j] = w + randomGaussian();
-                        this.mutated++;
-                        this.mutatedNeurons += j + ',';
+                        values[j] = w + randomGaussian()
+                        this.mutated++
+                        this.mutatedNeurons += j + ','
 
                     }
 
 
                 }
 
-                let newTensor = tf.tensor(values, shape);
-                mutatedWeights[i] = newTensor;
+                let newTensor = tf.tensor(values, shape)
+                mutatedWeights[i] = newTensor
 
             }
-            this.model.setWeights(mutatedWeights);
+            this.model.setWeights(mutatedWeights)
 
-        });
+        })
 
     }
     mutate_normal(rate, maxMutations = Infinity) {
 
-        maxMutations = Infinity;
+        maxMutations = Infinity
 
         tf.tidy(() => {
 
             // maxMutations = Number(random(1,4).toFixed(0));
 
-            const weights = this.model.getWeights();
-            const mutatedWeights = [];
+            const weights = this.model.getWeights()
+            const mutatedWeights = []
 
             if (random(1) > 0.5) {
 
                 for (let i = 0; i < weights.length; i++) {
 
-                    let tensor = weights[i];
-                    let shape = weights[i].shape;
-                    let values = tensor.dataSync().slice();
+                    let tensor = weights[i]
+                    let shape = weights[i].shape
+                    let values = tensor.dataSync().slice()
 
                     for (let j = 0; j < values.length; j++) {
                         if (random(1) < rate) {
                             if (this.mutated < maxMutations) {
-                                const w = values[j];
-                                values[j] = w + randomGaussian();
+                                const w = values[j]
+                                values[j] = w + randomGaussian()
                                 // values[j] = w + random(-1,1);
-                                this.mutated++;
+                                this.mutated++
                                 if (this.mutatedNeurons != '') this.mutatedNeurons += ','
                                 this.mutatedNeurons += `${i}.${j}`
                             }
@@ -180,8 +180,8 @@ class RedeNeural {
 
                     }
 
-                    let newTensor = tf.tensor(values, shape);
-                    mutatedWeights[i] = newTensor;
+                    let newTensor = tf.tensor(values, shape)
+                    mutatedWeights[i] = newTensor
 
                 }
 
@@ -189,17 +189,17 @@ class RedeNeural {
 
                 for (let i = weights.length - 1; i > -1; i--) {
 
-                    let tensor = weights[i];
-                    let shape = weights[i].shape;
-                    let values = tensor.dataSync().slice();
+                    let tensor = weights[i]
+                    let shape = weights[i].shape
+                    let values = tensor.dataSync().slice()
 
                     for (let j = values.length - 1; j > -1; j--) {
                         if (random(1) < rate) {
                             if (this.mutated < maxMutations) {
-                                const w = values[j];
-                                values[j] = w + randomGaussian();
+                                const w = values[j]
+                                values[j] = w + randomGaussian()
                                 // values[j] = w + random(-1,1);
-                                this.mutated++;
+                                this.mutated++
                                 if (this.mutatedNeurons != '') this.mutatedNeurons += ','
                                 this.mutatedNeurons += `${i}.${j}`
                             }
@@ -207,27 +207,27 @@ class RedeNeural {
 
                     }
 
-                    let newTensor = tf.tensor(values, shape);
-                    mutatedWeights[i] = newTensor;
+                    let newTensor = tf.tensor(values, shape)
+                    mutatedWeights[i] = newTensor
 
                 }
 
             }
-            this.model.setWeights(mutatedWeights);
+            this.model.setWeights(mutatedWeights)
 
-        });
+        })
 
     }
 
     mutateNoRepeat(rate, maxMutations = Infinity) {
 
         for (let i = 0; i < 1; i++) {
-            this.mutate(rate, maxMutations);
+            this.mutate(rate, maxMutations)
             if (this.mutated > 0) {
-                const mn = this.mutatedNeurons;
+                const mn = this.mutatedNeurons
                 if (!globalMutations.includes(mn)) {
-                    globalMutations.push(mn);
-                    break;
+                    globalMutations.push(mn)
+                    break
                 }
             }
         }
@@ -239,7 +239,7 @@ class RedeNeural {
         tf.tidy(() => {
 
             const handleElement = (value, sorted) => {
-                this.mutated++;
+                this.mutated++
                 this.mutatedNeurons += `N${sorted} `
                 return value + randomGaussian()
             }
@@ -267,8 +267,8 @@ class RedeNeural {
 
             // console.log("ANTES: ", this.showWeights(true))
 
-            const weights = this.model.getWeights();
-            const blocks = weights.length;
+            const weights = this.model.getWeights()
+            const blocks = weights.length
 
             for (let m = 0; m < maxMutations; m++) {
 
@@ -276,95 +276,95 @@ class RedeNeural {
 
                 for (let i = 0; i < blocks; i++) {
 
-                    let tensor = weights[i];
-                    let shape = weights[i].shape;
-                    let values = tensor.dataSync().slice();
+                    let tensor = weights[i]
+                    let shape = weights[i].shape
+                    let values = tensor.dataSync().slice()
 
                     if (i == sortedBlock) {
 
-                        const n = Number(random(0, values.length - 1).toFixed(0));
-                        const w = values[n] + randomGaussian();
+                        const n = Number(random(0, values.length - 1).toFixed(0))
+                        const w = values[n] + randomGaussian()
 
                         values[n] = w
-                        this.mutated++;
+                        this.mutated++
                         this.mutatedNeurons += `(B${i} N${n} W${w.toFixed(2)})`
                     }
 
-                    weights[i] = tf.tensor(values, shape);
+                    weights[i] = tf.tensor(values, shape)
 
                 }
             }
 
-            this.model.setWeights(weights);
+            this.model.setWeights(weights)
             // console.log("Muts: ", this.mutated)
             // console.log("DEPOIS: ", this.showWeights(true))
 
-        });
+        })
 
     }
     showWeights(toReturn) {
 
         return tf.tidy(() => {
 
-            const weights = this.model.getWeights();
-            let pesos = '';
-            let shapes = '';
+            const weights = this.model.getWeights()
+            let pesos = ''
+            let shapes = ''
 
             for (let i = 0; i < weights.length; i++) {
 
-                let tensor = weights[i];
-                let shape = weights[i].shape;
-                let values = tensor.dataSync().slice();
+                let tensor = weights[i]
+                let shape = weights[i].shape
+                let values = tensor.dataSync().slice()
 
-                if (pesos) pesos += ';';
-                if (shapes) shapes += ';';
+                if (pesos) pesos += ';'
+                if (shapes) shapes += ';'
 
-                pesos += values;
-                shapes += shape;
+                pesos += values
+                shapes += shape
 
             }
 
             if (toReturn) {
-                return pesos;
+                return pesos
             } else {
-                console.log(pesos);  // sValues for setWeightsFromString
+                console.log(pesos)  // sValues for setWeightsFromString
                 // console.log(shapes); // sShapes for setWeightsFromString
             }
 
-        });
+        })
 
     }
     shape(toReturn) {
 
         return tf.tidy(() => {
 
-            const weights = this.model.getWeights();
-            let shapes = '';
+            const weights = this.model.getWeights()
+            let shapes = ''
 
             for (let i = 0; i < weights.length; i++) {
 
-                let shape = weights[i].shape;
+                let shape = weights[i].shape
 
-                if (shapes) shapes += ';';
+                if (shapes) shapes += ';'
 
-                shapes += shape;
+                shapes += shape
 
             }
 
             return shapes
 
-        });
+        })
 
     }
 
     getCopiedWeights() {
 
-        const weights = this.model.getWeights();
-        const weightCopies = [];
+        const weights = this.model.getWeights()
+        const weightCopies = []
         for (let i = 0; i < weights.length; i++) {
-            weightCopies[i] = weights[i].clone();
+            weightCopies[i] = weights[i].clone()
         }
-        return weightCopies;
+        return weightCopies
     }
 
     setWeightsFromString(sValues, sShapes) {
@@ -373,18 +373,18 @@ class RedeNeural {
 
             try {
 
-                const aValues = sValues.split(';');
-                const aShapes = sShapes.split(';');
-                const loadedWeights = [];
+                const aValues = sValues.split(';')
+                const aShapes = sShapes.split(';')
+                const loadedWeights = []
 
                 for (let i = 0; i < aValues.length; i++) {
 
-                    const anValues = aValues[i].split(',').map((e) => { return Number(e) });
-                    const newValues = new Float32Array(anValues);
-                    const newShapes = aShapes[i].split(',').map((e) => { return Number(e) });
+                    const anValues = aValues[i].split(',').map((e) => { return Number(e) })
+                    const newValues = new Float32Array(anValues)
+                    const newShapes = aShapes[i].split(',').map((e) => { return Number(e) })
 
                     try {
-                        loadedWeights[i] = tf.tensor(newValues, newShapes);
+                        loadedWeights[i] = tf.tensor(newValues, newShapes)
                     } catch (error) {
                         console.log('Erro ao carregar pesos!')
                     }
@@ -392,12 +392,12 @@ class RedeNeural {
                 }
 
 
-                this.model.setWeights(loadedWeights);
+                this.model.setWeights(loadedWeights)
 
             } catch (error) {
                 console.log(error)
             }
 
-        });
+        })
     }
 }
